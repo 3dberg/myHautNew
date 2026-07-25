@@ -1,0 +1,216 @@
+{%- comment -%}
+  Bundle cards. Each card points at one variant of the product by its
+  position in the variant list (1 = first variant in the Shopify admin).
+{%- endcomment -%}
+
+{%- liquid
+  assign mh_product = section.settings.product | default: product | default: collections.all.products.first
+  assign current_variant = mh_product.selected_or_first_available_variant
+
+  assign fallback_eyebrow = 'sections.bundles.eyebrow' | t
+  assign fallback_heading = 'sections.bundles.heading' | t
+  assign fallback_body = 'sections.bundles.body' | t
+  assign fallback_select = 'sections.bundles.select' | t
+  assign bestseller_word = 'sections.bundles.badge_bestseller' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign intro = section.settings.body | default: fallback_body
+  assign select_label = section.settings.select_label | default: fallback_select
+
+  assign fallback_trust_1 = 'sections.bundles.trust_1' | t
+  assign fallback_trust_2 = 'sections.bundles.trust_2' | t
+  assign fallback_trust_3 = 'sections.bundles.trust_3' | t
+-%}
+
+<div class="mh-bundles" id="{{ section.settings.anchor | default: 'mh-bundles' }}">
+  <div class="mh-container">
+    <div class="mh-bundles__head">
+      {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+      <h2 class="mh-bundles__title">{{ heading | newline_to_br }}</h2>
+      {%- if intro != blank -%}<p class="mh-bundles__intro">{{ intro }}</p>{%- endif -%}
+    </div>
+
+    {%- if mh_product == blank -%}
+      <p class="mh-bundles__intro">{{ 'products.product.no_product' | t }}</p>
+    {%- else -%}
+      {% render 'mh-product-data', mh_product: mh_product %}
+
+      <div class="mh-bundles__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign position = block.settings.variant_position | default: forloop.index
+            assign index = position | minus: 1
+            assign variant = mh_product.variants[index]
+
+            assign eyebrow_key = 'sections.bundles.card_' | append: forloop.index | append: '_eyebrow'
+            assign fallback_card_eyebrow = eyebrow_key | t
+            if fallback_card_eyebrow contains 'translation missing'
+              assign fallback_card_eyebrow = ''
+            endif
+            assign card_eyebrow = block.settings.eyebrow | default: fallback_card_eyebrow
+            assign card_title = block.settings.title | default: variant.title
+
+            assign bottles = block.settings.bottles | default: 0
+            if bottles < 1
+              assign bottles = variant.title | split: ' ' | first | remove: '×' | remove: 'x' | remove: 'X' | remove: '*' | plus: 0
+            endif
+            if bottles < 1
+              assign bottles = 1
+            endif
+            assign unit_price = ''
+            if bottles > 1
+              assign unit_cents = variant.price | divided_by: bottles
+              assign unit_price = unit_cents | money
+            endif
+
+            assign discount_percent = 0
+            if variant.compare_at_price > variant.price
+              assign price_difference = variant.compare_at_price | minus: variant.price
+              assign rounding = variant.compare_at_price | divided_by: 2
+              assign discount_percent = price_difference | times: 100 | plus: rounding | divided_by: variant.compare_at_price
+            endif
+
+            assign flag_text = block.settings.flag
+            if flag_text == blank and block.settings.featured
+              assign flag_text = bestseller_word
+              if discount_percent > 0
+                assign saving = 'sections.bundles.save_percent' | t: percent: discount_percent
+                assign flag_text = flag_text | append: ' · ' | append: saving
+              endif
+            endif
+          -%}
+
+          {%- if variant != blank -%}
+            <div
+              class="mh-bundle{% if block.settings.featured %} mh-bundle--featured{% endif %}{% if variant.id == current_variant.id %} is-selected{% endif %}"
+              {{ block.shopify_attributes }}>
+              {%- if flag_text != blank -%}
+                <div class="mh-bundle__flag">{{ flag_text }}</div>
+              {%- endif -%}
+
+              {%- if card_eyebrow != blank -%}
+                <div class="mh-bundle__eyebrow">{{ card_eyebrow }}</div>
+              {%- endif -%}
+
+              <div class="mh-bundle__title">{{ card_title }}</div>
+
+              <div class="mh-bundle__price">
+                <span class="mh-bundle__price-current">{{ variant.price | money }}</span>
+                {%- if discount_percent > 0 -%}
+                  <s class="mh-bundle__price-compare">{{ variant.compare_at_price | money }}</s>
+                {%- endif -%}
+              </div>
+
+              {%- if unit_price != blank -%}
+                <div class="mh-bundle__unit">{{ 'sections.bundles.per_bottle' | t: price: unit_price }}</div>
+              {%- endif -%}
+
+              <button
+                type="button"
+                class="mh-btn mh-bundle__cta {% if block.settings.featured %}mh-btn--primary{% else %}mh-btn--outline{% endif %}"
+                data-mh-select="{{ variant.id }}"
+                data-mh-select-action="{{ section.settings.cta_action }}"
+                data-mh-select-scroll="#mh-buy"
+                data-mh-add-label-text="{{ select_label | escape }}"
+                aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
+                {% unless variant.available %}disabled{% endunless %}>
+                <span data-mh-add-label>
+                  {%- if variant.available %}{{ select_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif -%}
+                </span>
+              </button>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="mh-bundles__trust">
+      {%- assign trust_1 = section.settings.trust_1 | default: fallback_trust_1 -%}
+      {%- assign trust_2 = section.settings.trust_2 | default: fallback_trust_2 -%}
+      {%- assign trust_3 = section.settings.trust_3 | default: fallback_trust_3 -%}
+      {%- if trust_1 != blank -%}<span>✓ {{ trust_1 }}</span>{%- endif -%}
+      {%- if trust_2 != blank -%}<span>✓ {{ trust_2 }}</span>{%- endif -%}
+      {%- if trust_3 != blank -%}<span>✓ {{ trust_3 }}</span>{%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bundles",
+  "tag": "section",
+  "class": "mh-section-bundles",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Required on the homepage. On the product template the current product is used automatically."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Headline" },
+    { "type": "textarea", "id": "body", "label": "Intro text" },
+    { "type": "text", "id": "select_label", "label": "Button label" },
+    {
+      "type": "select",
+      "id": "cta_action",
+      "label": "What the button does",
+      "options": [
+        { "value": "select", "label": "Select the bundle" },
+        { "value": "scroll", "label": "Select and scroll to the buy box" },
+        { "value": "add", "label": "Add to cart straight away" }
+      ],
+      "default": "add"
+    },
+    { "type": "header", "content": "Trust row" },
+    { "type": "text", "id": "trust_1", "label": "Item 1" },
+    { "type": "text", "id": "trust_2", "label": "Item 2" },
+    { "type": "text", "id": "trust_3", "label": "Item 3" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-bundles" }
+  ],
+  "blocks": [
+    {
+      "type": "bundle",
+      "name": "Bundle card",
+      "settings": [
+        {
+          "type": "range",
+          "id": "variant_position",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "label": "Variant (position in the admin)",
+          "default": 1
+        },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "title", "label": "Title", "info": "Defaults to the variant name." },
+        {
+          "type": "range",
+          "id": "bottles",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "label": "Bottles in this bundle",
+          "default": 0,
+          "info": "Used for the “per bottle” price. 0 = read it from the variant name."
+        },
+        { "type": "checkbox", "id": "featured", "label": "Highlight this card", "default": false },
+        { "type": "text", "id": "flag", "label": "Flag text", "info": "Defaults to “Bestseller · save X %” on the highlighted card." }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Bundles",
+      "blocks": [
+        { "type": "bundle", "settings": { "variant_position": 1 } },
+        { "type": "bundle", "settings": { "variant_position": 2 } },
+        { "type": "bundle", "settings": { "variant_position": 3, "featured": true } },
+        { "type": "bundle", "settings": { "variant_position": 4 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

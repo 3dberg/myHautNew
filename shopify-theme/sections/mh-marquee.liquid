@@ -1,0 +1,52 @@
+{%- comment -%}
+  Scrolling trust strip. The list is duplicated so the loop is seamless.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_items = 'sections.marquee.items' | t
+  assign items_string = section.settings.items | default: fallback_items
+  assign items = items_string | split: ','
+-%}
+
+{%- if items.size > 0 -%}
+  <div
+    class="mh-marquee"
+    style="--mh-marquee-speed: {{ section.settings.speed }}s"
+    aria-label="{{ items_string | escape }}">
+    <div class="mh-marquee__track" style="animation-duration: {{ section.settings.speed }}s" aria-hidden="true">
+      {%- for pass in (1..2) -%}
+        {%- for item in items -%}
+          <span>{{ item | strip }}</span>
+          <span>·</span>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Marquee",
+  "tag": "section",
+  "class": "mh-section-marquee",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "items",
+      "label": "Items (comma separated)",
+      "info": "Leave empty to use the built-in translation (DE/EN)."
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "s",
+      "label": "Duration of one loop",
+      "default": 28
+    }
+  ],
+  "presets": [{ "name": "Marquee" }]
+}
+{% endschema %}

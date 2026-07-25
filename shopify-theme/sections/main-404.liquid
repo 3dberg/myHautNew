@@ -1,0 +1,16 @@
+<div class="mh-page" style="text-align: center">
+  <div class="mh-container">
+    <h1 class="mh-page__title">404</h1>
+    <p class="mh-page__intro">{{ 'general.search.no_results' | t: terms: page_title }}</p>
+    <p style="margin-top: 28px">
+      <a href="{{ routes.root_url }}" class="mh-btn">{{ 'general.continue_shopping' | t }}</a>
+    </p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "404",
+  "settings": []
+}
+{% endschema %}

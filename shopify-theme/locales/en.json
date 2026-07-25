@@ -1,0 +1,348 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close",
+      "open_menu": "Open menu",
+      "open_cart": "Open cart",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "meta": {
+      "tags": "Tagged: {{ tags }}",
+      "page": "Page {{ page }}"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search …",
+      "submit": "Search",
+      "no_results": "No results for “{{ terms }}”.",
+      "results_with_count": {
+        "one": "{{ count }} result",
+        "other": "{{ count }} results"
+      }
+    },
+    "language": {
+      "label": "Language"
+    },
+    "country": {
+      "label": "Country / region"
+    },
+    "newsletter": {
+      "success": "Thanks — you're on the list."
+    },
+    "continue_shopping": "Continue shopping"
+  },
+
+  "sections": {
+    "announcement": {
+      "item_1": "Free shipping over €25",
+      "item_2": "30-day money-back guarantee",
+      "item_3": "Ships from Germany"
+    },
+
+    "header": {
+      "cart": "Cart",
+      "cart_short": "Bag",
+      "menu": "Menu"
+    },
+
+    "hero": {
+      "rating_text": "4.8 · 2,184 reviews",
+      "heading_1": "Smooth skin in",
+      "heading_2": "8 minutes.",
+      "body": "Spray, wait a moment, wipe off. No pulling, no shaving, no appointments. With aloe vera & allantoin for skin that feels better afterwards than before.",
+      "body_mobile": "Spray, wait, wipe off. No pulling, no shaving — with aloe vera & allantoin.",
+      "note": "100 ml · around 6 applications · incl. VAT",
+      "secondary_button": "Bundles",
+      "trust_1": "CPSR certified",
+      "trust_2": "Dermatologically tested",
+      "trust_3": "Vegan",
+      "trust_mobile_1": "CPSR certified",
+      "trust_mobile_2": "Vegan",
+      "trust_mobile_3": "30-day returns"
+    },
+
+    "sticky": {
+      "product_title": "MyHaut Hair Removal Spray",
+      "product_meta": "100 ml · In stock",
+      "buy": "Buy now"
+    },
+
+    "marquee": {
+      "items": "No blades, No wax, No appointments, Aloe vera & allantoin, 8 minutes, For body, legs & arms"
+    },
+
+    "steps": {
+      "eyebrow": "How it works",
+      "heading": "Three steps.\nOne shower long.",
+      "body": "No heating up, no touch-up shaving. All you need is the bottle, a damp cloth and eight minutes.",
+      "step_1_title": "Spray",
+      "step_1_body": "Apply evenly to dry skin until the hairs are covered. Don't rub it in.",
+      "step_2_title": "Wait 8 minutes",
+      "step_2_body": "The formula dissolves the hair at the surface. Aloe vera keeps your skin calm meanwhile.",
+      "step_3_title": "Wipe & rinse",
+      "step_3_body": "Wipe off with a damp cloth, rinse briefly with lukewarm water. Done."
+    },
+
+    "before_after": {
+      "eyebrow": "Before / after",
+      "heading": "One pass. No stubble.",
+      "label_before": "Before",
+      "label_after": "After · 8 min",
+      "stat_1_value": "96 %",
+      "stat_1_label": "report noticeably smoother skin after the first application*",
+      "stat_2_value": "0",
+      "stat_2_label": "blades, wax strips and salon appointments",
+      "stat_3_value": "€3.15",
+      "stat_3_label": "per application – a fraction of a salon session",
+      "footnote": "*Self-assessment, user test with 112 participants over 4 weeks."
+    },
+
+    "facts": {
+      "eyebrow": "In the bottle",
+      "heading": "Care that pulls its weight.",
+      "fact_label": "FACT",
+      "fact_1_title": "Allantoin soothes instantly",
+      "fact_1_body": "Instead of irritated skin after shaving: allantoin supports regeneration and reduces redness right after use.",
+      "fact_2_title": "Aloe vera holds moisture",
+      "fact_2_body": "Your skin doesn't dry out the way it does with many hair removal creams. After rinsing, a soft, cared-for film remains.",
+      "fact_3_title": "CPSR certified",
+      "fact_3_body": "Cosmetic Product Safety Report under EU regulation 1223/2009. Made and tested in the EU, vegan and cruelty-free."
+    },
+
+    "reviews": {
+      "heading": "What customers\nsay afterwards.",
+      "rating_summary": "4.8 out of 5 · 2,184 reviews",
+      "verified": "Verified purchase",
+      "review_1_body": "“I shaved for ten years and complained about stubble for ten years. This was the first week without.”",
+      "review_1_author": "Lena M.",
+      "review_2_body": "“No smell like other creams, no red patches. After eight minutes everything was gone, really.”",
+      "review_2_author": "Sarah K.",
+      "review_3_body": "“I use it on my chest and back. Far more pleasant than waxing and I don't need anyone to help me.”",
+      "review_3_author": "Tobias R."
+    },
+
+    "bundles": {
+      "eyebrow": "Bundles",
+      "heading": "Choose your amount.",
+      "body": "One bottle lasts around six applications. Most people order three.",
+      "select": "Select",
+      "selected": "Selected",
+      "per_bottle": "{{ price }} per bottle",
+      "per_bottle_short": "{{ price }} / bottle",
+      "badge_bestseller": "Bestseller",
+      "save_percent": "save {{ percent }} %",
+      "card_1_eyebrow": "To try",
+      "card_2_eyebrow": "For 3 months",
+      "card_3_eyebrow": "Most popular",
+      "card_4_eyebrow": "Best price",
+      "trust_1": "Free shipping over €25",
+      "trust_2": "30-day money back",
+      "trust_3": "Delivery in 2–4 working days"
+    },
+
+    "faq": {
+      "eyebrow": "FAQ",
+      "heading": "Still have questions?",
+      "body_html": "Write to us at <a href=\"mailto:hallo@myhaut.de\">hallo@myhaut.de</a> – we usually reply the same working day.",
+      "q_1": "Which body areas is the spray suitable for?",
+      "a_1": "Legs, arms, underarms, chest and back. Do not use on the face, the intimate area or irritated skin.",
+      "q_2": "How long does the skin stay smooth?",
+      "a_2": "Because the hair is dissolved below the skin's surface, it takes most people five to seven days before anything grows back – noticeably longer than after shaving. And it comes back soft, not stubbly.",
+      "q_3": "Is it suitable for sensitive skin?",
+      "a_3": "Aloe vera and allantoin are in the formula for exactly that reason. Still, do a patch test on a small area of your inner elbow 24 hours in advance.",
+      "q_4": "Does the spray smell like other hair removal creams?",
+      "a_4": "No. The formula works without the typical harsh smell – you get a light, neutral scent.",
+      "q_5": "What if it doesn't work for me?",
+      "a_5": "Send us a message within 30 days and you'll get the full purchase price back – even with an opened bottle."
+    },
+
+    "cta": {
+      "heading": "Eight minutes until\nyour next shower.",
+      "button": "Try it now for {price}",
+      "note": "30-day money-back guarantee"
+    },
+
+    "footer": {
+      "tagline": "Skincare that gives you time back. Developed and tested in the EU.",
+      "column_1_title": "Shop",
+      "column_2_title": "Help",
+      "column_3_title": "Legal",
+      "copyright": "All rights reserved."
+    }
+  },
+
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "adding": "Adding …",
+      "added": "Added ✓",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "in_stock": "In stock",
+      "quantity": "Quantity",
+      "regular_price": "Regular price",
+      "sale_price": "Sale price",
+      "save_percent": "−{{ percent }} %",
+      "from_price": "from {{ price }}",
+      "view_details": "View details",
+      "vendor": "Brand",
+      "no_product": "No product selected. Pick your product under “Product” in the theme editor.",
+      "no_product_link": "Choose a product in the theme editor"
+    }
+  },
+
+  "cart": {
+    "general": {
+      "title": "Cart",
+      "empty": "Your cart is empty.",
+      "subtotal": "Subtotal",
+      "taxes_and_shipping": "Incl. VAT. Shipping calculated at checkout.",
+      "checkout": "Checkout",
+      "remove": "Remove",
+      "quantity": "Quantity",
+      "item_count": {
+        "one": "{{ count }} item",
+        "other": "{{ count }} items"
+      },
+      "continue": "Continue shopping",
+      "update": "Update",
+      "error": "That item couldn't be added. Please try again."
+    }
+  },
+
+  "blogs": {
+    "article": {
+      "read_more": "Read more",
+      "back_to_blog": "Back to overview",
+      "posted_on": "Posted on {{ date }}"
+    }
+  },
+
+  "customer": {
+    "account": {
+      "title": "My account",
+      "details": "Account details",
+      "view_addresses": "View addresses",
+      "return": "Back to account",
+      "orders": "Orders",
+      "no_orders": "You haven't placed an order yet.",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment",
+      "fulfillment_status": "Fulfillment",
+      "total": "Total"
+    },
+    "login": {
+      "title": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "submit": "Log in",
+      "create_account": "Create account",
+      "guest_title": "Continue as guest",
+      "guest_continue": "Continue"
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create account"
+    },
+    "recover_password": {
+      "title": "Reset password",
+      "subtext": "We'll send you an email with a link.",
+      "email": "Email",
+      "submit": "Send link",
+      "cancel": "Cancel",
+      "success": "We've sent you an email."
+    },
+    "reset_password": {
+      "title": "Set a new password",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Save"
+    },
+    "activate_account": {
+      "title": "Activate account",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Activate account",
+      "cancel": "Decline invitation"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "add_new": "New address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Really delete this address?",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company": "Company",
+      "address1": "Street and number",
+      "address2": "Address line 2",
+      "city": "City",
+      "country": "Country",
+      "province": "State / province",
+      "zip": "ZIP / postcode",
+      "phone": "Phone",
+      "set_default": "Set as default address",
+      "add": "Save address",
+      "update": "Update address",
+      "cancel": "Cancel"
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date": "Placed on {{ date }}",
+      "product": "Item",
+      "quantity": "Quantity",
+      "price": "Price",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "billing_address": "Billing address",
+      "shipping_address": "Shipping address",
+      "cancelled": "Order cancelled on {{ date }}"
+    }
+  },
+
+  "gift_cards": {
+    "issued": {
+      "title": "Your {{ value }} gift card",
+      "subtext": "Your gift card",
+      "code": "Gift card code",
+      "shop_link": "Redeem now",
+      "print": "Print",
+      "expired": "Expired"
+    }
+  },
+
+  "onboarding": {
+    "product_title": "MyHaut Hair Removal Spray",
+    "collection_title": "Collection"
+  },
+
+  "shopify": {
+    "links": {
+      "powered_by_shopify": "Powered by Shopify"
+    }
+  },
+
+  "password_page": {
+    "title": "Coming soon",
+    "message": "We're opening shortly.",
+    "login_form_heading": "Enter using password",
+    "login_password": "Password",
+    "login_submit": "Enter",
+    "admin_link": "Are you the store owner?",
+    "admin_link_text": "Log in here"
+  }
+}

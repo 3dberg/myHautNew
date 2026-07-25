@@ -1,0 +1,88 @@
+{%- comment -%}
+  Dark review band. Text reviews are theme content — swap them for a review
+  app's block once you collect real ones.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_heading = 'sections.reviews.heading' | t
+  assign fallback_summary = 'sections.reviews.rating_summary' | t
+  assign verified_label = 'sections.reviews.verified' | t
+
+  assign heading = section.settings.heading | default: fallback_heading
+  assign summary = section.settings.summary | default: fallback_summary
+-%}
+
+<div class="mh-reviews" id="{{ section.settings.anchor | default: 'mh-reviews' }}">
+  <div class="mh-container">
+    <div class="mh-reviews__head">
+      <h2 class="mh-reviews__title">{{ heading | newline_to_br }}</h2>
+      {%- if section.settings.show_summary -%}
+        <div class="mh-reviews__score">
+          <div class="mh-reviews__stars">{% render 'mh-stars', mh_rating: section.settings.rating_stars %}</div>
+          {%- if summary != blank -%}<div class="mh-reviews__summary">{{ summary }}</div>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="mh-reviews__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign body_key = 'sections.reviews.review_' | append: forloop.index | append: '_body'
+          assign author_key = 'sections.reviews.review_' | append: forloop.index | append: '_author'
+          assign fallback_body = body_key | t
+          assign fallback_author = author_key | t
+          if fallback_body contains 'translation missing'
+            assign fallback_body = ''
+          endif
+          if fallback_author contains 'translation missing'
+            assign fallback_author = ''
+          endif
+          assign review_body = block.settings.body | default: fallback_body
+          assign review_author = block.settings.author | default: fallback_author
+        -%}
+        <div class="mh-review" {{ block.shopify_attributes }}>
+          <div class="mh-review__stars">{% render 'mh-stars', mh_rating: block.settings.stars %}</div>
+          <p class="mh-review__body">{{ review_body }}</p>
+          <div class="mh-review__author">
+            {{- review_author -}}
+            {%- if block.settings.show_verified %} · {{ verified_label }}{% endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Reviews",
+  "tag": "section",
+  "class": "mh-section-reviews",
+  "settings": [
+    { "type": "textarea", "id": "heading", "label": "Headline" },
+    { "type": "checkbox", "id": "show_summary", "label": "Show rating summary", "default": true },
+    { "type": "range", "id": "rating_stars", "min": 0, "max": 5, "step": 1, "label": "Stars", "default": 5 },
+    { "type": "text", "id": "summary", "label": "Rating summary" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-reviews" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "range", "id": "stars", "min": 0, "max": 5, "step": 1, "label": "Stars", "default": 5 },
+        { "type": "textarea", "id": "body", "label": "Review" },
+        { "type": "text", "id": "author", "label": "Name" },
+        { "type": "checkbox", "id": "show_verified", "label": "Show “verified purchase”", "default": true }
+      ]
+    }
+  ],
+  "max_blocks": 9,
+  "presets": [
+    {
+      "name": "Reviews",
+      "blocks": [{ "type": "review" }, { "type": "review" }, { "type": "review" }]
+    }
+  ]
+}
+{% endschema %}

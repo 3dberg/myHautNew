@@ -1,0 +1,49 @@
+<div class="mh-page">
+  <div class="mh-container">
+    {%- assign order_date = order.created_at | date: format: 'date' -%}
+    <h1 class="mh-page__title">{{ 'customer.order.title' | t: name: order.name }}</h1>
+    <p class="mh-page__intro">{{ 'customer.order.date' | t: date: order_date }}</p>
+
+    <table class="mh-table" style="margin-top: 24px">
+      <thead>
+        <tr>
+          <th>{{ 'customer.order.product' | t }}</th>
+          <th>{{ 'customer.order.quantity' | t }}</th>
+          <th>{{ 'customer.order.total' | t }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for line_item in order.line_items -%}
+          <tr>
+            <td>{{ line_item.title }}</td>
+            <td>{{ line_item.quantity }}</td>
+            <td>{{ line_item.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">{{ 'customer.order.subtotal' | t }}</td>
+          <td>{{ order.subtotal_price | money }}</td>
+        </tr>
+        <tr>
+          <td colspan="2">{{ 'customer.order.total' | t }}</td>
+          <td>{{ order.total_price | money }}</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-top: 32px">
+      <div>
+        <strong>{{ 'customer.order.billing_address' | t }}</strong>
+        <div class="mh-page__intro">{{ order.billing_address | format_address }}</div>
+      </div>
+      <div>
+        <strong>{{ 'customer.order.shipping_address' | t }}</strong>
+        <div class="mh-page__intro">{{ order.shipping_address | format_address }}</div>
+      </div>
+    </div>
+
+    <p style="margin-top: 32px"><a href="{{ routes.account_url }}">← {{ 'customer.account.return' | t }}</a></p>
+  </div>
+</div>

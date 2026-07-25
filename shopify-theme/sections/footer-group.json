@@ -1,0 +1,19 @@
+{
+  "name": "Footer",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "column-1": { "type": "column", "settings": { "menu": "footer" } },
+        "column-2": { "type": "column", "settings": { "menu": "footer" } },
+        "column-3": { "type": "column", "settings": { "menu": "footer" } }
+      },
+      "block_order": ["column-1", "column-2", "column-3"],
+      "settings": {
+        "show_payment_icons": true
+      }
+    }
+  },
+  "order": ["footer"]
+}

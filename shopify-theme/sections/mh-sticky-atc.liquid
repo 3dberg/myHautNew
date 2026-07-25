@@ -1,0 +1,170 @@
+{%- comment -%}
+  Sticky add-to-cart bar. Slides in from the top on desktop and from the
+  bottom on mobile once the hero has scrolled out of view.
+{%- endcomment -%}
+
+{%- liquid
+  assign mh_product = section.settings.product | default: product | default: collections.all.products.first
+  assign current_variant = mh_product.selected_or_first_available_variant
+
+  assign fallback_title = 'sections.sticky.product_title' | t
+  assign fallback_meta = 'sections.sticky.product_meta' | t
+  assign fallback_buy = 'sections.sticky.buy' | t
+
+  assign bar_title = section.settings.title | default: mh_product.title | default: fallback_title
+  assign bar_meta = section.settings.meta | default: fallback_meta
+  assign buy_label = section.settings.buy_label | default: fallback_buy
+
+  assign discount_percent = 0
+  if current_variant.compare_at_price > current_variant.price
+    assign price_difference = current_variant.compare_at_price | minus: current_variant.price
+    assign rounding = current_variant.compare_at_price | divided_by: 2
+    assign discount_percent = price_difference | times: 100 | plus: rounding | divided_by: current_variant.compare_at_price
+  endif
+
+  comment
+    The savings label only goes on the best-value chip — as in the design, and
+    it keeps the bar from overflowing when a product has many variants.
+  endcomment
+  assign best_discount = 0
+  for variant in mh_product.variants limit: 4
+    if variant.compare_at_price > variant.price
+      assign variant_difference = variant.compare_at_price | minus: variant.price
+      assign variant_rounding = variant.compare_at_price | divided_by: 2
+      assign variant_discount = variant_difference | times: 100 | plus: variant_rounding | divided_by: variant.compare_at_price
+      if variant_discount > best_discount
+        assign best_discount = variant_discount
+      endif
+    endif
+  endfor
+-%}
+
+{%- if mh_product != blank -%}
+  <div
+    class="mh-atc"
+    data-mh-sticky
+    data-mh-sticky-after="{{ section.settings.reveal_after | default: '.mh-hero' }}">
+    {%- form 'product', mh_product, class: 'mh-atc__form', data-mh-form: 'true' -%}
+      <input type="hidden" name="id" value="{{ current_variant.id }}" data-mh-form-variant>
+      <input type="hidden" name="quantity" value="1">
+
+      <div class="mh-atc__inner">
+        {%- comment -%} desktop layout {%- endcomment -%}
+        <div class="mh-atc__desktop">
+          <div class="mh-atc__product">
+            {%- if section.settings.show_thumbnail -%}
+              {% render 'mh-media',
+                mh_image: section.settings.image,
+                mh_fallback: 'mh-demo-product.png',
+                mh_class: 'mh-atc__thumb',
+                mh_alt: bar_title,
+                mh_sizes: '44px'
+              %}
+            {%- endif -%}
+            <div>
+              <div class="mh-atc__name">{{ bar_title }}</div>
+              <div class="mh-atc__meta">{{ bar_meta }}</div>
+            </div>
+          </div>
+
+          <div class="mh-atc__controls">
+            {%- if mh_product.variants.size > 1 -%}
+              <div class="mh-chips" role="group" aria-label="{{ 'sections.bundles.heading' | t }}">
+                {%- for variant in mh_product.variants limit: 4 -%}
+                  {%- liquid
+                    assign variant_discount = 0
+                    if variant.compare_at_price > variant.price
+                      assign variant_difference = variant.compare_at_price | minus: variant.price
+                      assign variant_rounding = variant.compare_at_price | divided_by: 2
+                      assign variant_discount = variant_difference | times: 100 | plus: variant_rounding | divided_by: variant.compare_at_price
+                    endif
+                  -%}
+                  <button
+                    type="button"
+                    class="mh-chip{% if variant.id == current_variant.id %} is-active{% endif %}"
+                    data-mh-select="{{ variant.id }}"
+                    aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
+                    {% unless variant.available %}disabled{% endunless %}>
+                    {{- variant.title -}}
+                    {%- if variant_discount == best_discount and variant_discount > 0 and section.settings.show_chip_savings %}
+                      <span> · {{ 'sections.bundles.save_percent' | t: percent: variant_discount }}</span>
+                    {%- endif -%}
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            <span class="mh-atc__price" data-mh-price>{{ current_variant.price | money }}</span>
+
+            <button
+              type="submit"
+              class="mh-btn mh-atc__buy"
+              data-mh-add
+              data-mh-add-label-text="{{ buy_label | escape }}"
+              {% unless current_variant.available %}disabled{% endunless %}>
+              <span data-mh-add-label>
+                {%- if current_variant.available %}{{ buy_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif -%}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {%- comment -%} mobile layout {%- endcomment -%}
+        <div class="mh-atc__mobile">
+          <div class="mh-atc__summary">
+            <div class="mh-atc__summary-title">
+              <span data-mh-variant-title>{{ current_variant.title }}</span>
+              <span class="mh-atc__save" data-mh-save-note {% unless discount_percent > 0 %}hidden{% endunless %}>
+                {%- if discount_percent > 0 -%}
+                  {{ 'sections.bundles.save_percent' | t: percent: discount_percent }}
+                {%- endif -%}
+              </span>
+            </div>
+            {% render 'mh-price', mh_variant: current_variant, mh_class: 'mh-atc__summary-price' %}
+          </div>
+
+          <button
+            type="submit"
+            class="mh-btn mh-atc__buy"
+            data-mh-add
+            data-mh-add-label-text="{{ buy_label | escape }}"
+            {% unless current_variant.available %}disabled{% endunless %}>
+            <span data-mh-add-label>
+              {%- if current_variant.available %}{{ buy_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif -%}
+            </span>
+          </button>
+        </div>
+      </div>
+    {%- endform -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sticky add to cart",
+  "tag": "section",
+  "class": "mh-section-sticky",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Required on the homepage. On the product template the current product is used automatically."
+    },
+    { "type": "checkbox", "id": "show_thumbnail", "label": "Show product thumbnail", "default": true },
+    { "type": "image_picker", "id": "image", "label": "Thumbnail image" },
+    { "type": "text", "id": "title", "label": "Product name", "info": "Leave empty to use the product title." },
+    { "type": "text", "id": "meta", "label": "Small line under the name" },
+    { "type": "text", "id": "buy_label", "label": "Button label" },
+    { "type": "checkbox", "id": "show_chip_savings", "label": "Show savings on the variant chips", "default": true },
+    {
+      "type": "text",
+      "id": "reveal_after",
+      "label": "Appears after this element",
+      "default": ".mh-hero",
+      "info": "CSS selector. The bar slides in once this element has scrolled out of view."
+    }
+  ],
+  "presets": [{ "name": "Sticky add to cart" }]
+}
+{% endschema %}

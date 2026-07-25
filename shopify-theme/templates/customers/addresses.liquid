@@ -1,0 +1,49 @@
+<div class="mh-page">
+  <div class="mh-container">
+    <h1 class="mh-page__title">{{ 'customer.addresses.title' | t }}</h1>
+    <p><a href="{{ routes.account_url }}">← {{ 'customer.account.return' | t }}</a></p>
+
+    {%- paginate customer.addresses by 10 -%}
+      {%- for address in customer.addresses -%}
+        <div style="border-top: 1px solid var(--mh-line); padding: 20px 0">
+          <div class="mh-page__intro">{{ address | format_address }}</div>
+          {%- form 'customer_address', address -%}
+            <button type="submit" class="mh-line-item__remove" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">
+              {{ 'customer.addresses.delete' | t }}
+            </button>
+            <input type="hidden" name="_method" value="delete">
+          {%- endform -%}
+        </div>
+      {%- endfor -%}
+    {%- endpaginate -%}
+
+    <h2 style="font-size: 28px; margin: 32px 0 16px">{{ 'customer.addresses.add_new' | t }}</h2>
+    {%- form 'customer_address', customer.new_address, class: 'mh-form' -%}
+      <div class="mh-field">
+        <label for="address-first">{{ 'customer.addresses.first_name' | t }}</label>
+        <input type="text" id="address-first" name="address[first_name]" autocomplete="given-name">
+      </div>
+      <div class="mh-field">
+        <label for="address-last">{{ 'customer.addresses.last_name' | t }}</label>
+        <input type="text" id="address-last" name="address[last_name]" autocomplete="family-name">
+      </div>
+      <div class="mh-field">
+        <label for="address-street">{{ 'customer.addresses.address1' | t }}</label>
+        <input type="text" id="address-street" name="address[address1]" autocomplete="address-line1">
+      </div>
+      <div class="mh-field">
+        <label for="address-zip">{{ 'customer.addresses.zip' | t }}</label>
+        <input type="text" id="address-zip" name="address[zip]" autocomplete="postal-code">
+      </div>
+      <div class="mh-field">
+        <label for="address-city">{{ 'customer.addresses.city' | t }}</label>
+        <input type="text" id="address-city" name="address[city]" autocomplete="address-level2">
+      </div>
+      <div class="mh-field">
+        <label for="address-country">{{ 'customer.addresses.country' | t }}</label>
+        <select id="address-country" name="address[country]">{{ country_option_tags }}</select>
+      </div>
+      <button type="submit" class="mh-btn">{{ 'customer.addresses.add' | t }}</button>
+    {%- endform -%}
+  </div>
+</div>

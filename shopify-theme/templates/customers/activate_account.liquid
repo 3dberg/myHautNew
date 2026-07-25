@@ -1,0 +1,18 @@
+<div class="mh-page">
+  <div class="mh-container">
+    <h1 class="mh-page__title">{{ 'customer.activate_account.title' | t }}</h1>
+    {%- form 'activate_customer_password', class: 'mh-form' -%}
+      {{ form.errors | default_errors }}
+      <div class="mh-field">
+        <label for="activate-password">{{ 'customer.activate_account.password' | t }}</label>
+        <input type="password" id="activate-password" name="customer[password]" autocomplete="new-password">
+      </div>
+      <div class="mh-field">
+        <label for="activate-password-confirm">{{ 'customer.activate_account.password_confirm' | t }}</label>
+        <input type="password" id="activate-password-confirm" name="customer[password_confirmation]" autocomplete="new-password">
+      </div>
+      <button type="submit" class="mh-btn">{{ 'customer.activate_account.submit' | t }}</button>
+      <button type="submit" name="decline" class="mh-btn mh-btn--outline">{{ 'customer.activate_account.cancel' | t }}</button>
+    {%- endform -%}
+  </div>
+</div>

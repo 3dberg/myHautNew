@@ -1,0 +1,30 @@
+<div class="mh-page">
+  <div class="mh-container">
+    <h1 class="mh-page__title">{{ 'customer.login.title' | t }}</h1>
+    {%- form 'customer_login', class: 'mh-form' -%}
+      {{ form.errors | default_errors }}
+      <div class="mh-field">
+        <label for="customer-email">{{ 'customer.login.email' | t }}</label>
+        <input type="email" id="customer-email" name="customer[email]" autocomplete="email">
+      </div>
+      <div class="mh-field">
+        <label for="customer-password">{{ 'customer.login.password' | t }}</label>
+        <input type="password" id="customer-password" name="customer[password]" autocomplete="current-password">
+      </div>
+      <button type="submit" class="mh-btn">{{ 'customer.login.submit' | t }}</button>
+      <p><a href="{{ routes.account_register_url }}">{{ 'customer.login.create_account' | t }}</a></p>
+    {%- endform -%}
+
+    {%- form 'recover_customer_password', class: 'mh-form', style: 'margin-top: 32px' -%}
+      {{ form.errors | default_errors }}
+      {%- if form.posted_successfully? -%}
+        <p>{{ 'customer.recover_password.success' | t }}</p>
+      {%- endif -%}
+      <div class="mh-field">
+        <label for="recover-email">{{ 'customer.recover_password.title' | t }}</label>
+        <input type="email" id="recover-email" name="email" autocomplete="email">
+      </div>
+      <button type="submit" class="mh-btn mh-btn--outline">{{ 'customer.recover_password.submit' | t }}</button>
+    {%- endform -%}
+  </div>
+</div>

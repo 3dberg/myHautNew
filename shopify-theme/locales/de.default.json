@@ -1,0 +1,348 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Zum Inhalt springen",
+      "close": "Schließen",
+      "open_menu": "Menü öffnen",
+      "open_cart": "Warenkorb öffnen",
+      "previous": "Zurück",
+      "next": "Weiter"
+    },
+    "meta": {
+      "tags": "Schlagwörter: {{ tags }}",
+      "page": "Seite {{ page }}"
+    },
+    "pagination": {
+      "previous": "Zurück",
+      "next": "Weiter"
+    },
+    "search": {
+      "title": "Suche",
+      "placeholder": "Suchen …",
+      "submit": "Suchen",
+      "no_results": "Keine Ergebnisse für „{{ terms }}“.",
+      "results_with_count": {
+        "one": "{{ count }} Ergebnis",
+        "other": "{{ count }} Ergebnisse"
+      }
+    },
+    "language": {
+      "label": "Sprache"
+    },
+    "country": {
+      "label": "Land / Region"
+    },
+    "newsletter": {
+      "success": "Danke – du bist dabei."
+    },
+    "continue_shopping": "Weiter einkaufen"
+  },
+
+  "sections": {
+    "announcement": {
+      "item_1": "Kostenloser Versand ab 25 €",
+      "item_2": "30 Tage Geld-zurück-Garantie",
+      "item_3": "Versand aus Deutschland"
+    },
+
+    "header": {
+      "cart": "Warenkorb",
+      "cart_short": "Bag",
+      "menu": "Menü"
+    },
+
+    "hero": {
+      "rating_text": "4,8 · 2.184 Bewertungen",
+      "heading_1": "Glatte Haut in",
+      "heading_2": "8 Minuten.",
+      "body": "Sprühen, kurz warten, abwischen. Kein Ziehen, kein Rasieren, keine Termine. Mit Aloe Vera & Allantoin für Haut, die sich danach besser anfühlt als vorher.",
+      "body_mobile": "Sprühen, warten, abwischen. Kein Ziehen, kein Rasieren – mit Aloe Vera & Allantoin.",
+      "note": "100 ml · reicht für ca. 6 Anwendungen · inkl. MwSt.",
+      "secondary_button": "Sparset",
+      "trust_1": "CPSR-zertifiziert",
+      "trust_2": "Dermatologisch geprüft",
+      "trust_3": "Vegan",
+      "trust_mobile_1": "CPSR-zertifiziert",
+      "trust_mobile_2": "Vegan",
+      "trust_mobile_3": "30 Tage Rückgabe"
+    },
+
+    "sticky": {
+      "product_title": "MyHaut Hair Removal Spray",
+      "product_meta": "100 ml · Auf Lager",
+      "buy": "Kaufen"
+    },
+
+    "marquee": {
+      "items": "Ohne Klingen, Ohne Wachs, Ohne Termin, Aloe Vera & Allantoin, 8 Minuten, Für Körper, Beine & Arme"
+    },
+
+    "steps": {
+      "eyebrow": "So funktioniert's",
+      "heading": "Drei Schritte.\nEine Dusche lang.",
+      "body": "Kein Aufheizen, kein Nachrasieren. Du brauchst nur die Flasche, ein feuchtes Tuch und acht Minuten.",
+      "step_1_title": "Sprühen",
+      "step_1_body": "Gleichmäßig auf trockene Haut auftragen, bis die Härchen bedeckt sind. Nicht einmassieren.",
+      "step_2_title": "8 Minuten warten",
+      "step_2_body": "Die Formel löst das Haar an der Oberfläche. Aloe Vera hält die Haut in der Zeit ruhig.",
+      "step_3_title": "Abwischen & abspülen",
+      "step_3_body": "Mit einem feuchten Tuch abnehmen, kurz mit lauwarmem Wasser nachspülen. Fertig."
+    },
+
+    "before_after": {
+      "eyebrow": "Vorher / Nachher",
+      "heading": "Ein Durchgang. Kein Stoppelgefühl.",
+      "label_before": "Vorher",
+      "label_after": "Nachher · 8 Min",
+      "stat_1_value": "96 %",
+      "stat_1_label": "berichten von spürbar glatterer Haut nach der ersten Anwendung*",
+      "stat_2_value": "0",
+      "stat_2_label": "Klingen, Wachsstreifen und Termine im Studio",
+      "stat_3_value": "3,15 €",
+      "stat_3_label": "pro Anwendung – ein Bruchteil einer Studio-Sitzung",
+      "footnote": "*Selbsteinschätzung, Anwendertest mit 112 Teilnehmerinnen über 4 Wochen."
+    },
+
+    "facts": {
+      "eyebrow": "In der Flasche",
+      "heading": "Pflege, die mitarbeitet.",
+      "fact_label": "FAKT",
+      "fact_1_title": "Allantoin beruhigt sofort",
+      "fact_1_body": "Statt gereizter Haut nach dem Rasieren: Allantoin unterstützt die Regeneration und mindert Rötungen direkt nach der Anwendung.",
+      "fact_2_title": "Aloe Vera hält Feuchtigkeit",
+      "fact_2_body": "Die Haut trocknet nicht aus, wie es bei vielen Enthaarungscremes passiert. Nach dem Abspülen bleibt ein weicher, gepflegter Film.",
+      "fact_3_title": "CPSR-zertifiziert",
+      "fact_3_body": "Cosmetic Product Safety Report nach EU-Verordnung 1223/2009. Hergestellt und geprüft in der EU, vegan und ohne Tierversuche."
+    },
+
+    "reviews": {
+      "heading": "Was Kundinnen\ndanach sagen.",
+      "rating_summary": "4,8 von 5 · 2.184 Bewertungen",
+      "verified": "Verifizierter Kauf",
+      "review_1_body": "„Ich habe zehn Jahre lang rasiert und mich zehn Jahre lang über die Stoppeln geärgert. Das hier war die erste Woche ohne.“",
+      "review_1_author": "Lena M.",
+      "review_2_body": "„Kein Geruch wie bei anderen Cremes, keine roten Flecken. Nach acht Minuten war alles ab, wirklich.“",
+      "review_2_author": "Sarah K.",
+      "review_3_body": "„Nutze es an Brust und Rücken. Deutlich angenehmer als Waxing und ich brauche niemanden, der mir hilft.“",
+      "review_3_author": "Tobias R."
+    },
+
+    "bundles": {
+      "eyebrow": "Sparsets",
+      "heading": "Wähle deine Menge.",
+      "body": "Eine Flasche reicht für rund sechs Anwendungen. Die meisten bestellen drei.",
+      "select": "Auswählen",
+      "selected": "Ausgewählt",
+      "per_bottle": "{{ price }} pro Flasche",
+      "per_bottle_short": "{{ price }} / Stück",
+      "badge_bestseller": "Bestseller",
+      "save_percent": "spare {{ percent }} %",
+      "card_1_eyebrow": "Zum Testen",
+      "card_2_eyebrow": "Für 3 Monate",
+      "card_3_eyebrow": "Beliebteste Wahl",
+      "card_4_eyebrow": "Bester Preis",
+      "trust_1": "Kostenloser Versand ab 25 €",
+      "trust_2": "30 Tage Geld-zurück",
+      "trust_3": "Lieferung in 2–4 Werktagen"
+    },
+
+    "faq": {
+      "eyebrow": "FAQ",
+      "heading": "Noch Fragen?",
+      "body_html": "Schreib uns an <a href=\"mailto:hallo@myhaut.de\">hallo@myhaut.de</a> – wir antworten meist am selben Werktag.",
+      "q_1": "Für welche Körperstellen ist das Spray geeignet?",
+      "a_1": "Für Beine, Arme, Achseln, Brust und Rücken. Nicht im Gesicht, im Intimbereich oder auf gereizter Haut anwenden.",
+      "q_2": "Wie lange bleibt die Haut glatt?",
+      "a_2": "Weil das Haar unterhalb der Hautoberfläche gelöst wird, dauert es bei den meisten fünf bis sieben Tage, bis wieder etwas nachwächst – deutlich länger als nach dem Rasieren. Und es kommt weich zurück, nicht stoppelig.",
+      "q_3": "Ist es auch für empfindliche Haut geeignet?",
+      "a_3": "Aloe Vera und Allantoin sind genau dafür in der Formel. Mach trotzdem 24 Stunden vorher einen Test an einer kleinen Stelle in der Armbeuge.",
+      "q_4": "Riecht das Spray wie andere Enthaarungscremes?",
+      "a_4": "Nein. Die Formel kommt ohne den typischen scharfen Geruch aus – du riechst einen leichten, neutralen Duft.",
+      "q_5": "Was, wenn es bei mir nicht funktioniert?",
+      "a_5": "Dann schickst du uns innerhalb von 30 Tagen eine Nachricht und bekommst den vollen Kaufpreis zurück – auch bei geöffneter Flasche."
+    },
+
+    "cta": {
+      "heading": "Acht Minuten bis\nzur nächsten Dusche.",
+      "button": "Jetzt für {price} testen",
+      "note": "30 Tage Geld-zurück-Garantie"
+    },
+
+    "footer": {
+      "tagline": "Hautpflege, die dir Zeit zurückgibt. Entwickelt und geprüft in der EU.",
+      "column_1_title": "Shop",
+      "column_2_title": "Hilfe",
+      "column_3_title": "Rechtliches",
+      "copyright": "Alle Rechte vorbehalten."
+    }
+  },
+
+  "products": {
+    "product": {
+      "add_to_cart": "In den Warenkorb",
+      "adding": "Wird hinzugefügt …",
+      "added": "Hinzugefügt ✓",
+      "sold_out": "Ausverkauft",
+      "unavailable": "Nicht verfügbar",
+      "in_stock": "Auf Lager",
+      "quantity": "Menge",
+      "regular_price": "Normalpreis",
+      "sale_price": "Aktionspreis",
+      "save_percent": "−{{ percent }} %",
+      "from_price": "ab {{ price }}",
+      "view_details": "Details ansehen",
+      "vendor": "Marke",
+      "no_product": "Kein Produkt ausgewählt. Wähle im Theme-Editor unter „Produkt“ dein Produkt aus.",
+      "no_product_link": "Produkt im Theme-Editor wählen"
+    }
+  },
+
+  "cart": {
+    "general": {
+      "title": "Warenkorb",
+      "empty": "Dein Warenkorb ist leer.",
+      "subtotal": "Zwischensumme",
+      "taxes_and_shipping": "Inkl. MwSt. Versand wird an der Kasse berechnet.",
+      "checkout": "Zur Kasse",
+      "remove": "Entfernen",
+      "quantity": "Menge",
+      "item_count": {
+        "one": "{{ count }} Artikel",
+        "other": "{{ count }} Artikel"
+      },
+      "continue": "Weiter einkaufen",
+      "update": "Aktualisieren",
+      "error": "Der Artikel konnte nicht hinzugefügt werden. Bitte versuche es erneut."
+    }
+  },
+
+  "blogs": {
+    "article": {
+      "read_more": "Weiterlesen",
+      "back_to_blog": "Zurück zur Übersicht",
+      "posted_on": "Veröffentlicht am {{ date }}"
+    }
+  },
+
+  "customer": {
+    "account": {
+      "title": "Mein Konto",
+      "details": "Kontodaten",
+      "view_addresses": "Adressen ansehen",
+      "return": "Zurück zum Konto",
+      "orders": "Bestellungen",
+      "no_orders": "Du hast noch keine Bestellung aufgegeben.",
+      "order_number": "Bestellung",
+      "date": "Datum",
+      "payment_status": "Zahlung",
+      "fulfillment_status": "Versand",
+      "total": "Summe"
+    },
+    "login": {
+      "title": "Anmelden",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "forgot_password": "Passwort vergessen?",
+      "submit": "Anmelden",
+      "create_account": "Konto erstellen",
+      "guest_title": "Als Gast fortfahren",
+      "guest_continue": "Fortfahren"
+    },
+    "register": {
+      "title": "Konto erstellen",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Konto erstellen"
+    },
+    "recover_password": {
+      "title": "Passwort zurücksetzen",
+      "subtext": "Wir schicken dir eine E-Mail mit einem Link.",
+      "email": "E-Mail",
+      "submit": "Link senden",
+      "cancel": "Abbrechen",
+      "success": "Wir haben dir eine E-Mail geschickt."
+    },
+    "reset_password": {
+      "title": "Neues Passwort vergeben",
+      "password": "Passwort",
+      "password_confirm": "Passwort bestätigen",
+      "submit": "Speichern"
+    },
+    "activate_account": {
+      "title": "Konto aktivieren",
+      "password": "Passwort",
+      "password_confirm": "Passwort bestätigen",
+      "submit": "Konto aktivieren",
+      "cancel": "Einladung ablehnen"
+    },
+    "addresses": {
+      "title": "Adressen",
+      "add_new": "Neue Adresse",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "delete_confirm": "Diese Adresse wirklich löschen?",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "company": "Firma",
+      "address1": "Straße und Hausnummer",
+      "address2": "Adresszusatz",
+      "city": "Stadt",
+      "country": "Land",
+      "province": "Bundesland",
+      "zip": "PLZ",
+      "phone": "Telefon",
+      "set_default": "Als Standardadresse festlegen",
+      "add": "Adresse speichern",
+      "update": "Adresse aktualisieren",
+      "cancel": "Abbrechen"
+    },
+    "order": {
+      "title": "Bestellung {{ name }}",
+      "date": "Aufgegeben am {{ date }}",
+      "product": "Artikel",
+      "quantity": "Menge",
+      "price": "Preis",
+      "total": "Summe",
+      "subtotal": "Zwischensumme",
+      "shipping": "Versand",
+      "tax": "Steuer",
+      "billing_address": "Rechnungsadresse",
+      "shipping_address": "Lieferadresse",
+      "cancelled": "Bestellung storniert am {{ date }}"
+    }
+  },
+
+  "gift_cards": {
+    "issued": {
+      "title": "Deine Geschenkkarte über {{ value }}",
+      "subtext": "Deine Geschenkkarte",
+      "code": "Gutscheincode",
+      "shop_link": "Jetzt einlösen",
+      "print": "Drucken",
+      "expired": "Abgelaufen"
+    }
+  },
+
+  "onboarding": {
+    "product_title": "MyHaut Hair Removal Spray",
+    "collection_title": "Kollektion"
+  },
+
+  "shopify": {
+    "links": {
+      "powered_by_shopify": "Powered by Shopify"
+    }
+  },
+
+  "password_page": {
+    "title": "Bald verfügbar",
+    "message": "Wir öffnen in Kürze.",
+    "login_form_heading": "Mit Passwort betreten",
+    "login_password": "Passwort",
+    "login_submit": "Betreten",
+    "admin_link": "Bist du der Shop-Inhaber?",
+    "admin_link_text": "Hier anmelden"
+  }
+}

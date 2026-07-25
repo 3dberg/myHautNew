@@ -1,0 +1,42 @@
+{%- liquid
+  assign fallback_1 = 'sections.announcement.item_1' | t
+  assign fallback_2 = 'sections.announcement.item_2' | t
+  assign fallback_3 = 'sections.announcement.item_3' | t
+
+  assign item_1 = section.settings.item_1 | default: fallback_1
+  assign item_2 = section.settings.item_2 | default: fallback_2
+  assign item_3 = section.settings.item_3 | default: fallback_3
+-%}
+
+{%- if item_1 != blank -%}
+  <div class="mh-announcement">
+    <div class="mh-announcement__list">
+      <span class="mh-announcement__item">{{ item_1 }}</span>
+      {%- if item_2 != blank -%}
+        <span class="mh-announcement__sep">·</span>
+        <span class="mh-announcement__item">{{ item_2 }}</span>
+      {%- endif -%}
+      {%- if item_3 != blank -%}
+        <span class="mh-announcement__sep">·</span>
+        <span class="mh-announcement__item">{{ item_3 }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "tag": "aside",
+  "class": "mh-section-announcement",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Only the first message is shown on mobile, exactly as in the design."
+    },
+    { "type": "text", "id": "item_1", "label": "Message 1", "info": "Leave empty to use the built-in translation." },
+    { "type": "text", "id": "item_2", "label": "Message 2" },
+    { "type": "text", "id": "item_3", "label": "Message 3" }
+  ]
+}
+{% endschema %}

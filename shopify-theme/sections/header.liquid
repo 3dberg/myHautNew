@@ -1,0 +1,87 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign cart_label = 'sections.header.cart' | t
+  assign cart_label_short = 'sections.header.cart_short' | t
+-%}
+
+<header class="mh-header">
+  <div class="mh-header__inner">
+    <div class="mh-header__start">
+      <button
+        type="button"
+        class="mh-header__burger"
+        data-mh-nav-toggle
+        aria-expanded="false"
+        aria-controls="mh-mobile-nav"
+        aria-label="{{ 'general.accessibility.open_menu' | t }}">
+        ☰
+      </button>
+
+      <nav class="mh-header__nav" aria-label="{{ 'sections.header.menu' | t }}">
+        {%- for link in linklists[menu].links -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      </nav>
+    </div>
+
+    <div class="mh-header__logo">
+      <a href="{{ routes.root_url }}" style="color: inherit">
+        {%- if settings.logo != blank -%}
+          {%- assign logo_style = 'width:' | append: settings.logo_width | append: 'px' -%}
+          {{
+            settings.logo
+            | image_url: width: 600
+            | image_tag: widths: '140, 280, 420, 600', sizes: '220px', alt: shop.name, style: logo_style
+          }}
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </a>
+    </div>
+
+    <div class="mh-header__actions">
+      {%- if section.settings.show_locale_switcher
+        and localization.available_languages.size > 1
+      -%}
+        <div class="mh-header__locale">
+          {%- form 'localization', class: 'mh-header__locale-form' -%}
+            <label class="mh-visually-hidden" for="mh-locale">{{ 'general.language.label' | t }}</label>
+            <select id="mh-locale" name="locale_code" onchange="this.form.submit()">
+              {%- for language in localization.available_languages -%}
+                <option
+                  value="{{ language.iso_code }}"
+                  {% if language.iso_code == localization.language.iso_code %}selected{% endif %}>
+                  {{ language.endonym_name | upcase }}
+                </option>
+              {%- endfor -%}
+            </select>
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+
+      <a href="{{ routes.cart_url }}" class="mh-header__cart" data-mh-cart-open>
+        <span class="mh-header__cart-label--long">{{ cart_label }}</span>
+        <span class="mh-header__cart-label--short">{{ cart_label_short }}</span>
+        <span class="mh-header__count" data-mh-cart-count>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="mh-mobile-nav" id="mh-mobile-nav" data-mh-nav>
+    {%- for link in linklists[menu].links -%}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+    {%- endfor -%}
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "div",
+  "class": "mh-section-header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_locale_switcher", "label": "Show language switcher", "default": true }
+  ]
+}
+{% endschema %}

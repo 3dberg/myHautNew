@@ -1,0 +1,72 @@
+{%- comment -%}
+  Plain product page — used by the "product.simple" template for any product
+  that is not the landing-page product.
+{%- endcomment -%}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="mh-container">
+  <div class="mh-product">
+    <div class="mh-product__media">
+      {% render 'mh-media',
+        mh_image: product.featured_image,
+        mh_alt: product.title,
+        mh_ratio: '1 / 1',
+        mh_sizes: '(min-width: 700px) 50vw, 100vw'
+      %}
+    </div>
+
+    <div>
+      <h1 class="mh-product__title">{{ product.title }}</h1>
+      {% render 'mh-price', mh_variant: current_variant %}
+      {% render 'mh-product-data', mh_product: product %}
+
+      {%- form 'product', product, class: 'mh-product__form', data-mh-form: 'true' -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" data-mh-form-variant>
+        <input type="hidden" name="quantity" value="1">
+
+        {%- if product.variants.size > 1 -%}
+          <div class="mh-options" role="group" aria-label="{{ 'products.product.quantity' | t }}">
+            {%- for variant in product.variants -%}
+              <button
+                type="button"
+                class="mh-option{% if variant.id == current_variant.id %} is-active{% endif %}"
+                data-mh-select="{{ variant.id }}"
+                aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
+                {% unless variant.available %}disabled{% endunless %}>
+                <span class="mh-option__meta"><span>{{ variant.title }}</span></span>
+                <span class="mh-option__price">{{ variant.price | money }}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <button
+          type="submit"
+          class="mh-btn mh-btn--block"
+          data-mh-add
+          data-mh-add-label-text="{{ 'products.product.add_to_cart' | t | escape }}"
+          {% unless current_variant.available %}disabled{% endunless %}>
+          <span data-mh-add-label>
+            {%- if current_variant.available -%}
+              {{ 'products.product.add_to_cart' | t }}
+            {%- else -%}
+              {{ 'products.product.sold_out' | t }}
+            {%- endif -%}
+          </span>
+        </button>
+      {%- endform -%}
+
+      <div class="mh-rte" style="margin-top: 28px; color: var(--mh-body); line-height: 1.7">
+        {{ product.description }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": []
+}
+{% endschema %}

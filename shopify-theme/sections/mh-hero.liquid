@@ -1,0 +1,294 @@
+{%- comment -%}
+  Hero — full-bleed media, rating, headline, price and add to cart.
+  Every text setting falls back to the theme translation (DE/EN) when it is
+  left empty, so the section is bilingual out of the box and still fully
+  editable in the theme editor.
+{%- endcomment -%}
+
+{%- liquid
+  assign mh_product = section.settings.product | default: product | default: collections.all.products.first
+  assign current_variant = mh_product.selected_or_first_available_variant
+
+  assign fallback_rating_text = 'sections.hero.rating_text' | t
+  assign fallback_heading_1 = 'sections.hero.heading_1' | t
+  assign fallback_heading_2 = 'sections.hero.heading_2' | t
+  assign fallback_body = 'sections.hero.body' | t
+  assign fallback_body_mobile = 'sections.hero.body_mobile' | t
+  assign fallback_note = 'sections.hero.note' | t
+  assign fallback_buy = 'products.product.add_to_cart' | t
+  assign fallback_secondary = 'sections.hero.secondary_button' | t
+  assign fallback_trust_1 = 'sections.hero.trust_1' | t
+  assign fallback_trust_2 = 'sections.hero.trust_2' | t
+  assign fallback_trust_3 = 'sections.hero.trust_3' | t
+  assign fallback_trust_m1 = 'sections.hero.trust_mobile_1' | t
+  assign fallback_trust_m2 = 'sections.hero.trust_mobile_2' | t
+  assign fallback_trust_m3 = 'sections.hero.trust_mobile_3' | t
+
+  assign rating_text = section.settings.rating_text | default: fallback_rating_text
+  assign heading_1 = section.settings.heading_1 | default: fallback_heading_1
+  assign heading_2 = section.settings.heading_2 | default: fallback_heading_2
+  assign body_text = section.settings.body | default: fallback_body
+  assign body_mobile = section.settings.body_mobile | default: fallback_body_mobile
+  assign note_text = section.settings.note | default: fallback_note
+  assign buy_label = section.settings.buy_label | default: fallback_buy
+  assign secondary_label = section.settings.secondary_label | default: fallback_secondary
+-%}
+
+<div class="mh-hero" id="mh-hero-{{ section.id }}">
+  {%- if mh_product != blank -%}
+    {% render 'mh-product-data', mh_product: mh_product %}
+  {%- endif -%}
+
+  <div class="mh-hero__stage">
+    {%- if section.settings.image_mobile != blank -%}
+      {% render 'mh-media',
+        mh_image: section.settings.image_mobile,
+        mh_class: 'mh-hero__media mh-hero__media--mobile',
+        mh_alt: mh_product.title,
+        mh_loading: 'eager',
+        mh_sizes: '100vw'
+      %}
+      {% render 'mh-media',
+        mh_image: section.settings.image,
+        mh_video: section.settings.video,
+        mh_video_url: section.settings.video_url,
+        mh_fallback: 'mh-demo-hero.webp',
+        mh_class: 'mh-hero__media mh-hero__media--desktop',
+        mh_alt: mh_product.title,
+        mh_loading: 'eager',
+        mh_sizes: '100vw'
+      %}
+    {%- else -%}
+      {% render 'mh-media',
+        mh_image: section.settings.image,
+        mh_video: section.settings.video,
+        mh_video_url: section.settings.video_url,
+        mh_fallback: 'mh-demo-hero.webp',
+        mh_class: 'mh-hero__media',
+        mh_alt: mh_product.title,
+        mh_loading: 'eager',
+        mh_sizes: '100vw'
+      %}
+    {%- endif -%}
+
+    <div class="mh-hero__scrim"></div>
+
+    <div class="mh-hero__text">
+      <div class="mh-hero__head">
+        {%- if section.settings.show_rating -%}
+          <div class="mh-hero__rating">
+            {% render 'mh-stars', mh_rating: section.settings.rating_stars %}
+            <span class="mh-hero__rating-note">{{ rating_text }}</span>
+          </div>
+        {%- endif -%}
+
+        <h1 class="mh-hero__title">
+          {{- heading_1 -}}
+          {%- if heading_2 != blank -%}
+            <br><em>{{ heading_2 }}</em>
+          {%- endif -%}
+        </h1>
+      </div>
+
+      <div class="mh-hero__body" id="mh-buy">
+        {%- if body_text != blank -%}
+          <p class="mh-hero__lede mh-hero__text-desktop">{{ body_text }}</p>
+        {%- endif -%}
+        {%- if body_mobile != blank -%}
+          <p class="mh-hero__lede mh-hero__text-mobile">{{ body_mobile }}</p>
+        {%- endif -%}
+
+        {%- if mh_product != blank -%}
+          {% render 'mh-price', mh_variant: current_variant %}
+
+          {%- if note_text != blank -%}
+            <div class="mh-hero__note mh-hero__text-desktop">{{ note_text }}</div>
+          {%- endif -%}
+
+          {%- if mh_product.variants.size > 1 -%}
+            <div class="mh-options mh-hero__options" role="group" aria-label="{{ 'sections.bundles.heading' | t }}">
+              {%- for variant in mh_product.variants -%}
+                {%- liquid
+                  assign bottles = variant.title | split: ' ' | first | remove: '×' | remove: 'x' | remove: 'X' | remove: '*' | plus: 0
+                  if bottles < 1
+                    assign bottles = 1
+                  endif
+                  assign unit_price = ''
+                  if bottles > 1
+                    assign unit_cents = variant.price | divided_by: bottles
+                    assign unit_price = unit_cents | money
+                  endif
+                  assign is_featured = false
+                  if forloop.index == section.settings.featured_position
+                    assign is_featured = true
+                  endif
+                -%}
+                <button
+                  type="button"
+                  class="mh-option{% if variant.id == current_variant.id %} is-active{% endif %}"
+                  data-mh-select="{{ variant.id }}"
+                  aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
+                  {% unless variant.available %}disabled{% endunless %}>
+                  <span class="mh-option__meta">
+                    <span>{{ variant.title }}</span>
+                    {%- if is_featured or unit_price != blank -%}
+                      <span class="mh-option__sub">
+                        {%- if is_featured %}{{ 'sections.bundles.badge_bestseller' | t }}{% if unit_price != blank %} · {% endif %}{% endif -%}
+                        {%- if unit_price != blank %}{{ 'sections.bundles.per_bottle_short' | t: price: unit_price }}{% endif -%}
+                      </span>
+                    {%- endif -%}
+                  </span>
+                  <span class="mh-option__price">
+                    {%- if variant.available -%}
+                      {{ variant.price | money }}
+                    {%- else -%}
+                      {{ 'products.product.sold_out' | t }}
+                    {%- endif -%}
+                  </span>
+                </button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {%- form 'product', mh_product, class: 'mh-hero__form', data-mh-form: 'true' -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-mh-form-variant>
+            <input type="hidden" name="quantity" value="1">
+            <div class="mh-hero__actions">
+              <button
+                type="submit"
+                class="mh-btn mh-btn--primary"
+                data-mh-add
+                data-mh-add-label-text="{{ buy_label | escape }}"
+                {% unless current_variant.available %}disabled{% endunless %}>
+                <span data-mh-add-label>
+                  {%- if current_variant.available -%}
+                    {{ buy_label }}
+                  {%- else -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- endif -%}
+                </span>
+              </button>
+              {%- if secondary_label != blank -%}
+                <a
+                  href="{{ section.settings.secondary_target | default: '#mh-bundles' }}"
+                  class="mh-btn mh-btn--outline"
+                  data-mh-scroll="{{ section.settings.secondary_target | default: '#mh-bundles' }}">
+                  {{ secondary_label }}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endform -%}
+        {%- else -%}
+          <p class="mh-hero__lede">{{ 'products.product.no_product' | t }}</p>
+        {%- endif -%}
+
+        <div class="mh-trust mh-trust--desktop">
+          {%- for i in (1..3) -%}
+            {%- liquid
+              case i
+                when 1
+                  assign trust = section.settings.trust_1 | default: fallback_trust_1
+                when 2
+                  assign trust = section.settings.trust_2 | default: fallback_trust_2
+                when 3
+                  assign trust = section.settings.trust_3 | default: fallback_trust_3
+              endcase
+            -%}
+            {%- if trust != blank -%}<span>✓ {{ trust }}</span>{%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <div class="mh-trust mh-trust--mobile">
+          {%- for i in (1..3) -%}
+            {%- liquid
+              case i
+                when 1
+                  assign trust = section.settings.trust_mobile_1 | default: fallback_trust_m1
+                when 2
+                  assign trust = section.settings.trust_mobile_2 | default: fallback_trust_m2
+                when 3
+                  assign trust = section.settings.trust_mobile_3 | default: fallback_trust_m3
+              endcase
+            -%}
+            {%- if trust != blank -%}<span>✓ {{ trust }}</span>{%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "mh-section-hero",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Required on the homepage. On the product template the current product is used automatically when this is empty."
+    },
+    { "type": "header", "content": "Media" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image",
+      "info": "Shown when no video is set, and as the poster on slow connections."
+    },
+    { "type": "image_picker", "id": "image_mobile", "label": "Background image (mobile)" },
+    { "type": "video", "id": "video", "label": "Background video (Shopify-hosted)" },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "accept": ["youtube", "vimeo"],
+      "label": "Background video (YouTube / Vimeo)"
+    },
+    { "type": "header", "content": "Rating" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show star rating", "default": true },
+    { "type": "range", "id": "rating_stars", "min": 0, "max": 5, "step": 1, "label": "Stars", "default": 5 },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Rating text",
+      "info": "Leave empty to use the built-in translation (DE/EN)."
+    },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "heading_1", "label": "Headline, first line", "info": "Leave empty for the built-in translation." },
+    { "type": "text", "id": "heading_2", "label": "Headline, second line (italic, accent colour)" },
+    { "type": "textarea", "id": "body", "label": "Intro text (desktop)" },
+    { "type": "textarea", "id": "body_mobile", "label": "Intro text (mobile)" },
+    { "type": "text", "id": "note", "label": "Small note under the price" },
+    { "type": "header", "content": "Buttons" },
+    { "type": "text", "id": "buy_label", "label": "Add-to-cart label" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary button label" },
+    {
+      "type": "text",
+      "id": "secondary_target",
+      "label": "Secondary button target",
+      "default": "#mh-bundles",
+      "info": "An anchor on this page (e.g. #mh-bundles) or a full URL."
+    },
+    {
+      "type": "range",
+      "id": "featured_position",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "label": "Highlighted variant (position)",
+      "default": 3,
+      "info": "Which variant gets the bestseller label in the mobile list. 0 = none."
+    },
+    { "type": "header", "content": "Trust row (desktop)" },
+    { "type": "text", "id": "trust_1", "label": "Item 1" },
+    { "type": "text", "id": "trust_2", "label": "Item 2" },
+    { "type": "text", "id": "trust_3", "label": "Item 3" },
+    { "type": "header", "content": "Trust row (mobile)" },
+    { "type": "text", "id": "trust_mobile_1", "label": "Item 1" },
+    { "type": "text", "id": "trust_mobile_2", "label": "Item 2" },
+    { "type": "text", "id": "trust_mobile_3", "label": "Item 3" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

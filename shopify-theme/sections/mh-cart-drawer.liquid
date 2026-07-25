@@ -1,0 +1,99 @@
+{%- comment -%}
+  Cart drawer. myhaut.js re-fetches this section through the Section
+  Rendering API after every cart change, so all money values stay Liquid-
+  formatted.
+{%- endcomment -%}
+
+<div class="mh-drawer" data-mh-drawer aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ 'cart.general.title' | t }}">
+  <div class="mh-drawer__overlay" data-mh-drawer-overlay></div>
+
+  <div class="mh-drawer__panel">
+    <div class="mh-drawer__head">
+      <span class="mh-drawer__title" data-mh-drawer-count="{{ cart.item_count }}">
+        {{ 'cart.general.title' | t }}
+        <span>({{ cart.item_count }})</span>
+      </span>
+      <button type="button" class="mh-drawer__close" data-mh-drawer-close aria-label="{{ 'general.accessibility.close' | t }}">
+        &times;
+      </button>
+    </div>
+
+    <div class="mh-drawer__body">
+      {%- if cart.item_count == 0 -%}
+        <p class="mh-drawer__empty">{{ 'cart.general.empty' | t }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="mh-btn mh-btn--outline mh-btn--block" style="margin-top: 18px">
+          {{ 'cart.general.continue' | t }}
+        </a>
+      {%- else -%}
+        {%- for item in cart.items -%}
+          <div class="mh-line-item">
+            <div class="mh-line-item__media">
+              {%- if item.image -%}
+                <img
+                  src="{{ item.image | image_url: width: 200 }}"
+                  alt="{{ item.title | escape }}"
+                  width="64"
+                  height="64"
+                  loading="lazy">
+              {%- endif -%}
+            </div>
+            <div class="mh-line-item__info">
+              <a class="mh-line-item__title" href="{{ item.url }}">{{ item.product.title }}</a>
+              {%- unless item.variant.title contains 'Default' -%}
+                <div class="mh-line-item__variant">{{ item.variant.title }}</div>
+              {%- endunless -%}
+              <div class="mh-line-item__row">
+                <span class="mh-qty">
+                  <button
+                    type="button"
+                    data-mh-line="{{ forloop.index }}"
+                    data-mh-line-change="{{ item.quantity | minus: 1 }}"
+                    aria-label="−">−</button>
+                  <output>{{ item.quantity }}</output>
+                  <button
+                    type="button"
+                    data-mh-line="{{ forloop.index }}"
+                    data-mh-line-change="{{ item.quantity | plus: 1 }}"
+                    aria-label="+">+</button>
+                </span>
+                <span>{{ item.final_line_price | money }}</span>
+              </div>
+              <button
+                type="button"
+                class="mh-line-item__remove"
+                data-mh-line="{{ forloop.index }}"
+                data-mh-line-change="0">
+                {{ 'cart.general.remove' | t }}
+              </button>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      <div class="mh-drawer__foot">
+        <div class="mh-drawer__subtotal">
+          <span>{{ 'cart.general.subtotal' | t }}</span>
+          <strong>{{ cart.total_price | money }}</strong>
+        </div>
+        <div class="mh-drawer__note">{{ 'cart.general.taxes_and_shipping' | t }}</div>
+        <form action="{{ routes.cart_url }}" method="post">
+          <button type="submit" name="checkout" class="mh-btn mh-btn--block">
+            {{ 'cart.general.checkout' | t }}
+          </button>
+        </form>
+        {%- if settings.cart_note != blank -%}
+          <div class="mh-drawer__note mh-rte">{{ settings.cart_note }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": []
+}
+{% endschema %}

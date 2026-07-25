@@ -1,0 +1,42 @@
+<div class="mh-page">
+  <div class="mh-container">
+    <h1 class="mh-page__title">{{ 'customer.account.title' | t }}</h1>
+    <p><a href="{{ routes.account_addresses_url }}">{{ 'customer.account.view_addresses' | t }}</a></p>
+
+    <h2 style="font-size: 28px; margin: 32px 0 16px">{{ 'customer.account.orders' | t }}</h2>
+    {%- paginate customer.orders by 20 -%}
+      {%- if customer.orders.size == 0 -%}
+        <p class="mh-page__intro">{{ 'customer.account.no_orders' | t }}</p>
+      {%- else -%}
+        <table class="mh-table">
+          <thead>
+            <tr>
+              <th>{{ 'customer.account.order_number' | t }}</th>
+              <th>{{ 'customer.account.date' | t }}</th>
+              <th>{{ 'customer.account.payment_status' | t }}</th>
+              <th>{{ 'customer.account.fulfillment_status' | t }}</th>
+              <th>{{ 'customer.account.total' | t }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for order in customer.orders -%}
+              <tr>
+                <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                <td>{{ order.created_at | date: format: 'date' }}</td>
+                <td>{{ order.financial_status_label }}</td>
+                <td>{{ order.fulfillment_status_label }}</td>
+                <td>{{ order.total_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      {%- endif -%}
+      {%- if paginate.pages > 1 -%}
+        <div class="mh-pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a>{%- endif -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a>{%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>

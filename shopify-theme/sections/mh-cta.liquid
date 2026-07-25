@@ -1,0 +1,101 @@
+{%- comment -%}
+  Closing call to action over a full-bleed image.
+  Put {price} anywhere in the button label to show the live variant price.
+{%- endcomment -%}
+
+{%- liquid
+  assign mh_product = section.settings.product | default: product | default: collections.all.products.first
+  assign current_variant = mh_product.selected_or_first_available_variant
+
+  assign fallback_heading = 'sections.cta.heading' | t
+  assign fallback_button = 'sections.cta.button' | t
+  assign fallback_note = 'sections.cta.note' | t
+
+  assign heading = section.settings.heading | default: fallback_heading
+  assign button_label = section.settings.button_label | default: fallback_button
+  assign note = section.settings.note | default: fallback_note
+
+  assign label_parts = button_label | split: '{price}'
+-%}
+
+<div class="mh-cta">
+  <div class="mh-cta__media">
+    {% render 'mh-media',
+      mh_image: section.settings.image,
+      mh_fallback: 'mh-demo-hero.webp',
+      mh_alt: heading,
+      mh_placeholder: section.settings.placeholder,
+      mh_sizes: '100vw'
+    %}
+  </div>
+  <div class="mh-cta__scrim"></div>
+
+  <div class="mh-cta__content">
+    <h2 class="mh-cta__title">{{ heading | newline_to_br }}</h2>
+    <div class="mh-cta__actions">
+      {%- if mh_product != blank and section.settings.button_action == 'add' -%}
+        <button
+          type="button"
+          class="mh-btn mh-btn--light"
+          data-mh-add
+          data-mh-add-label-text="{{ button_label | escape }}"
+          {% unless current_variant.available %}disabled{% endunless %}>
+          <span data-mh-add-label>
+            {%- if current_variant.available -%}
+              {{ label_parts[0] }}
+              {%- if button_label contains '{price}' -%}
+                <span data-mh-price>{{ current_variant.price | money }}</span>{{ label_parts[1] }}
+              {%- endif -%}
+            {%- else -%}
+              {{ 'products.product.sold_out' | t }}
+            {%- endif -%}
+          </span>
+        </button>
+      {%- else -%}
+        <a
+          href="{{ section.settings.button_link | default: mh_product.url | default: '#mh-buy' }}"
+          class="mh-btn mh-btn--light"
+          data-mh-scroll="#mh-buy">
+          {{ label_parts[0] }}
+          {%- if button_label contains '{price}' -%}
+            <span data-mh-price>{{ current_variant.price | money }}</span>{{ label_parts[1] }}
+          {%- endif -%}
+        </a>
+      {%- endif -%}
+      {%- if note != blank -%}<span class="mh-cta__note">{{ note }}</span>{%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Closing CTA",
+  "tag": "section",
+  "class": "mh-section-cta",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    { "type": "text", "id": "placeholder", "label": "Placeholder caption" },
+    { "type": "textarea", "id": "heading", "label": "Headline" },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "info": "Use {price} to insert the current price, e.g. “Jetzt für {price} testen”."
+    },
+    {
+      "type": "select",
+      "id": "button_action",
+      "label": "What the button does",
+      "options": [
+        { "value": "add", "label": "Add to cart" },
+        { "value": "link", "label": "Go to a link / anchor" }
+      ],
+      "default": "add"
+    },
+    { "type": "url", "id": "button_link", "label": "Link", "info": "Only used when the button goes to a link." },
+    { "type": "text", "id": "note", "label": "Note next to the button" }
+  ],
+  "presets": [{ "name": "Closing CTA" }]
+}
+{% endschema %}

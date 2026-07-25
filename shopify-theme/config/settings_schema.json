@@ -1,0 +1,182 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "MyHaut",
+    "theme_version": "1.0.0",
+    "theme_author": "MyHaut",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/manual/online-store/themes"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image",
+        "info": "Leave empty to show the shop name as a serif wordmark."
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 60,
+        "max": 260,
+        "step": 5,
+        "unit": "px",
+        "label": "Logo width",
+        "default": 140
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_demo_images",
+        "label": "Show the bundled demo images where no image is set",
+        "default": true,
+        "info": "Placeholder photography shipped with the theme. Switch off once you have uploaded your own images."
+      },
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1100,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "label": "Maximum page width",
+        "default": 1280,
+        "info": "The design was drawn at 1280 px."
+      }
+    ]
+  },
+  {
+    "name": "Colours",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Core palette"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (rose)",
+        "default": "#C43C61"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_dark",
+        "label": "Accent hover",
+        "default": "#8E2544"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_tint",
+        "label": "Accent tint (selected cards)",
+        "default": "#FBEEF2"
+      },
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Headline / dark sections",
+        "default": "#2A2320"
+      },
+      {
+        "type": "header",
+        "content": "Backgrounds"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Page background",
+        "default": "#FBF7F4"
+      },
+      {
+        "type": "color",
+        "id": "color_band",
+        "label": "Band background (before/after, FAQ, marquee)",
+        "default": "#F0E4DC"
+      },
+      {
+        "type": "color",
+        "id": "color_image_placeholder",
+        "label": "Empty image background",
+        "default": "#F3E3E7"
+      },
+      {
+        "type": "header",
+        "content": "Text and lines"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Body text",
+        "default": "#6B5C55"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Muted text",
+        "default": "#8B7A73"
+      },
+      {
+        "type": "color",
+        "id": "color_line",
+        "label": "Hairlines",
+        "default": "#EADFD8"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_google_fonts",
+        "label": "Use the design fonts (Cormorant Garamond + Jost)",
+        "default": true,
+        "info": "Loads both fonts from Google Fonts, exactly as in the design. Uncheck to use Shopify-hosted fonts instead."
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Headline font (Shopify-hosted)",
+        "default": "assistant_n4",
+        "info": "Only used when the design fonts above are switched off."
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font (Shopify-hosted)",
+        "default": "assistant_n4",
+        "info": "Only used when the design fonts above are switched off."
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "cart_drawer",
+        "label": "Open the cart drawer after adding to cart",
+        "default": true
+      },
+      {
+        "type": "richtext",
+        "id": "cart_note",
+        "label": "Note under the checkout button",
+        "default": "<p>Kostenloser Versand ab 25 € · 30 Tage Geld-zurück-Garantie</p>"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "text", "id": "social_instagram_link", "label": "Instagram" },
+      { "type": "text", "id": "social_facebook_link", "label": "Facebook" },
+      { "type": "text", "id": "social_tiktok_link", "label": "TikTok" }
+    ]
+  }
+]

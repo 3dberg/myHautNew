@@ -1,0 +1,97 @@
+{%- comment -%}
+  "So funktioniert's" — three numbered steps with an image each.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_eyebrow = 'sections.steps.eyebrow' | t
+  assign fallback_heading = 'sections.steps.heading' | t
+  assign fallback_body = 'sections.steps.body' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign intro = section.settings.body | default: fallback_body
+-%}
+
+<div class="mh-steps" id="{{ section.settings.anchor | default: 'mh-steps' }}">
+  <div class="mh-container">
+    <div class="mh-steps__head">
+      <div>
+        {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+        <h2 class="mh-steps__title">{{ heading | newline_to_br }}</h2>
+      </div>
+      {%- if intro != blank -%}<p class="mh-steps__intro">{{ intro }}</p>{%- endif -%}
+    </div>
+
+    <div class="mh-steps__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign title_key = 'sections.steps.step_' | append: forloop.index | append: '_title'
+          assign body_key = 'sections.steps.step_' | append: forloop.index | append: '_body'
+          assign fallback_title = title_key | t
+          assign fallback_step_body = body_key | t
+          if fallback_title contains 'translation missing'
+            assign fallback_title = ''
+          endif
+          if fallback_step_body contains 'translation missing'
+            assign fallback_step_body = ''
+          endif
+          assign step_title = block.settings.title | default: fallback_title
+          assign step_body = block.settings.body | default: fallback_step_body
+          assign number = block.settings.number | default: forloop.index
+          assign number_label = number | prepend: '0' | slice: -2, 2
+        -%}
+        <div class="mh-step" {{ block.shopify_attributes }}>
+          <div class="mh-step__media">
+            {% render 'mh-media',
+              mh_image: block.settings.image,
+              mh_alt: step_title,
+              mh_placeholder: block.settings.placeholder,
+              mh_sizes: '(min-width: 1000px) 33vw, 100vw'
+            %}
+          </div>
+          <div class="mh-step__text">
+            <span class="mh-step__num">{{ number_label }}</span>
+            <div>
+              <h3 class="mh-step__title">{{ step_title }}</h3>
+              {%- if step_body != blank -%}<p class="mh-step__body">{{ step_body }}</p>{%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "How it works",
+  "tag": "section",
+  "class": "mh-section-steps",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave empty to use the built-in translation." },
+    { "type": "textarea", "id": "heading", "label": "Headline", "info": "Line breaks are kept." },
+    { "type": "textarea", "id": "body", "label": "Intro text" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-steps" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "placeholder", "label": "Placeholder caption" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Text" },
+        { "type": "text", "id": "number", "label": "Number", "info": "Defaults to the position of the step." }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "How it works",
+      "blocks": [{ "type": "step" }, { "type": "step" }, { "type": "step" }]
+    }
+  ]
+}
+{% endschema %}

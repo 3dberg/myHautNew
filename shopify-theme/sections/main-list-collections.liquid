@@ -1,0 +1,24 @@
+<div class="mh-page">
+  <div class="mh-container">
+    <h1 class="mh-page__title">{{ page_title }}</h1>
+    <div class="mh-grid-products">
+      {%- for item in collections -%}
+        <div class="mh-card">
+          <a href="{{ item.url }}">
+            <div class="mh-card__media">
+              {% render 'mh-media', mh_image: item.featured_image, mh_alt: item.title, mh_sizes: '(min-width: 700px) 25vw, 50vw' %}
+            </div>
+            <span class="mh-card__title">{{ item.title }}</span>
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,95 @@
+{%- comment -%}
+  FAQ — real <details> accordions, so they work without JavaScript and are
+  picked up by search engines.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_eyebrow = 'sections.faq.eyebrow' | t
+  assign fallback_heading = 'sections.faq.heading' | t
+  assign fallback_body = 'sections.faq.body_html' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign intro = section.settings.body | default: fallback_body
+-%}
+
+<div class="mh-faq" id="{{ section.settings.anchor | default: 'mh-faq' }}">
+  <div class="mh-container">
+    <div class="mh-faq__grid">
+      <div>
+        {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+        <h2 class="mh-faq__title">{{ heading | newline_to_br }}</h2>
+        {%- if intro != blank -%}<div class="mh-faq__intro mh-rte">{{ intro }}</div>{%- endif -%}
+      </div>
+
+      <div class="mh-faq__list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign question_key = 'sections.faq.q_' | append: forloop.index
+            assign answer_key = 'sections.faq.a_' | append: forloop.index
+            assign fallback_question = question_key | t
+            assign fallback_answer = answer_key | t
+            if fallback_question contains 'translation missing'
+              assign fallback_question = ''
+            endif
+            if fallback_answer contains 'translation missing'
+              assign fallback_answer = ''
+            endif
+            assign question = block.settings.question | default: fallback_question
+            assign answer = block.settings.answer | default: fallback_answer
+          -%}
+          {%- if question != blank -%}
+            <details class="mh-faq__item" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary class="mh-faq__q">
+                <span>{{ question }}</span>
+                <span class="mh-faq__sign" aria-hidden="true">
+                  <span class="mh-faq__sign-plus">+</span>
+                  <span class="mh-faq__sign-minus">−</span>
+                </span>
+              </summary>
+              <div class="mh-faq__a mh-rte">{{ answer }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "mh-section-faq",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Headline" },
+    { "type": "richtext", "id": "body", "label": "Text under the headline" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-faq" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "richtext", "id": "answer", "label": "Answer" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "question" },
+        { "type": "question", "settings": { "open": true } },
+        { "type": "question" },
+        { "type": "question" },
+        { "type": "question" }
+      ]
+    }
+  ]
+}
+{% endschema %}

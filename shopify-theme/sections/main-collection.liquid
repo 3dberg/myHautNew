@@ -1,0 +1,40 @@
+<div class="mh-page">
+  <div class="mh-container">
+    <h1 class="mh-page__title">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <div class="mh-rte mh-page__intro" style="max-width: 640px; margin-bottom: 32px">{{ collection.description }}</div>
+    {%- endif -%}
+
+    <div class="mh-grid-products">
+      {%- paginate collection.products by 24 -%}
+        {%- for item in collection.products -%}
+          <div class="mh-card">
+            <a href="{{ item.url }}">
+              <div class="mh-card__media">
+                {% render 'mh-media', mh_image: item.featured_image, mh_alt: item.title, mh_sizes: '(min-width: 700px) 25vw, 50vw' %}
+              </div>
+              <span class="mh-card__title">{{ item.title }}</span>
+            </a>
+            <div class="mh-card__price">{{ item.price | money }}</div>
+          </div>
+        {%- else -%}
+          <p class="mh-page__intro">{{ 'general.search.no_results' | t: terms: collection.title }}</p>
+        {%- endfor -%}
+
+        {%- if paginate.pages > 1 -%}
+          <div class="mh-pagination">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a>{%- endif -%}
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a>{%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,16 @@
+{%- comment -%}
+  Text star rating, as in the design.
+  Accepts: mh_rating (0–5)
+{%- endcomment -%}
+{%- liquid
+  assign filled = mh_rating | default: 5 | round
+  if filled > 5
+    assign filled = 5
+  endif
+-%}
+<span class="mh-stars" aria-hidden="true">
+  {%- for i in (1..5) -%}
+    {%- if forloop.index <= filled %}★{% else %}☆{% endif -%}
+  {%- endfor -%}
+</span>
+<span class="mh-visually-hidden">{{ filled }}/5</span>

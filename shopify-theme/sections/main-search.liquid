@@ -1,0 +1,44 @@
+<div class="mh-page">
+  <div class="mh-container">
+    <h1 class="mh-page__title">{{ 'general.search.title' | t }}</h1>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="mh-form" style="margin-bottom: 36px">
+      <div class="mh-field">
+        <label for="mh-search">{{ 'general.search.title' | t }}</label>
+        <input type="search" id="mh-search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
+      </div>
+      <button type="submit" class="mh-btn">{{ 'general.search.submit' | t }}</button>
+    </form>
+
+    {%- if search.performed -%}
+      {%- if search.results_count == 0 -%}
+        <p class="mh-page__intro">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+      {%- else -%}
+        <p class="mh-page__intro" style="margin-bottom: 24px">
+          {{ 'general.search.results_with_count' | t: count: search.results_count }}
+        </p>
+        <div class="mh-grid-products">
+          {%- for item in search.results -%}
+            <div class="mh-card">
+              <a href="{{ item.url }}">
+                {%- if item.object_type == 'product' -%}
+                  <div class="mh-card__media">
+                    {% render 'mh-media', mh_image: item.featured_image, mh_alt: item.title, mh_sizes: '(min-width: 700px) 25vw, 50vw' %}
+                  </div>
+                {%- endif -%}
+                <span class="mh-card__title">{{ item.title }}</span>
+              </a>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,64 @@
+<div class="mh-page">
+  <div class="mh-container">
+    <h1 class="mh-page__title">{{ 'cart.general.title' | t }}</h1>
+
+    {%- if cart.item_count == 0 -%}
+      <p class="mh-page__intro">{{ 'cart.general.empty' | t }}</p>
+      <p style="margin-top: 24px">
+        <a href="{{ routes.all_products_collection_url }}" class="mh-btn">{{ 'cart.general.continue' | t }}</a>
+      </p>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" novalidate>
+        <table class="mh-table">
+          <thead>
+            <tr>
+              <th>{{ 'customer.order.product' | t }}</th>
+              <th>{{ 'cart.general.quantity' | t }}</th>
+              <th>{{ 'customer.order.total' | t }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for item in cart.items -%}
+              <tr>
+                <td>
+                  <a href="{{ item.url }}">{{ item.product.title }}</a>
+                  {%- unless item.variant.title contains 'Default' -%}
+                    <div class="mh-line-item__variant">{{ item.variant.title }}</div>
+                  {%- endunless -%}
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name="updates[]"
+                    value="{{ item.quantity }}"
+                    min="0"
+                    style="width: 72px; padding: 8px; border: 1px solid var(--mh-border); border-radius: 4px">
+                </td>
+                <td>{{ item.final_line_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 28px">
+          <div>
+            <div style="font-size: 15px">{{ 'cart.general.subtotal' | t }}</div>
+            <div style="font-family: var(--mh-serif); font-size: 32px">{{ cart.total_price | money }}</div>
+            <div class="mh-drawer__note">{{ 'cart.general.taxes_and_shipping' | t }}</div>
+          </div>
+          <div style="display: flex; gap: 12px">
+            <button type="submit" name="update" class="mh-btn mh-btn--outline">{{ 'cart.general.update' | t }}</button>
+            <button type="submit" name="checkout" class="mh-btn">{{ 'cart.general.checkout' | t }}</button>
+          </div>
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": []
+}
+{% endschema %}

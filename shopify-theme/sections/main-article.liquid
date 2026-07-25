@@ -1,0 +1,23 @@
+<div class="mh-page">
+  <div class="mh-container" style="max-width: 760px">
+    <h1 class="mh-page__title">{{ article.title }}</h1>
+    {%- assign published = article.published_at | date: format: 'date' -%}
+    <div class="mh-page__intro" style="margin-bottom: 28px">
+      {{ 'blogs.article.posted_on' | t: date: published }}
+    </div>
+    {%- if article.image -%}
+      <div style="border-radius: var(--mh-radius); overflow: hidden; margin-bottom: 32px">
+        {% render 'mh-media', mh_image: article.image, mh_alt: article.title, mh_ratio: '16 / 9', mh_sizes: '760px' %}
+      </div>
+    {%- endif -%}
+    <div class="mh-rte" style="color: var(--mh-body); line-height: 1.8">{{ article.content }}</div>
+    <p style="margin-top: 40px"><a href="{{ blog.url }}">← {{ 'blogs.article.back_to_blog' | t }}</a></p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": []
+}
+{% endschema %}

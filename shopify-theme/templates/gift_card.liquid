@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ 'gift_cards.issued.title' | t: value: gift_card.initial_value | money }}</title>
+    {{ 'myhaut.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body>
+    <div class="mh-page" style="text-align: center">
+      <div class="mh-container">
+        <h1 class="mh-page__title">{{ 'gift_cards.issued.subtext' | t }}</h1>
+        <p style="font-family: var(--mh-serif); font-size: 46px; color: var(--mh-rose)">
+          {{ gift_card.balance | money }}
+        </p>
+        <p style="font-size: 20px; letter-spacing: .18em; margin-top: 24px">{{ gift_card.code | format_code }}</p>
+        {%- if gift_card.expired %}<p>{{ 'gift_cards.issued.expired' | t }}</p>{% endif -%}
+        <p style="margin-top: 28px">
+          <a href="{{ shop.url }}" class="mh-btn">{{ 'gift_cards.issued.shop_link' | t }}</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "current": {
+    "logo_width": 140,
+    "use_demo_images": true,
+    "page_width": 1280,
+    "color_accent": "#C43C61",
+    "color_accent_dark": "#8E2544",
+    "color_accent_tint": "#FBEEF2",
+    "color_ink": "#2A2320",
+    "color_background": "#FBF7F4",
+    "color_band": "#F0E4DC",
+    "color_image_placeholder": "#F3E3E7",
+    "color_text": "#6B5C55",
+    "color_muted": "#8B7A73",
+    "color_line": "#EADFD8",
+    "use_google_fonts": true,
+    "font_heading": "assistant_n4",
+    "font_body": "assistant_n4",
+    "cart_drawer": true,
+    "cart_note": "<p>Kostenloser Versand ab 25 € · 30 Tage Geld-zurück-Garantie</p>"
+  }
+}

@@ -1,0 +1,91 @@
+{%- comment -%}
+  "In der Flasche" — product shot next to the numbered FAKT rows.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_eyebrow = 'sections.facts.eyebrow' | t
+  assign fallback_heading = 'sections.facts.heading' | t
+  assign fact_word = 'sections.facts.fact_label' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+-%}
+
+<div class="mh-facts" id="{{ section.settings.anchor | default: 'mh-ingredients' }}">
+  <div class="mh-container">
+    <div class="mh-facts__grid">
+      <div class="mh-facts__media">
+        {% render 'mh-media',
+          mh_image: section.settings.image,
+          mh_fallback: 'mh-demo-product.png',
+          mh_alt: heading,
+          mh_placeholder: section.settings.placeholder,
+          mh_sizes: '(min-width: 1000px) 520px, 100vw'
+        %}
+      </div>
+
+      <div class="mh-facts__text">
+        {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+        <h2 class="mh-facts__title">{{ heading | newline_to_br }}</h2>
+
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign title_key = 'sections.facts.fact_' | append: forloop.index | append: '_title'
+            assign body_key = 'sections.facts.fact_' | append: forloop.index | append: '_body'
+            assign fallback_title = title_key | t
+            assign fallback_body = body_key | t
+            if fallback_title contains 'translation missing'
+              assign fallback_title = ''
+            endif
+            if fallback_body contains 'translation missing'
+              assign fallback_body = ''
+            endif
+            assign fact_title = block.settings.title | default: fallback_title
+            assign fact_body = block.settings.body | default: fallback_body
+            assign fact_number = forloop.index | prepend: '0' | slice: -2, 2
+          -%}
+          <div class="mh-fact" {{ block.shopify_attributes }}>
+            <span class="mh-fact__label">{{ block.settings.label | default: fact_word }} {{ fact_number }}</span>
+            <div>
+              <h3 class="mh-fact__title">{{ fact_title }}</h3>
+              {%- if fact_body != blank -%}<p class="mh-fact__body">{{ fact_body }}</p>{%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Facts",
+  "tag": "section",
+  "class": "mh-section-facts",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Product image" },
+    { "type": "text", "id": "placeholder", "label": "Placeholder caption" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Headline" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-ingredients" }
+  ],
+  "blocks": [
+    {
+      "type": "fact",
+      "name": "Fact",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "info": "Defaults to FAKT / FACT." },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Text" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Facts",
+      "blocks": [{ "type": "fact" }, { "type": "fact" }, { "type": "fact" }]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,25 @@
+<div class="mh-page">
+  <div class="mh-container">
+    <h1 class="mh-page__title">{{ 'customer.register.title' | t }}</h1>
+    {%- form 'create_customer', class: 'mh-form' -%}
+      {{ form.errors | default_errors }}
+      <div class="mh-field">
+        <label for="register-first">{{ 'customer.register.first_name' | t }}</label>
+        <input type="text" id="register-first" name="customer[first_name]" autocomplete="given-name">
+      </div>
+      <div class="mh-field">
+        <label for="register-last">{{ 'customer.register.last_name' | t }}</label>
+        <input type="text" id="register-last" name="customer[last_name]" autocomplete="family-name">
+      </div>
+      <div class="mh-field">
+        <label for="register-email">{{ 'customer.register.email' | t }}</label>
+        <input type="email" id="register-email" name="customer[email]" autocomplete="email">
+      </div>
+      <div class="mh-field">
+        <label for="register-password">{{ 'customer.register.password' | t }}</label>
+        <input type="password" id="register-password" name="customer[password]" autocomplete="new-password">
+      </div>
+      <button type="submit" class="mh-btn">{{ 'customer.register.submit' | t }}</button>
+    {%- endform -%}
+  </div>
+</div>

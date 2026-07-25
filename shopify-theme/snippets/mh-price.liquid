@@ -1,0 +1,27 @@
+{%- comment -%}
+  Price + compare-at + discount badge for one variant.
+  myhaut.js keeps these three nodes in sync when another variant is selected.
+
+  Accepts:
+    mh_variant   a variant object
+    mh_class     extra class names
+{%- endcomment -%}
+
+{%- liquid
+  assign discount_percent = 0
+  if mh_variant.compare_at_price > mh_variant.price
+    assign price_difference = mh_variant.compare_at_price | minus: mh_variant.price
+    assign rounding = mh_variant.compare_at_price | divided_by: 2
+    assign discount_percent = price_difference | times: 100 | plus: rounding | divided_by: mh_variant.compare_at_price
+  endif
+-%}
+
+<div class="mh-price {{ mh_class }}">
+  <span class="mh-price__current" data-mh-price>{{ mh_variant.price | money }}</span>
+  <s class="mh-price__compare" data-mh-compare {% unless discount_percent > 0 %}hidden{% endunless %}>
+    {%- if discount_percent > 0 %}{{ mh_variant.compare_at_price | money }}{% endif -%}
+  </s>
+  <span class="mh-price__badge" data-mh-discount {% unless discount_percent > 0 %}hidden{% endunless %}>
+    {%- if discount_percent > 0 %}{{ 'products.product.save_percent' | t: percent: discount_percent }}{% endif -%}
+  </span>
+</div>

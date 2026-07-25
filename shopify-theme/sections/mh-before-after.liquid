@@ -1,0 +1,119 @@
+{%- comment -%}
+  Before / after pair plus the three proof numbers.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_eyebrow = 'sections.before_after.eyebrow' | t
+  assign fallback_heading = 'sections.before_after.heading' | t
+  assign fallback_before = 'sections.before_after.label_before' | t
+  assign fallback_after = 'sections.before_after.label_after' | t
+  assign fallback_footnote = 'sections.before_after.footnote' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign label_before = section.settings.label_before | default: fallback_before
+  assign label_after = section.settings.label_after | default: fallback_after
+  assign footnote = section.settings.footnote | default: fallback_footnote
+-%}
+
+<div class="mh-ba" id="{{ section.settings.anchor | default: 'mh-results' }}">
+  <div class="mh-container">
+    <div class="mh-ba__head">
+      {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+      <h2 class="mh-ba__title">{{ heading | newline_to_br }}</h2>
+    </div>
+
+    <div class="mh-ba__pair">
+      <div class="mh-ba__frame">
+        {%- if label_before != blank -%}
+          <span class="mh-ba__label">{{ label_before }}</span>
+        {%- endif -%}
+        {% render 'mh-media',
+          mh_image: section.settings.image_before,
+          mh_alt: label_before,
+          mh_placeholder: section.settings.placeholder_before,
+          mh_sizes: '(min-width: 1000px) 50vw, 50vw'
+        %}
+      </div>
+      <div class="mh-ba__frame">
+        {%- if label_after != blank -%}
+          <span class="mh-ba__label mh-ba__label--after">{{ label_after }}</span>
+        {%- endif -%}
+        {% render 'mh-media',
+          mh_image: section.settings.image_after,
+          mh_alt: label_after,
+          mh_placeholder: section.settings.placeholder_after,
+          mh_sizes: '(min-width: 1000px) 50vw, 50vw'
+        %}
+      </div>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="mh-ba__stats">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign value_key = 'sections.before_after.stat_' | append: forloop.index | append: '_value'
+            assign label_key = 'sections.before_after.stat_' | append: forloop.index | append: '_label'
+            assign fallback_value = value_key | t
+            assign fallback_label = label_key | t
+            if fallback_value contains 'translation missing'
+              assign fallback_value = ''
+            endif
+            if fallback_label contains 'translation missing'
+              assign fallback_label = ''
+            endif
+            assign stat_value = block.settings.value | default: fallback_value
+            assign stat_label = block.settings.label | default: fallback_label
+          -%}
+          <div class="mh-ba__stat" {{ block.shopify_attributes }}>
+            <div class="mh-ba__stat-value">{{ stat_value }}</div>
+            <div class="mh-ba__stat-label">{{ stat_label }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if footnote != blank -%}
+      <p class="mh-ba__footnote">{{ footnote }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Before / after",
+  "tag": "section",
+  "class": "mh-section-ba",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Headline" },
+    { "type": "header", "content": "Images" },
+    { "type": "image_picker", "id": "image_before", "label": "Before" },
+    { "type": "text", "id": "placeholder_before", "label": "Placeholder caption (before)" },
+    { "type": "image_picker", "id": "image_after", "label": "After" },
+    { "type": "text", "id": "placeholder_after", "label": "Placeholder caption (after)" },
+    { "type": "text", "id": "label_before", "label": "Label on the before image" },
+    { "type": "text", "id": "label_after", "label": "Label on the after image" },
+    { "type": "header", "content": "Footnote" },
+    { "type": "textarea", "id": "footnote", "label": "Footnote" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-results" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Number",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Number" },
+        { "type": "textarea", "id": "label", "label": "Description" }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Before / after",
+      "blocks": [{ "type": "stat" }, { "type": "stat" }, { "type": "stat" }]
+    }
+  ]
+}
+{% endschema %}

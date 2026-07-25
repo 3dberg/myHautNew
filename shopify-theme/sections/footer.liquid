@@ -1,0 +1,80 @@
+{%- liquid
+  assign fallback_tagline = 'sections.footer.tagline' | t
+  assign tagline = section.settings.tagline | default: fallback_tagline
+-%}
+
+<footer class="mh-footer">
+  <div class="mh-container">
+    <div class="mh-footer__grid">
+      <div>
+        <div class="mh-footer__brand">
+          {%- if settings.logo != blank -%}
+            {{ settings.logo | image_url: width: 400 | image_tag: alt: shop.name, widths: '160, 320, 400' }}
+          {%- else -%}
+            {{ shop.name }}
+          {%- endif -%}
+        </div>
+        {%- if tagline != blank -%}<p class="mh-footer__tagline">{{ tagline }}</p>{%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign title_key = 'sections.footer.column_' | append: forloop.index | append: '_title'
+          assign fallback_title = title_key | t
+          if fallback_title contains 'translation missing'
+            assign fallback_title = ''
+          endif
+          assign column_title = block.settings.title | default: fallback_title
+        -%}
+        <div class="mh-footer__col" {{ block.shopify_attributes }}>
+          {%- if column_title != blank -%}
+            <span class="mh-footer__col-title">{{ column_title }}</span>
+          {%- endif -%}
+          {%- for link in linklists[block.settings.menu].links -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="mh-footer__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'sections.footer.copyright' | t }}</span>
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <span class="mh-footer__payment">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'mh-footer__payment-icon' }}
+          {%- endfor -%}
+        </span>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "div",
+  "class": "mh-section-footer",
+  "settings": [
+    { "type": "textarea", "id": "tagline", "label": "Tagline", "info": "Leave empty to use the built-in translation." },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Link column",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [{ "type": "column" }, { "type": "column" }, { "type": "column" }]
+    }
+  ]
+}
+{% endschema %}

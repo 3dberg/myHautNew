@@ -1,0 +1,75 @@
+{%- comment -%}
+  Renders an image, a Shopify-hosted video, an external video or an empty
+  placeholder into a full-bleed box. Replaces the <image-slot> drop targets
+  from the design prototype.
+
+  Accepts:
+    mh_image        image_picker setting
+    mh_video        video setting (optional)
+    mh_video_url    video_url setting (optional, YouTube/Vimeo)
+    mh_fallback     filename of a theme asset used when nothing is set
+    mh_placeholder  caption shown when there is nothing to display
+    mh_alt          alt text
+    mh_class        extra class names
+    mh_sizes        sizes attribute (default 100vw)
+    mh_loading      'lazy' (default) or 'eager'
+    mh_ratio        optional aspect-ratio for the box
+{%- endcomment -%}
+
+{%- liquid
+  assign mh_image = mh_image | default: ''
+  assign mh_video = mh_video | default: ''
+  assign mh_video_url = mh_video_url | default: ''
+  assign mh_fallback = mh_fallback | default: ''
+  assign mh_sizes = mh_sizes | default: '100vw'
+  assign mh_loading = mh_loading | default: 'lazy'
+  assign mh_alt = mh_alt | default: ''
+  if settings.use_demo_images == false
+    assign mh_fallback = blank
+  endif
+-%}
+
+<div class="mh-media {{ mh_class }}"{% if mh_ratio %} style="aspect-ratio: {{ mh_ratio }}"{% endif %}>
+  {%- if mh_video != blank -%}
+    {{
+      mh_video
+      | video_tag:
+        image_size: '1600x',
+        autoplay: true,
+        loop: true,
+        muted: true,
+        controls: false,
+        playsinline: true
+    }}
+  {%- elsif mh_video_url != blank -%}
+    {%- if mh_video_url.type == 'youtube' -%}
+      <iframe
+        src="https://www.youtube.com/embed/{{ mh_video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ mh_video_url.id }}&controls=0&playsinline=1&modestbranding=1&rel=0"
+        title="{{ mh_alt | escape }}"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+        loading="lazy"></iframe>
+    {%- elsif mh_video_url.type == 'vimeo' -%}
+      <iframe
+        src="https://player.vimeo.com/video/{{ mh_video_url.id }}?autoplay=1&muted=1&loop=1&background=1"
+        title="{{ mh_alt | escape }}"
+        allow="autoplay"
+        allowfullscreen
+        loading="lazy"></iframe>
+    {%- endif -%}
+  {%- elsif mh_image != blank -%}
+    {{
+      mh_image
+      | image_url: width: 2000
+      | image_tag:
+        loading: mh_loading,
+        sizes: mh_sizes,
+        widths: '400, 600, 800, 1000, 1200, 1600, 2000',
+        alt: mh_alt
+    }}
+  {%- elsif mh_fallback != blank -%}
+    <img src="{{ mh_fallback | asset_url }}" alt="{{ mh_alt | escape }}" loading="{{ mh_loading }}">
+  {%- else -%}
+    <div class="mh-media__empty">{{ mh_placeholder | default: '' }}</div>
+  {%- endif -%}
+</div>
