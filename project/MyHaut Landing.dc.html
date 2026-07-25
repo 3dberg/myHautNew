@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  body { margin:0; background:#EDE6E0; font-family:'Jost',sans-serif; }
+  a { color:#C43C61; text-decoration:none; }
+  a:hover { color:#8E2544; }
+  @keyframes myhautMarquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+</style>
+</helmet>
+
+<div style="display:flex;gap:64px;align-items:flex-start;padding:56px;flex-wrap:wrap;background:#EDE6E0;font-family:'Jost',sans-serif">
+
+<!-- ===================== DESKTOP ===================== -->
+<div style="display:flex;flex-direction:column;gap:14px">
+  <div style="display:flex;align-items:baseline;gap:12px;padding-left:4px">
+    <span style="font-family:'Cormorant Garamond',serif;font-size:26px;color:#2A2320">Desktop</span>
+    <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8B7A73">1280 px · Shopify Produkt- &amp; Landingpage</span>
+  </div>
+
+  <div data-screen-label="Desktop" style="width:1280px;background:#FBF7F4;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px -30px rgba(42,35,32,.35);color:#2A2320">
+
+    <!-- announcement -->
+    <div style="background:#C43C61;color:#fff;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;display:flex;justify-content:center;gap:44px;padding:11px 0">
+      <span>Kostenloser Versand ab 25 €</span>
+      <span style="opacity:.5">·</span>
+      <span>30 Tage Geld-zurück-Garantie</span>
+      <span style="opacity:.5">·</span>
+      <span>Versand aus Deutschland</span>
+    </div>
+
+    <!-- nav -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 52px;background:#FBF7F4;border-bottom:1px solid #EADFD8">
+      <div style="display:flex;gap:30px;font-size:14.5px;color:#5C4F49">
+        <span>So funktioniert's</span>
+        <span>Ergebnisse</span>
+        <span>Inhaltsstoffe</span>
+        <span>FAQ</span>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:30px;letter-spacing:.02em;color:#C43C61">MyHaut</div>
+      <div style="display:flex;gap:24px;align-items:center;font-size:14.5px;color:#5C4F49">
+        <span>DE / EN</span>
+        <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid #DCCBC2;border-radius:999px;padding:8px 16px">Warenkorb <span style="background:#C43C61;color:#fff;border-radius:999px;width:19px;height:19px;display:inline-flex;align-items:center;justify-content:center;font-size:11px">0</span></span>
+      </div>
+    </div>
+
+    <!-- hero -->
+    <div style="position:relative;height:660px;background:#F3E3E7">
+      <div style="position:absolute;inset:0">
+        <image-slot id="mh-hero-video" shape="rect" fit="cover" placeholder="Hero-Video / Still: Frau sprüht MyHaut aufs Bein (Vollflächig, 16:9)"></image-slot>
+      </div>
+      <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(251,247,244,.94) 0%,rgba(251,247,244,.86) 34%,rgba(251,247,244,0) 62%);pointer-events:none"></div>
+      <div style="position:absolute;left:72px;top:0;bottom:0;width:492px;display:flex;flex-direction:column;justify-content:center;gap:22px;pointer-events:none">
+        <div style="display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#C43C61">
+          <span style="letter-spacing:.05em">★★★★★</span>
+          <span style="color:#6B5C55">4,8 · 2.184 Bewertungen</span>
+        </div>
+        <h1 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:70px;line-height:.98;margin:0;letter-spacing:-.015em">Glatte Haut in<br><em style="font-style:italic;color:#C43C61">8 Minuten.</em></h1>
+        <p style="margin:0;font-size:17.5px;line-height:1.62;color:#6B5C55;max-width:400px;text-wrap:pretty">Sprühen, kurz warten, abwischen. Kein Ziehen, kein Rasieren, keine Termine. Mit Aloe Vera &amp; Allantoin für Haut, die sich danach besser anfühlt als vorher.</p>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-top:4px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:44px;color:#2A2320">18,90 €</span>
+          <span style="font-size:17px;color:#A2918A;text-decoration:line-through">21,90 €</span>
+          <span style="background:#C43C61;color:#fff;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;padding:6px 11px;border-radius:3px">−14 %</span>
+        </div>
+        <div style="font-size:13.5px;color:#8B7A73;margin-top:-10px">100 ml · reicht für ca. 6 Anwendungen · inkl. MwSt.</div>
+        <div style="display:flex;gap:12px;pointer-events:auto">
+          <div style="flex:1;background:#C43C61;color:#fff;text-align:center;padding:19px;border-radius:4px;font-size:15px;letter-spacing:.1em;text-transform:uppercase">In den Warenkorb</div>
+          <div style="width:150px;border:1px solid #2A2320;text-align:center;padding:19px;border-radius:4px;font-size:15px;letter-spacing:.1em;text-transform:uppercase">Sparset</div>
+        </div>
+        <div style="display:flex;gap:26px;font-size:13px;color:#6B5C55;margin-top:2px">
+          <span>✓ CPSR-zertifiziert</span>
+          <span>✓ Dermatologisch geprüft</span>
+          <span>✓ Vegan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- sticky ATC -->
+    <div style="position:relative">
+      <div style="position:sticky;top:0;z-index:20;background:rgba(251,247,244,.96);backdrop-filter:blur(10px);border-bottom:1px solid #EADFD8;display:flex;align-items:center;justify-content:space-between;padding:13px 52px">
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="width:44px;height:44px;border-radius:4px;overflow:hidden;background:#F3E3E7">
+            <image-slot id="mh-atc-thumb" shape="rect" fit="cover" placeholder="Produkt"></image-slot>
+          </div>
+          <div>
+            <div style="font-size:15px">MyHaut Hair Removal Spray</div>
+            <div style="font-size:12.5px;color:#8B7A73">100 ml · Auf Lager</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px">
+          <div style="display:flex;gap:8px">
+            <span style="border:1px solid #DCCBC2;border-radius:3px;padding:8px 14px;font-size:13.5px">1×</span>
+            <span style="border:1px solid #C43C61;background:#FBEEF2;color:#C43C61;border-radius:3px;padding:8px 14px;font-size:13.5px">3× spare 30 %</span>
+            <span style="border:1px solid #DCCBC2;border-radius:3px;padding:8px 14px;font-size:13.5px">5×</span>
+          </div>
+          <span style="font-family:'Cormorant Garamond',serif;font-size:26px">18,90 €</span>
+          <span style="background:#C43C61;color:#fff;padding:13px 34px;border-radius:4px;font-size:13.5px;letter-spacing:.1em;text-transform:uppercase">Kaufen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- marquee trust -->
+    <div style="background:#F0E4DC;padding:15px 0;overflow:hidden;white-space:nowrap">
+      <div style="display:inline-flex;gap:56px;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8B7A73;animation:myhautMarquee 28s linear infinite;padding-right:56px">
+        <span>Ohne Klingen</span><span>·</span><span>Ohne Wachs</span><span>·</span><span>Ohne Termin</span><span>·</span><span>Aloe Vera &amp; Allantoin</span><span>·</span><span>8 Minuten</span><span>·</span><span>Für Körper, Beine &amp; Arme</span><span>·</span>
+        <span>Ohne Klingen</span><span>·</span><span>Ohne Wachs</span><span>·</span><span>Ohne Termin</span><span>·</span><span>Aloe Vera &amp; Allantoin</span><span>·</span><span>8 Minuten</span><span>·</span><span>Für Körper, Beine &amp; Arme</span><span>·</span>
+      </div>
+    </div>
+
+    <!-- how it works -->
+    <div style="padding:104px 72px 96px;background:#FBF7F4">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:54px">
+        <div>
+          <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#C43C61;margin-bottom:14px">So funktioniert's</div>
+          <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:52px;margin:0;line-height:1.05">Drei Schritte.<br>Eine Dusche lang.</h2>
+        </div>
+        <p style="margin:0;max-width:330px;font-size:16px;line-height:1.65;color:#6B5C55;text-wrap:pretty">Kein Aufheizen, kein Nachrasieren. Du brauchst nur die Flasche, ein feuchtes Tuch und acht Minuten.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="height:300px;border-radius:6px;overflow:hidden;background:#F3E3E7"><image-slot id="mh-step-1" shape="rect" fit="cover" placeholder="Schritt 1 — Sprühen aufs Bein"></image-slot></div>
+          <div style="display:flex;gap:16px">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:34px;color:#C43C61;line-height:1">01</span>
+            <div>
+              <div style="font-size:19px;margin-bottom:7px">Sprühen</div>
+              <p style="margin:0;font-size:15px;line-height:1.6;color:#6B5C55;text-wrap:pretty">Gleichmäßig auf trockene Haut auftragen, bis die Härchen bedeckt sind. Nicht einmassieren.</p>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="height:300px;border-radius:6px;overflow:hidden;background:#F3E3E7"><image-slot id="mh-step-2" shape="rect" fit="cover" placeholder="Schritt 2 — Timer / 8 Minuten warten"></image-slot></div>
+          <div style="display:flex;gap:16px">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:34px;color:#C43C61;line-height:1">02</span>
+            <div>
+              <div style="font-size:19px;margin-bottom:7px">8 Minuten warten</div>
+              <p style="margin:0;font-size:15px;line-height:1.6;color:#6B5C55;text-wrap:pretty">Die Formel löst das Haar an der Oberfläche. Aloe Vera hält die Haut in der Zeit ruhig.</p>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="height:300px;border-radius:6px;overflow:hidden;background:#F3E3E7"><image-slot id="mh-step-3" shape="rect" fit="cover" placeholder="Schritt 3 — Abwischen mit feuchtem Tuch"></image-slot></div>
+          <div style="display:flex;gap:16px">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:34px;color:#C43C61;line-height:1">03</span>
+            <div>
+              <div style="font-size:19px;margin-bottom:7px">Abwischen &amp; abspülen</div>
+              <p style="margin:0;font-size:15px;line-height:1.6;color:#6B5C55;text-wrap:pretty">Mit einem feuchten Tuch abnehmen, kurz mit lauwarmem Wasser nachspülen. Fertig.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- before after -->
+    <div style="background:#F0E4DC;padding:100px 72px">
+      <div style="text-align:center;margin-bottom:48px">
+        <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#C43C61;margin-bottom:14px">Vorher / Nachher</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:52px;margin:0">Ein Durchgang. Kein Stoppelgefühl.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:6px;overflow:hidden">
+        <div style="position:relative;height:430px;background:#E3D2CA">
+          <image-slot id="mh-before" shape="rect" fit="cover" placeholder="Vorher — Nahaufnahme Bein"></image-slot>
+          <span style="position:absolute;top:20px;left:20px;background:rgba(42,35,32,.72);color:#fff;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;padding:7px 14px;border-radius:3px;pointer-events:none">Vorher</span>
+        </div>
+        <div style="position:relative;height:430px;background:#E3D2CA">
+          <image-slot id="mh-after" shape="rect" fit="cover" placeholder="Nachher — dieselbe Stelle, 8 Min später"></image-slot>
+          <span style="position:absolute;top:20px;left:20px;background:#C43C61;color:#fff;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;padding:7px 14px;border-radius:3px;pointer-events:none">Nachher · 8 Min</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:44px;background:#DFCEC5;border-radius:6px;overflow:hidden">
+        <div style="background:#F0E4DC;padding:34px 30px">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:46px;color:#C43C61;line-height:1">96 %</div>
+          <div style="font-size:14.5px;color:#6B5C55;margin-top:8px">berichten von spürbar glatterer Haut nach der ersten Anwendung*</div>
+        </div>
+        <div style="background:#F0E4DC;padding:34px 30px">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:46px;color:#C43C61;line-height:1">0</div>
+          <div style="font-size:14.5px;color:#6B5C55;margin-top:8px">Klingen, Wachsstreifen und Termine im Studio</div>
+        </div>
+        <div style="background:#F0E4DC;padding:34px 30px">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:46px;color:#C43C61;line-height:1">3,15 €</div>
+          <div style="font-size:14.5px;color:#6B5C55;margin-top:8px">pro Anwendung – ein Bruchteil einer Studio-Sitzung</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:#9C8B84;margin-top:18px">*Selbsteinschätzung, Anwendertest mit 112 Teilnehmerinnen über 4 Wochen.</div>
+    </div>
+
+    <!-- facts -->
+    <div style="padding:104px 72px;background:#FBF7F4;display:grid;grid-template-columns:520px 1fr;gap:80px;align-items:center">
+      <div style="height:560px;border-radius:6px;overflow:hidden;background:#F3E3E7">
+        <image-slot id="mh-product" shape="rect" fit="cover" placeholder="Produktfoto MyHaut Flasche (Freisteller oder Still-Life)"></image-slot>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#C43C61;margin-bottom:14px">In der Flasche</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:52px;margin:0 0 40px;line-height:1.05">Pflege, die mitarbeitet.</h2>
+        <div style="border-top:1px solid #EADFD8;padding:26px 0;display:flex;gap:28px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:.14em;color:#C43C61;padding-top:5px">FAKT 01</span>
+          <div>
+            <div style="font-size:21px;margin-bottom:8px">Allantoin beruhigt sofort</div>
+            <p style="margin:0;font-size:15.5px;line-height:1.65;color:#6B5C55;max-width:460px;text-wrap:pretty">Statt gereizter Haut nach dem Rasieren: Allantoin unterstützt die Regeneration und mindert Rötungen direkt nach der Anwendung.</p>
+          </div>
+        </div>
+        <div style="border-top:1px solid #EADFD8;padding:26px 0;display:flex;gap:28px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:.14em;color:#C43C61;padding-top:5px">FAKT 02</span>
+          <div>
+            <div style="font-size:21px;margin-bottom:8px">Aloe Vera hält Feuchtigkeit</div>
+            <p style="margin:0;font-size:15.5px;line-height:1.65;color:#6B5C55;max-width:460px;text-wrap:pretty">Die Haut trocknet nicht aus, wie es bei vielen Enthaarungscremes passiert. Nach dem Abspülen bleibt ein weicher, gepflegter Film.</p>
+          </div>
+        </div>
+        <div style="border-top:1px solid #EADFD8;border-bottom:1px solid #EADFD8;padding:26px 0;display:flex;gap:28px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:.14em;color:#C43C61;padding-top:5px">FAKT 03</span>
+          <div>
+            <div style="font-size:21px;margin-bottom:8px">CPSR-zertifiziert</div>
+            <p style="margin:0;font-size:15.5px;line-height:1.65;color:#6B5C55;max-width:460px;text-wrap:pretty">Cosmetic Product Safety Report nach EU-Verordnung 1223/2009. Hergestellt und geprüft in der EU, vegan und ohne Tierversuche.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- reviews -->
+    <div style="background:#2A2320;color:#FBF7F4;padding:96px 72px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px">
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:52px;margin:0;line-height:1.05">Was Kundinnen<br>danach sagen.</h2>
+        <div style="text-align:right">
+          <div style="font-size:22px;letter-spacing:.1em;color:#E8A0B4">★★★★★</div>
+          <div style="font-size:15px;color:#BFB0A8;margin-top:8px">4,8 von 5 · 2.184 Bewertungen</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <div style="border:1px solid #453A35;border-radius:6px;padding:32px">
+          <div style="color:#E8A0B4;letter-spacing:.1em;margin-bottom:16px">★★★★★</div>
+          <p style="margin:0 0 22px;font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.45;text-wrap:pretty">„Ich habe zehn Jahre lang rasiert und mich zehn Jahre lang über die Stoppeln geärgert. Das hier war die erste Woche ohne."</p>
+          <div style="font-size:14px;color:#BFB0A8">Lena M. · Verifizierter Kauf</div>
+        </div>
+        <div style="border:1px solid #453A35;border-radius:6px;padding:32px">
+          <div style="color:#E8A0B4;letter-spacing:.1em;margin-bottom:16px">★★★★★</div>
+          <p style="margin:0 0 22px;font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.45;text-wrap:pretty">„Kein Geruch wie bei anderen Cremes, keine roten Flecken. Nach acht Minuten war alles ab, wirklich."</p>
+          <div style="font-size:14px;color:#BFB0A8">Sarah K. · Verifizierter Kauf</div>
+        </div>
+        <div style="border:1px solid #453A35;border-radius:6px;padding:32px">
+          <div style="color:#E8A0B4;letter-spacing:.1em;margin-bottom:16px">★★★★☆</div>
+          <p style="margin:0 0 22px;font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.45;text-wrap:pretty">„Nutze es an Brust und Rücken. Deutlich angenehmer als Waxing und ich brauche niemanden, der mir hilft."</p>
+          <div style="font-size:14px;color:#BFB0A8">Tobias R. · Verifizierter Kauf</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- bundles -->
+    <div style="padding:100px 72px;background:#FBF7F4">
+      <div style="text-align:center;margin-bottom:52px">
+        <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#C43C61;margin-bottom:14px">Sparsets</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:52px;margin:0 0 12px">Wähle deine Menge.</h2>
+        <p style="margin:0;font-size:16px;color:#6B5C55">Eine Flasche reicht für rund sechs Anwendungen. Die meisten bestellen drei.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch">
+        <div style="border:1px solid #E3D5CD;border-radius:6px;padding:30px 26px;background:#fff;display:flex;flex-direction:column;gap:14px">
+          <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8B7A73">Zum Testen</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1">1× 100 ml</div>
+          <div style="display:flex;align-items:baseline;gap:9px"><span style="font-size:26px">18,90 €</span><span style="font-size:14px;color:#A2918A;text-decoration:line-through">21,90 €</span></div>
+          <div style="font-size:13.5px;color:#8B7A73">18,90 € pro Flasche</div>
+          <div style="margin-top:auto;border:1px solid #2A2320;text-align:center;padding:14px;border-radius:4px;font-size:13.5px;letter-spacing:.1em;text-transform:uppercase">Auswählen</div>
+        </div>
+        <div style="border:1px solid #E3D5CD;border-radius:6px;padding:30px 26px;background:#fff;display:flex;flex-direction:column;gap:14px">
+          <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8B7A73">Für 3 Monate</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1">2× 100 ml</div>
+          <div style="display:flex;align-items:baseline;gap:9px"><span style="font-size:26px">39,90 €</span><span style="font-size:14px;color:#A2918A;text-decoration:line-through">43,80 €</span></div>
+          <div style="font-size:13.5px;color:#8B7A73">19,95 € pro Flasche</div>
+          <div style="margin-top:auto;border:1px solid #2A2320;text-align:center;padding:14px;border-radius:4px;font-size:13.5px;letter-spacing:.1em;text-transform:uppercase">Auswählen</div>
+        </div>
+        <div style="border:2px solid #C43C61;border-radius:6px;padding:30px 26px;background:#FBEEF2;display:flex;flex-direction:column;gap:14px;position:relative">
+          <div style="position:absolute;top:-13px;left:26px;background:#C43C61;color:#fff;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 13px;border-radius:3px">Bestseller · spare 24 %</div>
+          <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#C43C61">Beliebteste Wahl</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1">3× 100 ml</div>
+          <div style="display:flex;align-items:baseline;gap:9px"><span style="font-size:26px">49,90 €</span><span style="font-size:14px;color:#A2918A;text-decoration:line-through">65,70 €</span></div>
+          <div style="font-size:13.5px;color:#8B7A73">16,63 € pro Flasche</div>
+          <div style="margin-top:auto;background:#C43C61;color:#fff;text-align:center;padding:14px;border-radius:4px;font-size:13.5px;letter-spacing:.1em;text-transform:uppercase">Auswählen</div>
+        </div>
+        <div style="border:1px solid #E3D5CD;border-radius:6px;padding:30px 26px;background:#fff;display:flex;flex-direction:column;gap:14px">
+          <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8B7A73">Bester Preis</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1">5× 100 ml</div>
+          <div style="display:flex;align-items:baseline;gap:9px"><span style="font-size:26px">79,90 €</span><span style="font-size:14px;color:#A2918A;text-decoration:line-through">109,50 €</span></div>
+          <div style="font-size:13.5px;color:#8B7A73">15,98 € pro Flasche</div>
+          <div style="margin-top:auto;border:1px solid #2A2320;text-align:center;padding:14px;border-radius:4px;font-size:13.5px;letter-spacing:.1em;text-transform:uppercase">Auswählen</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:40px;margin-top:36px;font-size:13.5px;color:#6B5C55">
+        <span>✓ Kostenloser Versand ab 25 €</span>
+        <span>✓ 30 Tage Geld-zurück</span>
+        <span>✓ Lieferung in 2–4 Werktagen</span>
+      </div>
+    </div>
+
+    <!-- faq -->
+    <div style="background:#F0E4DC;padding:100px 72px;display:grid;grid-template-columns:380px 1fr;gap:80px">
+      <div>
+        <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#C43C61;margin-bottom:14px">FAQ</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:46px;margin:0;line-height:1.05">Noch Fragen?</h2>
+        <p style="font-size:15.5px;color:#6B5C55;line-height:1.65;margin-top:20px;text-wrap:pretty">Schreib uns an <a href="mailto:hallo@myhaut.de">hallo@myhaut.de</a> – wir antworten meist am selben Werktag.</p>
+      </div>
+      <div>
+        <div style="border-top:1px solid #DFCEC5;padding:24px 0;display:flex;justify-content:space-between;gap:40px">
+          <div style="font-size:19px">Für welche Körperstellen ist das Spray geeignet?</div>
+          <span style="color:#C43C61;font-size:22px">+</span>
+        </div>
+        <div style="border-top:1px solid #DFCEC5;padding:24px 0">
+          <div style="display:flex;justify-content:space-between;gap:40px;margin-bottom:14px">
+            <div style="font-size:19px">Wie lange bleibt die Haut glatt?</div>
+            <span style="color:#C43C61;font-size:22px">−</span>
+          </div>
+          <p style="margin:0;font-size:15.5px;line-height:1.7;color:#6B5C55;max-width:620px;text-wrap:pretty">Weil das Haar unterhalb der Hautoberfläche gelöst wird, dauert es bei den meisten fünf bis sieben Tage, bis wieder etwas nachwächst – deutlich länger als nach dem Rasieren. Und es kommt weich zurück, nicht stoppelig.</p>
+        </div>
+        <div style="border-top:1px solid #DFCEC5;padding:24px 0;display:flex;justify-content:space-between;gap:40px">
+          <div style="font-size:19px">Ist es auch für empfindliche Haut geeignet?</div>
+          <span style="color:#C43C61;font-size:22px">+</span>
+        </div>
+        <div style="border-top:1px solid #DFCEC5;padding:24px 0;display:flex;justify-content:space-between;gap:40px">
+          <div style="font-size:19px">Riecht das Spray wie andere Enthaarungscremes?</div>
+          <span style="color:#C43C61;font-size:22px">+</span>
+        </div>
+        <div style="border-top:1px solid #DFCEC5;border-bottom:1px solid #DFCEC5;padding:24px 0;display:flex;justify-content:space-between;gap:40px">
+          <div style="font-size:19px">Was, wenn es bei mir nicht funktioniert?</div>
+          <span style="color:#C43C61;font-size:22px">+</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- closing cta -->
+    <div style="position:relative;height:440px;background:#F3E3E7">
+      <div style="position:absolute;inset:0"><image-slot id="mh-cta" shape="rect" fit="cover" placeholder="Lifestyle-Foto quer (Beine, Badezimmer, warmes Licht)"></image-slot></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(42,35,32,.55),rgba(42,35,32,.18));pointer-events:none"></div>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;color:#fff;pointer-events:none">
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:56px;margin:0;text-align:center;line-height:1.06">Acht Minuten bis<br>zur nächsten Dusche.</h2>
+        <div style="display:flex;gap:14px;align-items:center;pointer-events:auto">
+          <span style="background:#fff;color:#2A2320;padding:18px 42px;border-radius:4px;font-size:14px;letter-spacing:.1em;text-transform:uppercase">Jetzt für 18,90 € testen</span>
+          <span style="font-size:14px;opacity:.9">30 Tage Geld-zurück-Garantie</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div style="background:#2A2320;color:#BFB0A8;padding:56px 72px 40px;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;font-size:14px">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:30px;color:#FBF7F4;margin-bottom:14px">MyHaut</div>
+        <p style="margin:0;line-height:1.7;max-width:280px;text-wrap:pretty">Hautpflege, die dir Zeit zurückgibt. Entwickelt und geprüft in der EU.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px"><span style="color:#FBF7F4">Shop</span><span>Hair Removal Spray</span><span>Sparsets</span><span>Geschenkkarte</span></div>
+      <div style="display:flex;flex-direction:column;gap:11px"><span style="color:#FBF7F4">Hilfe</span><span>Versand &amp; Rückgabe</span><span>Anwendung</span><span>Kontakt</span></div>
+      <div style="display:flex;flex-direction:column;gap:11px"><span style="color:#FBF7F4">Rechtliches</span><span>Impressum</span><span>Datenschutz</span><span>AGB</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MOBILE ===================== -->
+<div style="display:flex;flex-direction:column;gap:14px">
+  <div style="display:flex;align-items:baseline;gap:12px;padding-left:4px">
+    <span style="font-family:'Cormorant Garamond',serif;font-size:26px;color:#2A2320">Mobile</span>
+    <span style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8B7A73">390 px</span>
+  </div>
+
+  <div data-screen-label="Mobile" style="width:390px;background:#FBF7F4;border-radius:34px;overflow:hidden;box-shadow:0 30px 80px -30px rgba(42,35,32,.35);color:#2A2320;border:9px solid #2A2320">
+
+    <div style="background:#C43C61;color:#fff;font-size:11px;letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:9px 0">Kostenloser Versand ab 25 €</div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #EADFD8">
+      <span style="font-size:20px;color:#5C4F49">☰</span>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:25px;color:#C43C61">MyHaut</span>
+      <span style="font-size:13px;color:#5C4F49">Bag (0)</span>
+    </div>
+
+    <div style="position:relative;height:400px;background:#F3E3E7">
+      <div style="position:absolute;inset:0"><image-slot id="mh-m-hero" shape="rect" fit="cover" placeholder="Hero-Video hochkant"></image-slot></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(251,247,244,.97) 0%,rgba(251,247,244,.7) 32%,rgba(251,247,244,0) 66%);pointer-events:none"></div>
+      <div style="position:absolute;left:22px;right:22px;bottom:20px;pointer-events:none">
+        <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#C43C61;margin-bottom:10px">★★★★★ 4,8 · 2.184 Bewertungen</div>
+        <h1 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:46px;line-height:.98;margin:0">Glatte Haut in<br><em style="font-style:italic;color:#C43C61">8 Minuten.</em></h1>
+      </div>
+    </div>
+
+    <div style="padding:22px;display:flex;flex-direction:column;gap:16px">
+      <p style="margin:0;font-size:15.5px;line-height:1.6;color:#6B5C55;text-wrap:pretty">Sprühen, warten, abwischen. Kein Ziehen, kein Rasieren – mit Aloe Vera &amp; Allantoin.</p>
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:36px">18,90 €</span>
+        <span style="font-size:15px;color:#A2918A;text-decoration:line-through">21,90 €</span>
+        <span style="background:#C43C61;color:#fff;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:3px">−14 %</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid #DCCBC2;border-radius:5px;padding:14px 16px;background:#fff">
+          <span style="font-size:15px">1× 100 ml</span><span style="font-size:15px">18,90 €</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;border:2px solid #C43C61;border-radius:5px;padding:14px 16px;background:#FBEEF2;position:relative">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="font-size:15px">3× 100 ml</span>
+            <span style="font-size:12px;color:#C43C61;letter-spacing:.1em;text-transform:uppercase">Bestseller · 16,63 € / Stück</span>
+          </div>
+          <span style="font-size:15px">49,90 €</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;border:1px solid #DCCBC2;border-radius:5px;padding:14px 16px;background:#fff">
+          <span style="font-size:15px">5× 100 ml</span><span style="font-size:15px">79,90 €</span>
+        </div>
+      </div>
+      <div style="background:#C43C61;color:#fff;text-align:center;padding:18px;border-radius:5px;font-size:14px;letter-spacing:.1em;text-transform:uppercase">In den Warenkorb</div>
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#6B5C55">
+        <span>✓ CPSR-zertifiziert</span><span>✓ Vegan</span><span>✓ 30 Tage Rückgabe</span>
+      </div>
+    </div>
+
+    <div style="background:#F0E4DC;padding:12px 0;overflow:hidden;white-space:nowrap">
+      <div style="display:inline-flex;gap:34px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8B7A73;animation:myhautMarquee 20s linear infinite;padding-right:34px">
+        <span>Ohne Klingen</span><span>·</span><span>Ohne Wachs</span><span>·</span><span>Ohne Termin</span><span>·</span><span>8 Minuten</span><span>·</span>
+        <span>Ohne Klingen</span><span>·</span><span>Ohne Wachs</span><span>·</span><span>Ohne Termin</span><span>·</span><span>8 Minuten</span><span>·</span>
+      </div>
+    </div>
+
+    <div style="padding:56px 22px">
+      <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C43C61;margin-bottom:12px">So funktioniert's</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:36px;margin:0 0 30px;line-height:1.05">Drei Schritte.<br>Eine Dusche lang.</h2>
+      <div style="display:flex;flex-direction:column;gap:26px">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="height:200px;border-radius:5px;overflow:hidden;background:#F3E3E7"><image-slot id="mh-m-step1" shape="rect" fit="cover" placeholder="Schritt 1"></image-slot></div>
+          <div style="display:flex;gap:14px">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#C43C61;line-height:1">01</span>
+            <div><div style="font-size:17px;margin-bottom:5px">Sprühen</div><p style="margin:0;font-size:14.5px;line-height:1.6;color:#6B5C55;text-wrap:pretty">Gleichmäßig auf trockene Haut, bis die Härchen bedeckt sind.</p></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="height:200px;border-radius:5px;overflow:hidden;background:#F3E3E7"><image-slot id="mh-m-step2" shape="rect" fit="cover" placeholder="Schritt 2"></image-slot></div>
+          <div style="display:flex;gap:14px">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#C43C61;line-height:1">02</span>
+            <div><div style="font-size:17px;margin-bottom:5px">8 Minuten warten</div><p style="margin:0;font-size:14.5px;line-height:1.6;color:#6B5C55;text-wrap:pretty">Die Formel löst das Haar. Aloe Vera hält die Haut ruhig.</p></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="height:200px;border-radius:5px;overflow:hidden;background:#F3E3E7"><image-slot id="mh-m-step3" shape="rect" fit="cover" placeholder="Schritt 3"></image-slot></div>
+          <div style="display:flex;gap:14px">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#C43C61;line-height:1">03</span>
+            <div><div style="font-size:17px;margin-bottom:5px">Abwischen &amp; abspülen</div><p style="margin:0;font-size:14.5px;line-height:1.6;color:#6B5C55;text-wrap:pretty">Feuchtes Tuch, kurz nachspülen. Fertig.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#F0E4DC;padding:52px 22px">
+      <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C43C61;margin-bottom:12px">Vorher / Nachher</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:34px;margin:0 0 24px;line-height:1.05">Ein Durchgang.<br>Kein Stoppelgefühl.</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:5px;overflow:hidden">
+        <div style="position:relative;height:230px;background:#E3D2CA">
+          <image-slot id="mh-m-before" shape="rect" fit="cover" placeholder="Vorher"></image-slot>
+          <span style="position:absolute;top:12px;left:12px;background:rgba(42,35,32,.72);color:#fff;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:3px;pointer-events:none">Vorher</span>
+        </div>
+        <div style="position:relative;height:230px;background:#E3D2CA">
+          <image-slot id="mh-m-after" shape="rect" fit="cover" placeholder="Nachher"></image-slot>
+          <span style="position:absolute;top:12px;left:12px;background:#C43C61;color:#fff;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;border-radius:3px;pointer-events:none">Nachher</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:26px">
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:34px;color:#C43C61;line-height:1">96 %</div><div style="font-size:12.5px;color:#6B5C55;margin-top:6px;max-width:95px">glattere Haut nach 1×*</div></div>
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:34px;color:#C43C61;line-height:1">0</div><div style="font-size:12.5px;color:#6B5C55;margin-top:6px;max-width:95px">Klingen &amp; Termine</div></div>
+        <div><div style="font-family:'Cormorant Garamond',serif;font-size:34px;color:#C43C61;line-height:1">3,15 €</div><div style="font-size:12.5px;color:#6B5C55;margin-top:6px;max-width:95px">pro Anwendung</div></div>
+      </div>
+    </div>
+
+    <div style="background:#2A2320;color:#FBF7F4;padding:52px 22px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:26px">
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:34px;margin:0;line-height:1.05">Was Kundinnen<br>sagen.</h2>
+        <div style="text-align:right"><div style="color:#E8A0B4;font-size:15px">★★★★★</div><div style="font-size:12px;color:#BFB0A8;margin-top:5px">4,8 · 2.184</div></div>
+      </div>
+      <div style="border:1px solid #453A35;border-radius:5px;padding:24px;margin-bottom:12px">
+        <div style="color:#E8A0B4;letter-spacing:.1em;margin-bottom:12px;font-size:13px">★★★★★</div>
+        <p style="margin:0 0 16px;font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.45;text-wrap:pretty">„Zehn Jahre rasiert, zehn Jahre über Stoppeln geärgert. Das hier war die erste Woche ohne."</p>
+        <div style="font-size:13px;color:#BFB0A8">Lena M. · Verifizierter Kauf</div>
+      </div>
+      <div style="border:1px solid #453A35;border-radius:5px;padding:24px">
+        <div style="color:#E8A0B4;letter-spacing:.1em;margin-bottom:12px;font-size:13px">★★★★★</div>
+        <p style="margin:0 0 16px;font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.45;text-wrap:pretty">„Kein Geruch, keine roten Flecken. Nach acht Minuten war alles ab."</p>
+        <div style="font-size:13px;color:#BFB0A8">Sarah K. · Verifizierter Kauf</div>
+      </div>
+    </div>
+
+    <div style="padding:52px 22px 40px">
+      <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C43C61;margin-bottom:12px">FAQ</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:34px;margin:0 0 22px">Noch Fragen?</h2>
+      <div style="border-top:1px solid #EADFD8;padding:18px 0;display:flex;justify-content:space-between;gap:20px"><span style="font-size:15.5px">Für welche Stellen ist es geeignet?</span><span style="color:#C43C61">+</span></div>
+      <div style="border-top:1px solid #EADFD8;padding:18px 0;display:flex;justify-content:space-between;gap:20px"><span style="font-size:15.5px">Wie lange bleibt die Haut glatt?</span><span style="color:#C43C61">+</span></div>
+      <div style="border-top:1px solid #EADFD8;padding:18px 0;display:flex;justify-content:space-between;gap:20px"><span style="font-size:15.5px">Auch für empfindliche Haut?</span><span style="color:#C43C61">+</span></div>
+      <div style="border-top:1px solid #EADFD8;border-bottom:1px solid #EADFD8;padding:18px 0;display:flex;justify-content:space-between;gap:20px"><span style="font-size:15.5px">Was, wenn es nicht funktioniert?</span><span style="color:#C43C61">+</span></div>
+    </div>
+
+    <div style="background:#2A2320;color:#BFB0A8;padding:34px 22px;font-size:13px;display:flex;flex-direction:column;gap:10px">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:#FBF7F4">MyHaut</div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap"><span>Impressum</span><span>Datenschutz</span><span>AGB</span><span>Versand</span></div>
+    </div>
+
+    <!-- sticky mobile ATC -->
+    <div style="position:sticky;bottom:0;background:rgba(251,247,244,.97);backdrop-filter:blur(10px);border-top:1px solid #EADFD8;padding:12px 18px;display:flex;align-items:center;gap:12px">
+      <div style="flex:1">
+        <div style="font-size:13px">3× Sparset · <span style="color:#C43C61">spare 24 %</span></div>
+        <div style="display:flex;align-items:baseline;gap:7px"><span style="font-size:19px">49,90 €</span><span style="font-size:12px;color:#A2918A;text-decoration:line-through">65,70 €</span></div>
+      </div>
+      <div style="background:#C43C61;color:#fff;padding:15px 26px;border-radius:5px;font-size:13px;letter-spacing:.08em;text-transform:uppercase">Kaufen</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+</x-dc>
+</body>
+</html>
