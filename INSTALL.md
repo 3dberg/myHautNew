@@ -72,7 +72,8 @@ sizes:
 
 | Section | Slot | Suggested size |
 | --- | --- | --- |
-| Hero | Background image / video | 2400 × 1400 (desktop), 1200 × 1600 (mobile) |
+| Hero | Background image | 1672 × 941 (16:9) or larger — 2560 × 1440 for retina |
+| Hero | Background image (mobile) | 1200 × 1600 portrait |
 | Hero | Background video | Shopify-hosted MP4, or a YouTube/Vimeo URL |
 | Sticky bar | Thumbnail | 200 × 200 |
 | How it works | Step 1–3 | 1200 × 1200 |
@@ -83,6 +84,19 @@ sizes:
 The hero takes a **video with an image fallback**: set a video *and* an image —
 the video autoplays muted and loops, the image shows on slow connections and
 where autoplay is blocked.
+
+**Hero width and height.** The hero keeps the same maximum width as the rest of
+the page (1280 px by default, set under *Theme settings → Brand → Maximum page
+width*), so it lines up with the sections below instead of stretching across a
+wide monitor. Turn on *Stretch the hero across the full screen* in the section
+if you want edge-to-edge instead.
+
+Its height follows **the proportions of the image you upload**, so nothing gets
+cropped — a 1672 × 941 image (16:9) renders 1280 × 720 on desktop. Switch *Hero
+height on desktop* to **Fixed height** if you would rather set the height
+yourself and let the image crop to fill it. The mobile image height is a
+separate slider (400 px by default). The closing CTA has the same full-width
+toggle, and ships full-width as designed.
 
 Two demo images ship with the theme (`mh-demo-hero.webp`, the pink bathroom
 scene, and `mh-demo-product.png`, your bottle render) and fill empty slots so

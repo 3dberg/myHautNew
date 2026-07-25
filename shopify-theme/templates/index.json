@@ -6,7 +6,11 @@
         "show_rating": true,
         "rating_stars": 5,
         "featured_position": 3,
-        "secondary_target": "#mh-bundles"
+        "secondary_target": "#mh-bundles",
+        "full_width": false,
+        "height_mode": "image",
+        "height": 660,
+        "height_mobile": 400
       }
     },
     "sticky": {
@@ -26,11 +30,30 @@
     "steps": {
       "type": "mh-steps",
       "blocks": {
-        "step-1": { "type": "step", "settings": { "placeholder": "Schritt 1 — Sprühen aufs Bein" } },
-        "step-2": { "type": "step", "settings": { "placeholder": "Schritt 2 — Timer / 8 Minuten warten" } },
-        "step-3": { "type": "step", "settings": { "placeholder": "Schritt 3 — Abwischen mit feuchtem Tuch" } }
+        "step-1": {
+          "type": "step",
+          "settings": {
+            "placeholder": "Schritt 1 \u2014 Spr\u00fchen aufs Bein"
+          }
+        },
+        "step-2": {
+          "type": "step",
+          "settings": {
+            "placeholder": "Schritt 2 \u2014 Timer / 8 Minuten warten"
+          }
+        },
+        "step-3": {
+          "type": "step",
+          "settings": {
+            "placeholder": "Schritt 3 \u2014 Abwischen mit feuchtem Tuch"
+          }
+        }
       },
-      "block_order": ["step-1", "step-2", "step-3"],
+      "block_order": [
+        "step-1",
+        "step-2",
+        "step-3"
+      ],
       "settings": {
         "anchor": "mh-steps"
       }
@@ -38,25 +61,51 @@
     "before-after": {
       "type": "mh-before-after",
       "blocks": {
-        "stat-1": { "type": "stat", "settings": {} },
-        "stat-2": { "type": "stat", "settings": {} },
-        "stat-3": { "type": "stat", "settings": {} }
+        "stat-1": {
+          "type": "stat",
+          "settings": {}
+        },
+        "stat-2": {
+          "type": "stat",
+          "settings": {}
+        },
+        "stat-3": {
+          "type": "stat",
+          "settings": {}
+        }
       },
-      "block_order": ["stat-1", "stat-2", "stat-3"],
+      "block_order": [
+        "stat-1",
+        "stat-2",
+        "stat-3"
+      ],
       "settings": {
-        "placeholder_before": "Vorher — Nahaufnahme Bein",
-        "placeholder_after": "Nachher — dieselbe Stelle, 8 Min später",
+        "placeholder_before": "Vorher \u2014 Nahaufnahme Bein",
+        "placeholder_after": "Nachher \u2014 dieselbe Stelle, 8 Min sp\u00e4ter",
         "anchor": "mh-results"
       }
     },
     "facts": {
       "type": "mh-facts",
       "blocks": {
-        "fact-1": { "type": "fact", "settings": {} },
-        "fact-2": { "type": "fact", "settings": {} },
-        "fact-3": { "type": "fact", "settings": {} }
+        "fact-1": {
+          "type": "fact",
+          "settings": {}
+        },
+        "fact-2": {
+          "type": "fact",
+          "settings": {}
+        },
+        "fact-3": {
+          "type": "fact",
+          "settings": {}
+        }
       },
-      "block_order": ["fact-1", "fact-2", "fact-3"],
+      "block_order": [
+        "fact-1",
+        "fact-2",
+        "fact-3"
+      ],
       "settings": {
         "placeholder": "Produktfoto MyHaut Flasche",
         "anchor": "mh-ingredients"
@@ -65,11 +114,30 @@
     "reviews": {
       "type": "mh-reviews",
       "blocks": {
-        "review-1": { "type": "review", "settings": { "stars": 5 } },
-        "review-2": { "type": "review", "settings": { "stars": 5 } },
-        "review-3": { "type": "review", "settings": { "stars": 4 } }
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "stars": 5
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "stars": 5
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "stars": 4
+          }
+        }
       },
-      "block_order": ["review-1", "review-2", "review-3"],
+      "block_order": [
+        "review-1",
+        "review-2",
+        "review-3"
+      ],
       "settings": {
         "show_summary": true,
         "rating_stars": 5,
@@ -79,12 +147,42 @@
     "bundles": {
       "type": "mh-bundles",
       "blocks": {
-        "bundle-1": { "type": "bundle", "settings": { "variant_position": 1, "bottles": 1 } },
-        "bundle-2": { "type": "bundle", "settings": { "variant_position": 2, "bottles": 2 } },
-        "bundle-3": { "type": "bundle", "settings": { "variant_position": 3, "bottles": 3, "featured": true } },
-        "bundle-4": { "type": "bundle", "settings": { "variant_position": 4, "bottles": 5 } }
+        "bundle-1": {
+          "type": "bundle",
+          "settings": {
+            "variant_position": 1,
+            "bottles": 1
+          }
+        },
+        "bundle-2": {
+          "type": "bundle",
+          "settings": {
+            "variant_position": 2,
+            "bottles": 2
+          }
+        },
+        "bundle-3": {
+          "type": "bundle",
+          "settings": {
+            "variant_position": 3,
+            "bottles": 3,
+            "featured": true
+          }
+        },
+        "bundle-4": {
+          "type": "bundle",
+          "settings": {
+            "variant_position": 4,
+            "bottles": 5
+          }
+        }
       },
-      "block_order": ["bundle-1", "bundle-2", "bundle-3", "bundle-4"],
+      "block_order": [
+        "bundle-1",
+        "bundle-2",
+        "bundle-3",
+        "bundle-4"
+      ],
       "settings": {
         "cta_action": "add",
         "anchor": "mh-bundles"
@@ -93,13 +191,36 @@
     "faq": {
       "type": "mh-faq",
       "blocks": {
-        "q-1": { "type": "question", "settings": {} },
-        "q-2": { "type": "question", "settings": { "open": true } },
-        "q-3": { "type": "question", "settings": {} },
-        "q-4": { "type": "question", "settings": {} },
-        "q-5": { "type": "question", "settings": {} }
+        "q-1": {
+          "type": "question",
+          "settings": {}
+        },
+        "q-2": {
+          "type": "question",
+          "settings": {
+            "open": true
+          }
+        },
+        "q-3": {
+          "type": "question",
+          "settings": {}
+        },
+        "q-4": {
+          "type": "question",
+          "settings": {}
+        },
+        "q-5": {
+          "type": "question",
+          "settings": {}
+        }
       },
-      "block_order": ["q-1", "q-2", "q-3", "q-4", "q-5"],
+      "block_order": [
+        "q-1",
+        "q-2",
+        "q-3",
+        "q-4",
+        "q-5"
+      ],
       "settings": {
         "anchor": "mh-faq"
       }
@@ -108,7 +229,8 @@
       "type": "mh-cta",
       "settings": {
         "button_action": "add",
-        "placeholder": "Lifestyle-Foto quer (Beine, Badezimmer, warmes Licht)"
+        "placeholder": "Lifestyle-Foto quer (Beine, Badezimmer, warmes Licht)",
+        "full_width": true
       }
     }
   },

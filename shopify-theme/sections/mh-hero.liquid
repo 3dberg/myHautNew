@@ -32,14 +32,29 @@
   assign note_text = section.settings.note | default: fallback_note
   assign buy_label = section.settings.buy_label | default: fallback_buy
   assign secondary_label = section.settings.secondary_label | default: fallback_secondary
+
+  comment
+    In "image" height mode the hero box takes the proportions of the image you
+    uploaded (1672 × 941 → 16:9 → 720 px tall at the 1280 px page width), so
+    nothing is cropped. Falls back to the fixed height when no image is set.
+  endcomment
+  assign hero_ratio = section.settings.image.aspect_ratio
+  assign use_ratio = false
+  if section.settings.height_mode == 'image' and hero_ratio != blank
+    assign use_ratio = true
+  endif
 -%}
 
-<div class="mh-hero" id="mh-hero-{{ section.id }}">
+<div
+  class="mh-hero{% unless section.settings.full_width %} mh-hero--boxed{% endunless %}{% if use_ratio %} mh-hero--ratio{% endif %}"
+  id="mh-hero-{{ section.id }}">
   {%- if mh_product != blank -%}
     {% render 'mh-product-data', mh_product: mh_product %}
   {%- endif -%}
 
-  <div class="mh-hero__stage">
+  <div
+    class="mh-hero__stage"
+    style="--mh-hero-height: {{ section.settings.height }}px; --mh-hero-media-height: {{ section.settings.height_mobile }}px;{% if use_ratio %} --mh-hero-ratio: {{ hero_ratio }};{% endif %}">
     {%- if section.settings.image_mobile != blank -%}
       {% render 'mh-media',
         mh_image: section.settings.image_mobile,
@@ -230,12 +245,51 @@
       "label": "Product",
       "info": "Required on the homepage. On the product template the current product is used automatically when this is empty."
     },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Stretch the hero across the full screen",
+      "default": false,
+      "info": "Off: the hero keeps the same maximum width as the rest of the page. On: the image spans the whole viewport on wide screens."
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Hero height on desktop",
+      "options": [
+        { "value": "image", "label": "Follow the image proportions (no crop)" },
+        { "value": "fixed", "label": "Fixed height (crops the image to fit)" }
+      ],
+      "default": "image",
+      "info": "A 1672 × 941 image is 16:9, so it becomes 720 px tall at the 1280 px page width."
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "min": 480,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop height",
+      "default": 660,
+      "info": "Used as the fixed height, and as the minimum height in “follow the image” mode."
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 280,
+      "max": 640,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile image height",
+      "default": 400
+    },
     { "type": "header", "content": "Media" },
     {
       "type": "image_picker",
       "id": "image",
       "label": "Background image",
-      "info": "Shown when no video is set, and as the poster on slow connections."
+      "info": "1672 × 941 or larger. Shown when no video is set, and as the poster on slow connections."
     },
     { "type": "image_picker", "id": "image_mobile", "label": "Background image (mobile)" },
     { "type": "video", "id": "video", "label": "Background video (Shopify-hosted)" },

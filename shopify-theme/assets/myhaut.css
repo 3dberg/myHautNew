@@ -338,11 +338,18 @@ button { font: inherit; color: inherit; }
 
 .mh-hero__stage { position: relative; }
 
+/* Keeps the hero media and its text column on the same grid as every other
+   section instead of stretching across a wide monitor. */
+.mh-hero--boxed .mh-hero__stage {
+  max-width: var(--mh-page);
+  margin-inline: auto;
+}
+
 .mh-hero__media,
 .mh-hero__scrim {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 400px;
+  height: var(--mh-hero-media-height, 400px);
 }
 .mh-hero__scrim {
   background: linear-gradient(0deg, rgba(251, 247, 244, .97) 0%, rgba(251, 247, 244, .7) 32%, rgba(251, 247, 244, 0) 66%);
@@ -353,7 +360,7 @@ button { font: inherit; color: inherit; }
 .mh-hero__text { position: relative; z-index: 2; }
 
 .mh-hero__head {
-  height: 400px;
+  height: var(--mh-hero-media-height, 400px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -937,6 +944,10 @@ body.mh-has-sticky-atc { padding-bottom: 78px; }
   height: 360px;
   background: var(--mh-blush);
 }
+.mh-cta--boxed {
+  max-width: var(--mh-page);
+  margin-inline: auto;
+}
 .mh-cta__media { position: absolute; inset: 0; }
 .mh-cta__scrim {
   position: absolute;
@@ -1243,17 +1254,36 @@ body.mh-has-sticky-atc { padding-bottom: 78px; }
   .mh-mobile-nav { display: none !important; }
 
   /* hero */
-  .mh-hero__stage { height: 660px; }
+  .mh-hero__stage {
+    display: grid;
+    /* minmax(0, …) stops the ratio spacer below from setting a minimum
+       column width and pushing the page into horizontal overflow */
+    grid-template-columns: minmax(0, 1fr);
+    height: var(--mh-hero-height, 660px);
+  }
+  /* Follows the uploaded image's own proportions, so nothing is cropped.
+     The spacer sets the row height; if the copy is taller, the row grows
+     with it instead of overflowing. */
+  .mh-hero--ratio .mh-hero__stage { height: auto; }
+  .mh-hero--ratio .mh-hero__stage::before {
+    content: '';
+    grid-area: 1 / 1;
+    width: 100%;
+    aspect-ratio: var(--mh-hero-ratio, 1.94);
+    min-height: var(--mh-hero-height, 660px);
+  }
   .mh-hero__media,
   .mh-hero__scrim { height: 100%; bottom: 0; }
   .mh-hero__scrim {
     background: linear-gradient(100deg, rgba(251, 247, 244, .94) 0%, rgba(251, 247, 244, .86) 34%, rgba(251, 247, 244, 0) 62%);
   }
   .mh-hero__text {
-    position: absolute;
-    left: 72px;
-    top: 0; bottom: 0;
+    grid-area: 1 / 1;
+    position: relative;
     width: 492px;
+    max-width: calc(100% - 144px);
+    margin-left: 72px;
+    padding: 32px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;

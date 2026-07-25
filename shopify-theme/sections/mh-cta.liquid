@@ -18,7 +18,7 @@
   assign label_parts = button_label | split: '{price}'
 -%}
 
-<div class="mh-cta">
+<div class="mh-cta{% unless section.settings.full_width %} mh-cta--boxed{% endunless %}">
   <div class="mh-cta__media">
     {% render 'mh-media',
       mh_image: section.settings.image,
@@ -74,6 +74,13 @@
   "class": "mh-section-cta",
   "settings": [
     { "type": "product", "id": "product", "label": "Product" },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Stretch across the full screen",
+      "default": true,
+      "info": "Turn off to keep the same maximum width as the rest of the page."
+    },
     { "type": "image_picker", "id": "image", "label": "Background image" },
     { "type": "text", "id": "placeholder", "label": "Placeholder caption" },
     { "type": "textarea", "id": "heading", "label": "Headline" },
