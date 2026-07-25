@@ -176,6 +176,65 @@ actual documentation — those are legal claims in the EU.
 
 ---
 
+## 9. Working on the theme locally
+
+### The real way — Shopify CLI
+
+Liquid runs on Shopify's servers, so a theme can't be fully served offline.
+The CLI solves this: it serves your local files against your store, with hot
+reload on save.
+
+```bash
+# once: Node 18+ and the CLI
+npm install -g @shopify/cli@latest
+
+git clone https://github.com/3dberg/myHautNew.git
+cd myHautNew/shopify-theme          # run the CLI from inside the theme folder
+
+shopify theme dev --store your-store.myshopify.com
+```
+
+It opens `http://127.0.0.1:9292` with your real products and prices; edit a
+`.liquid` or `.css` file and the browser updates itself. It also prints a
+**Customize** link that opens the Shopify theme editor pointed at your local
+copy, so you can try section settings without uploading anything. Nothing is
+published — the CLI works against a hidden development theme.
+
+Other commands worth knowing:
+
+```bash
+shopify theme check                 # lints Liquid, schema and accessibility
+shopify theme push --unpublished    # upload as a new, unpublished theme
+shopify theme push                  # push to the theme you select
+shopify theme pull                  # bring editor changes back into git
+```
+
+`theme pull` matters: settings you change in the theme editor live on Shopify,
+not in these files. Pull before you edit locally, or your local
+`templates/*.json` will overwrite them on the next push.
+
+### Without a store — static preview
+
+For pure CSS and layout work there's a small renderer in the repo that runs the
+sections through a Liquid engine with stubbed products and prices:
+
+```bash
+pip install python-liquid
+python3 tools/preview.py
+open tools/_preview/index.html      # xdg-open on Linux, start on Windows
+```
+
+Re-run it after each edit. It's an approximation for layout only — no cart, no
+checkout, no theme editor, and prices are fake. Use `HERO_IMAGE=1
+python3 tools/preview.py` to simulate an uploaded 1672 × 941 hero image.
+
+### No CLI at all
+
+Upload the zip as an **unpublished** theme, then use **Actions → Edit code** in
+the Shopify admin. Slower loop, but it needs nothing installed.
+
+---
+
 ## What's in the theme
 
 ```
