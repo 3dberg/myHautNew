@@ -358,7 +358,13 @@
       "acc_2_title": "Versand & Rückgabe",
       "acc_2_body_html": "<p>Wir verschicken aus Deutschland mit DHL, in der Regel am nächsten Werktag. Lieferzeit 2–5 Werktage, Sendungsnummer per E-Mail. Der Versand ist für jede Bestellung kostenlos.</p><p>Ungeöffnete Flaschen in unbeschädigter Originalverpackung kannst du innerhalb von 30 Tagen nach Erhalt zurückschicken – wir erstatten den Kaufpreis dieser Flaschen. Geöffnete Flaschen nehmen wir aus Hygienegründen nicht zurück. Dein gesetzliches Widerrufsrecht von 14 Tagen bleibt unberührt.</p>",
       "gallery_label": "Produktbilder",
-      "thumb_label": "Bild {{ index }} anzeigen"
+      "thumb_label": "Bild {{ index }} anzeigen",
+      "zoom_open": "Bild vergrößern",
+      "lightbox_label": "Produktbild in Großansicht",
+      "lightbox_close": "Schließen",
+      "lightbox_prev": "Vorheriges Bild",
+      "lightbox_next": "Nächstes Bild",
+      "lightbox_zoom": "Hineinzoomen"
     },
     "benefits": {
       "heading": "",

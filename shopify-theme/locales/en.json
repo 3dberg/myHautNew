@@ -359,7 +359,13 @@
       "acc_2_title": "Shipping & returns",
       "acc_2_body_html": "<p>We ship from Germany with DHL, usually the next working day. Delivery 2–5 working days, tracking number by email. Shipping is free on every order.</p><p>Unopened bottles in undamaged original packaging can be returned within 30 days of delivery – we refund the price of those bottles. Opened bottles cannot be returned for hygiene reasons. Your statutory 14-day right of withdrawal is unaffected.</p>",
       "gallery_label": "Product images",
-      "thumb_label": "Show image {{ index }}"
+      "thumb_label": "Show image {{ index }}",
+      "zoom_open": "Enlarge image",
+      "lightbox_label": "Product image, full screen",
+      "lightbox_close": "Close",
+      "lightbox_prev": "Previous image",
+      "lightbox_next": "Next image",
+      "lightbox_zoom": "Zoom in"
     },
     "benefits": {
       "heading": "",

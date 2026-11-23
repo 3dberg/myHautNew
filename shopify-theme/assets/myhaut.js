@@ -799,6 +799,252 @@
     $$('[data-mh-gallery]').forEach(function (gallery) { showGalleryMedia(gallery, variant.media_id); });
   });
 
+  /* ------------------------------------------------- gallery: hover zoom */
+
+  // Desktop only: the photo under the cursor scales up around the pointer.
+  // The <img> is scaled in place, so object-fit: cover crops stay correct,
+  // and its `sizes` is raised while zoomed so the browser fetches a sharper
+  // candidate from the srcset (once; it stays cached).
+  var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  function activeZoomImage(main) {
+    var slide = main.querySelector('.mh-gallery__slide.is-active[data-mh-zoom-src]');
+    return slide ? slide.querySelector('img') : null;
+  }
+
+  function resetHoverZoom(main) {
+    $$('.mh-gallery__slide img', main).forEach(function (img) {
+      img.style.transform = '';
+      img.style.transformOrigin = '';
+    });
+    main.classList.remove('is-zooming');
+  }
+
+  function initGalleryZoom(root) {
+    if (!canHover) return;
+    $$('[data-mh-hover-zoom]', root).forEach(function (main) {
+      if (main._mhZoomBound) return;
+      main._mhZoomBound = true;
+      var level = parseFloat(main.getAttribute('data-mh-hover-zoom')) || 2;
+
+      main.addEventListener('mousemove', function (event) {
+        // Hovering the magnifier button should show the button, not zoom.
+        if (event.target.closest('[data-mh-lightbox-open]')) { resetHoverZoom(main); return; }
+        var img = activeZoomImage(main);
+        if (!img) return;
+        var rect = main.getBoundingClientRect();
+        var x = Math.min(100, Math.max(0, ((event.clientX - rect.left) / rect.width) * 100));
+        var y = Math.min(100, Math.max(0, ((event.clientY - rect.top) / rect.height) * 100));
+        if (!img._mhSharp) {
+          img._mhSharp = true;
+          img.setAttribute('sizes', Math.round(rect.width * level) + 'px');
+        }
+        img.style.transformOrigin = x + '% ' + y + '%';
+        img.style.transform = 'scale(' + level + ')';
+        main.classList.add('is-zooming');
+      });
+      main.addEventListener('mouseleave', function () { resetHoverZoom(main); });
+    });
+  }
+
+  /* ------------------------------------------------- gallery: lightbox */
+
+  var lightbox = null; // { dialog, gallery, items, index, zoomed, lastFocus }
+
+  function lightboxItems(gallery) {
+    return $$('[data-mh-zoom-src]', gallery).map(function (slide) {
+      return {
+        id: slide.getAttribute('data-mh-gallery-slide'),
+        src: slide.getAttribute('data-mh-zoom-src'),
+        alt: slide.getAttribute('data-mh-zoom-alt') || '',
+        width: parseInt(slide.getAttribute('data-mh-zoom-width'), 10) || 0,
+        height: parseInt(slide.getAttribute('data-mh-zoom-height'), 10) || 0
+      };
+    });
+  }
+
+  function preloadImage(src) {
+    if (!src) return;
+    var img = new Image();
+    img.decoding = 'async';
+    img.src = src;
+  }
+
+  function setLightboxZoom(on, clientX, clientY) {
+    if (!lightbox) return;
+    var dialog = lightbox.dialog;
+    var stage = $('[data-mh-lightbox-stage]', dialog);
+    var img = $('[data-mh-lightbox-img]', dialog);
+    var toggle = $('[data-mh-lightbox-zoom]', dialog);
+    if (!stage || !img) return;
+
+    if (on) {
+      var rect = img.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      // Zoom to the photo's real pixels, but never less than 2x or more than 3x.
+      var natural = img.naturalWidth ? img.naturalWidth / rect.width : 2.5;
+      var factor = Math.max(2, Math.min(3, natural));
+      var px = clientX == null ? 0.5 : (clientX - rect.left) / rect.width;
+      var py = clientY == null ? 0.5 : (clientY - rect.top) / rect.height;
+      px = Math.min(1, Math.max(0, px));
+      py = Math.min(1, Math.max(0, py));
+      img.style.width = Math.round(rect.width * factor) + 'px';
+      img.style.height = Math.round(rect.height * factor) + 'px';
+      dialog.classList.add('is-zoomed');
+      // Keep the point the shopper clicked under their finger / cursor.
+      stage.scrollLeft = px * rect.width * factor - stage.clientWidth / 2;
+      stage.scrollTop = py * rect.height * factor - stage.clientHeight / 2;
+    } else {
+      img.style.width = '';
+      img.style.height = '';
+      dialog.classList.remove('is-zoomed');
+      stage.scrollLeft = 0;
+      stage.scrollTop = 0;
+    }
+    lightbox.zoomed = on;
+    if (toggle) toggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+
+  function showLightboxItem(index) {
+    if (!lightbox || !lightbox.items.length) return;
+    var count = lightbox.items.length;
+    lightbox.index = (index + count) % count;
+    var item = lightbox.items[lightbox.index];
+    var dialog = lightbox.dialog;
+    var img = $('[data-mh-lightbox-img]', dialog);
+
+    setLightboxZoom(false);
+    if (img) {
+      dialog.classList.add('is-loading');
+      img.onload = img.onerror = function () { dialog.classList.remove('is-loading'); };
+      if (item.width && item.height) {
+        img.setAttribute('width', item.width);
+        img.setAttribute('height', item.height);
+      }
+      img.alt = item.alt;
+      img.src = item.src;
+      if (img.complete) dialog.classList.remove('is-loading');
+    }
+
+    var counter = $('[data-mh-lightbox-count]', dialog);
+    if (counter) counter.textContent = count > 1 ? (lightbox.index + 1) + ' / ' + count : '';
+    dialog.classList.toggle('is-single', count < 2);
+
+    if (count > 1) {
+      preloadImage(lightbox.items[(lightbox.index + 1) % count].src);
+      preloadImage(lightbox.items[(lightbox.index - 1 + count) % count].src);
+    }
+  }
+
+  function openLightbox(gallery, mediaId) {
+    var dialog = gallery ? $('[data-mh-lightbox]', gallery) : null;
+    if (!dialog || typeof dialog.showModal !== 'function') return false;
+    var items = lightboxItems(gallery);
+    if (!items.length) return false;
+    var start = 0;
+    items.forEach(function (item, i) { if (String(item.id) === String(mediaId)) start = i; });
+
+    lightbox = { dialog: dialog, gallery: gallery, items: items, index: start, zoomed: false, lastFocus: document.activeElement };
+    bindLightbox(dialog);
+    showLightboxItem(start);
+    document.documentElement.classList.add('mh-lightbox-open');
+    dialog.showModal();
+    var close = $('[data-mh-lightbox-close]', dialog);
+    if (close) close.focus();
+    return true;
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    var dialog = lightbox.dialog;
+    if (dialog.open) dialog.close();
+  }
+
+  function bindLightbox(dialog) {
+    if (dialog._mhBound) return;
+    dialog._mhBound = true;
+    var stage = $('[data-mh-lightbox-stage]', dialog);
+    var swipe = null;
+    var suppressClick = false;
+
+    dialog.addEventListener('close', function () {
+      document.documentElement.classList.remove('mh-lightbox-open');
+      if (lightbox && lightbox.dialog === dialog) {
+        setLightboxZoom(false);
+        // Leave the page gallery on the photo the shopper ended on.
+        var item = lightbox.items[lightbox.index];
+        if (item) showGalleryMedia(lightbox.gallery, item.id);
+        var back = lightbox.lastFocus;
+        lightbox = null;
+        if (back && back.focus) back.focus();
+      }
+    });
+
+    dialog.addEventListener('click', function (event) {
+      if (!lightbox) return;
+      if (suppressClick) { suppressClick = false; return; }
+      if (event.target.closest('[data-mh-lightbox-close]')) { closeLightbox(); return; }
+      var step = event.target.closest('[data-mh-lightbox-step]');
+      if (step) { showLightboxItem(lightbox.index + parseInt(step.getAttribute('data-mh-lightbox-step'), 10)); return; }
+      if (event.target.closest('[data-mh-lightbox-zoom]')) { setLightboxZoom(!lightbox.zoomed); return; }
+      if (event.target.closest('[data-mh-lightbox-img]')) {
+        setLightboxZoom(!lightbox.zoomed, event.clientX, event.clientY);
+        return;
+      }
+      // A click on the dark backdrop around the photo closes the viewer.
+      if (event.target === stage || event.target === dialog) {
+        if (lightbox.zoomed) setLightboxZoom(false);
+        else closeLightbox();
+      }
+    });
+
+    dialog.addEventListener('keydown', function (event) {
+      if (!lightbox) return;
+      if (event.key === 'ArrowRight') { event.preventDefault(); showLightboxItem(lightbox.index + 1); }
+      else if (event.key === 'ArrowLeft') { event.preventDefault(); showLightboxItem(lightbox.index - 1); }
+    });
+
+    if (!stage) return;
+
+    // Zoomed with a mouse: the photo follows the cursor, no dragging needed.
+    // Touch keeps native scrolling, which pans the zoomed photo.
+    stage.addEventListener('mousemove', function (event) {
+      if (!lightbox || !lightbox.zoomed) return;
+      var rect = stage.getBoundingClientRect();
+      stage.scrollLeft = ((event.clientX - rect.left) / rect.width) * (stage.scrollWidth - stage.clientWidth);
+      stage.scrollTop = ((event.clientY - rect.top) / rect.height) * (stage.scrollHeight - stage.clientHeight);
+    });
+
+    // Swipe between photos when not zoomed.
+    stage.addEventListener('pointerdown', function (event) {
+      if (!lightbox || lightbox.zoomed || event.pointerType === 'mouse') { swipe = null; return; }
+      swipe = { x: event.clientX, y: event.clientY };
+    });
+    stage.addEventListener('pointerup', function (event) {
+      if (!swipe || !lightbox) return;
+      var dx = event.clientX - swipe.x;
+      var dy = event.clientY - swipe.y;
+      swipe = null;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        suppressClick = true;
+        setTimeout(function () { suppressClick = false; }, 400);
+        showLightboxItem(lightbox.index + (dx < 0 ? 1 : -1));
+      }
+    });
+    stage.addEventListener('pointercancel', function () { swipe = null; });
+  }
+
+  // Opening: the magnifier button, or a click / tap on the photo itself.
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    if (!target || !target.closest) return;
+    var gallery = target.closest('[data-mh-lightbox-enabled]');
+    if (!gallery) return;
+    var slide = target.closest('[data-mh-zoom-src]');
+    if (!slide) return;
+    if (openLightbox(gallery, slide.getAttribute('data-mh-gallery-slide'))) event.preventDefault();
+  });
+
   /* -------------------------------------------------------------- events */
 
   function initEvents() {
@@ -990,6 +1236,7 @@
     initStickyBar();
     initVideoCarousels();
     initInlineVideos();
+    initGalleryZoom();
     initRating();
     initEvents();
   }
@@ -1008,6 +1255,7 @@
     initStickyBar();
     initVideoCarousels(event.target);
     initInlineVideos(event.target);
+    initGalleryZoom(event.target);
     initRating(event.target);
   });
   document.addEventListener('shopify:section:unload', function (event) {
