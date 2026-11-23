@@ -16,7 +16,9 @@
       "settings": {
         "item_1": "Free shipping",
         "item_2": "30 Tage Geld-zurück-Garantie",
-        "item_3": "2-5 Tage Versand aus Deutschland"
+        "item_3": "2-5 Tage Versand aus Deutschland",
+        "promo_text": "🎄 Das Weihnachts-Set ist da",
+        "promo_link": "shopify://products/myhaut-christmas-starter-pack-🎄"
       }
     },
     "header": {

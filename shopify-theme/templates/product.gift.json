@@ -1,0 +1,347 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "buybox": {
+      "type": "mh-buy-box",
+      "settings": {
+        "product": "",
+        "title": "",
+        "subtitle": "3 Sprays, Korb & Schneeflocken – fertig zum Verschenken",
+        "show_rating": true,
+        "rating_note": "",
+        "rating_target": "#mh-reviews",
+        "chip_1": "3 × 100 ml Spray",
+        "chip_2": "Inkl. Aufbewahrungskorb",
+        "chip_3": "3 Schneeflocken-Anhänger",
+        "default_position": 1,
+        "featured_position": 2,
+        "single_position": 1,
+        "bullet_1": "",
+        "bullet_2": "sicherer Versand mit DHL-Sendungsverfolgung",
+        "buy_label": "",
+        "trust_1": "",
+        "trust_2": "",
+        "trust_3": "Sichere Zahlung: PayPal, Klarna, Kreditkarte, Apple Pay, Google Pay  &  Überweisung",
+        "trust_4": "30-Tage-Geld-zurück-Garantie",
+        "trust_5": "",
+        "use_product_description": false,
+        "description": "<p><strong>Das Geschenk für glatte Haut – ohne Rasierer, Wachs oder Termin.</strong></p><p>Drei MyHaut Haarentfernungssprays im dekorativen Aufbewahrungskorb, dazu drei weiße 3D-gedruckte Schneeflocken für den Weihnachtsbaum. Aufsprühen, 8 Minuten einwirken lassen, abwischen, abspülen – Aloe Vera und Allantoin pflegen die Haut schon während der Einwirkzeit.</p><p>✨ Für Beine, Arme, Achseln, Brust & Rücken<br/>✨ Für die Bikinizone geeignet<br/>✨ Der Korb bleibt – für Bad oder Beauty-Ecke</p>",
+        "acc_1_title": "",
+        "acc_1_body": "",
+        "acc_2_title": "",
+        "acc_2_body": "",
+        "base_price_bottles": 3,
+        "hide_base_price": false,
+        "gift_product": []
+      }
+    },
+    "sticky": {
+      "type": "mh-sticky-atc",
+      "settings": {
+        "product": "",
+        "show_thumbnail": true,
+        "title": "",
+        "meta": "",
+        "buy_label": "",
+        "show_chip_savings": false,
+        "reveal_after": ".mh-buybox"
+      }
+    },
+    "contents": {
+      "type": "mh-benefits",
+      "blocks": {
+        "c1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "spray",
+            "title": "3 × MyHaut Spray",
+            "body": "Je 100 ml – glatte Haut in 8 Minuten, mit Aloe Vera & Allantoin."
+          }
+        },
+        "c2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "basket",
+            "title": "Aufbewahrungskorb",
+            "body": "Dekorativ und wiederverwendbar – für Bad oder Beauty-Ecke."
+          }
+        },
+        "c3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "snowflake",
+            "title": "3 Schneeflocken",
+            "body": "Weiße, 3D-gedruckte Anhänger für den Weihnachtsbaum."
+          }
+        },
+        "c4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "gift",
+            "title": "Perfekt zum Verschenken",
+            "body": "Für alle, die sich glatte Haut ohne Rasierer wünschen."
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "heading": "Was im Set steckt",
+        "anchor": "mh-inhalt"
+      }
+    },
+    "reviews": {
+      "type": "mh-reviews",
+      "blocks": {
+        "loox_reviews_loox_card_carousel_section_Wbx7pX": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-card-carousel-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "maxWidth": 1100,
+            "borderRadius": 8,
+            "itemsPerView": 4,
+            "mobileItemsPerView": 1,
+            "maxNumberOfCharacters": 100,
+            "imageRatio": "0.72",
+            "reviewerNameColor": "#000000",
+            "textColor": "#000000",
+            "itemBackgroundColor": "#ffffff",
+            "starsColor": "",
+            "starsBackgroundColor": "#ffffff",
+            "arrows_backgroundColor": "#ffffff",
+            "arrows_iconColor": "#9a9a9a",
+            "shadow": "offset-dark",
+            "border_active": false,
+            "border_width": 2,
+            "border_color": "#000000",
+            "productIds": "8478204166474"
+          }
+        }
+      },
+      "block_order": [
+        "loox_reviews_loox_card_carousel_section_Wbx7pX"
+      ],
+      "custom_css": [
+        "#mh-reviews {background: #f0e4dc;}"
+      ],
+      "settings": {
+        "show_loox": true,
+        "product": "myhaut-haarentfernung-shaum",
+        "eyebrow": "★★★★★ 5.00  (13) ✅ Verifiziert",
+        "heading": "Kund:innenstimmen:",
+        "body": "",
+        "dark": false,
+        "anchor": "mh-reviews"
+      }
+    },
+    "steps": {
+      "type": "mh-steps",
+      "blocks": {
+        "step-1": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/armpit_1.png",
+            "placeholder": "Schritt 1 — Sprühen aufs Bein",
+            "title": "",
+            "body": "",
+            "number": ""
+          }
+        },
+        "step-2": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_19.png",
+            "placeholder": "Schritt 2 — Timer / 8 Minuten warten",
+            "title": "",
+            "body": "",
+            "number": ""
+          }
+        },
+        "step-3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/armpit_3.png",
+            "placeholder": "Schritt 3 — Abwischen mit feuchtem Tuch",
+            "title": "",
+            "body": "",
+            "number": ""
+          }
+        }
+      },
+      "block_order": [
+        "step-1",
+        "step-2",
+        "step-3"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Haarfrei\nin nur 3 Schritten",
+        "body": "",
+        "anchor": "mh-steps"
+      }
+    },
+    "before-after": {
+      "type": "mh-before-after",
+      "blocks": {
+        "stat-1": {
+          "type": "stat",
+          "settings": {
+            "value": "",
+            "label": ""
+          }
+        },
+        "stat-2": {
+          "type": "stat",
+          "settings": {
+            "value": "",
+            "label": ""
+          }
+        },
+        "stat-3": {
+          "type": "stat",
+          "settings": {
+            "value": "",
+            "label": ""
+          }
+        }
+      },
+      "block_order": [
+        "stat-1",
+        "stat-2",
+        "stat-3"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "image_before": "shopify://shop_images/download_8.png",
+        "placeholder_before": "Vorher — Nahaufnahme Bein",
+        "image_after": "shopify://shop_images/ChatGPT_Image_Sep_8_2026_01_56_55_PM.png",
+        "placeholder_after": "Nachher — dieselbe Stelle, 8 Min später",
+        "label_before": "",
+        "label_after": "",
+        "footnote": "",
+        "anchor": "mh-results"
+      }
+    },
+    "faq": {
+      "type": "mh-faq",
+      "blocks": {
+        "q-1": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": true
+          }
+        },
+        "q-2": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-3": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-4": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-5": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-6": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-7": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-8": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "q-1",
+        "q-2",
+        "q-3",
+        "q-4",
+        "q-5",
+        "q-6",
+        "q-7",
+        "q-8"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "anchor": "mh-faq"
+      }
+    },
+    "cta": {
+      "type": "mh-cta",
+      "settings": {
+        "product": "",
+        "full_width": false,
+        "image": "shopify://shop_images/MyHaut_Pink_Shower_Beauty_Scene.png",
+        "placeholder": "Lifestyle-Foto quer (Beine, Badezimmer, warmes Licht)",
+        "heading": "Glatte Haut verschenken",
+        "button_label": "",
+        "button_action": "add",
+        "button_link": "",
+        "note": "30-Tage-Geld-zurück-Garantie"
+      }
+    }
+  },
+  "order": [
+    "buybox",
+    "sticky",
+    "contents",
+    "reviews",
+    "steps",
+    "before-after",
+    "faq",
+    "cta"
+  ]
+}

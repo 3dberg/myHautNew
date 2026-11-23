@@ -1,0 +1,140 @@
+{%- comment -%}
+  Gift promo: a seasonal banner for a gift set (or any second product).
+
+  Image on one side; eyebrow, headline, short text, a "what's inside" list,
+  the price and a button to the product page on the other. The button links
+  to the product rather than adding to the cart, because this page's
+  shared variant state (myhaut.js) belongs to the main product.
+
+  Every text setting falls back to the translation in locales/*.json, so the
+  section works in German and English without typing anything. Turn the
+  section off in the theme editor (eye icon) when the season is over.
+{%- endcomment -%}
+
+{%- liquid
+  assign gift = section.settings.product
+  assign fallback_eyebrow = 'sections.gift_promo.eyebrow' | t
+  assign fallback_heading = 'sections.gift_promo.heading' | t
+  assign fallback_text = 'sections.gift_promo.text' | t
+  assign fallback_items = 'sections.gift_promo.items' | t
+  assign fallback_button = 'sections.gift_promo.button' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign text = section.settings.text | default: fallback_text
+  assign items_source = section.settings.items | default: fallback_items
+  assign items = items_source | newline_to_br | split: '<br />'
+  assign button = section.settings.button_label | default: fallback_button
+  assign deadline = section.settings.deadline
+
+  assign image = section.settings.image | default: gift.featured_image
+  assign link = section.settings.link | default: gift.url
+-%}
+
+{%- if gift != blank or section.settings.image != blank -%}
+  <div
+    class="mh-gift mh-gift--{{ section.settings.style }}{% if section.settings.image_right %} mh-gift--image-right{% endif %}"
+    id="{{ section.settings.anchor | default: 'mh-gift' }}">
+    <div class="mh-container">
+      <div class="mh-gift__card">
+        <a class="mh-gift__media" href="{{ link }}" tabindex="-1" aria-hidden="true">
+          {%- if image != blank -%}
+            {{ image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 600px, 100vw', widths: '400, 600, 800, 1000, 1200', alt: '' }}
+          {%- endif -%}
+        </a>
+        <div class="mh-gift__content">
+          {%- if eyebrow != blank -%}<div class="mh-eyebrow mh-gift__eyebrow">{{ eyebrow }}</div>{%- endif -%}
+          <h2 class="mh-gift__title">{{ heading | newline_to_br }}</h2>
+          {%- if text != blank -%}<p class="mh-gift__text">{{ text }}</p>{%- endif -%}
+
+          {%- if items_source != blank -%}
+            <ul class="mh-gift__items">
+              {%- for item in items -%}
+                {%- assign line = item | strip -%}
+                {%- if line != blank -%}
+                  <li>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+                    <span>{{ line }}</span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+          <div class="mh-gift__buy">
+            {%- if gift != blank and section.settings.show_price -%}
+              <div class="mh-gift__price">
+                <span class="mh-gift__price-current">{{ gift.price | money }}</span>
+                {%- if gift.compare_at_price > gift.price and settings.show_compare_prices -%}
+                  <s class="mh-gift__price-compare">{{ gift.compare_at_price | money }}</s>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            <a class="mh-btn mh-btn--primary mh-gift__btn" href="{{ link }}">{{ button }}</a>
+          </div>
+          {%- if gift != blank and section.settings.show_price -%}
+            <div class="mh-gift__legal">
+              {% render 'mh-base-price', mh_variant: gift.selected_or_first_available_variant, mh_bottles: section.settings.base_price_bottles %}
+              {% render 'mh-tax-note' %}
+            </div>
+          {%- endif -%}
+
+          {%- if deadline != blank -%}
+            <p class="mh-gift__deadline">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+              <span>{{ deadline }}</span>
+            </p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Gift promo",
+  "tag": "section",
+  "class": "mh-section-gift",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "A seasonal banner for a gift set. Every text field falls back to the built-in German/English text when left empty. Hide the section with the eye icon when the season is over."
+    },
+    { "type": "product", "id": "product", "label": "Gift product" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Empty = the product's main photo. Suggested 1200 × 1200." },
+    { "type": "checkbox", "id": "image_right", "label": "Image on the right (desktop)", "default": false },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Colour",
+      "options": [
+        { "value": "blush", "label": "Blush" },
+        { "value": "rose", "label": "Rose" },
+        { "value": "dark", "label": "Dark" }
+      ],
+      "default": "rose"
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Headline" },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "textarea", "id": "items", "label": "What's inside", "info": "One item per line." },
+    { "type": "checkbox", "id": "show_price", "label": "Show the price", "default": true },
+    {
+      "type": "range",
+      "id": "base_price_bottles",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 3,
+      "label": "Bottles in the gift set",
+      "info": "For the base price (Grundpreis) under the price. 0 = read from the variant name."
+    },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "link", "label": "Button link", "info": "Empty = the gift product's page." },
+    { "type": "text", "id": "deadline", "label": "Delivery deadline note", "info": "e.g. “Bis 18.12. bestellt – pünktlich unterm Baum”. Hidden when empty." },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-gift" }
+  ],
+  "presets": [{ "name": "Gift promo" }]
+}
+{% endschema %}

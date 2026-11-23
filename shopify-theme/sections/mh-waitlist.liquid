@@ -95,7 +95,7 @@
               <div class="mh-waitlist__selection">
                 <span class="mh-waitlist__selection-label">{{ 'sections.waitlist.selection_label' | t }}</span>
                 <span class="mh-waitlist__selection-value">
-                  <span data-mh-variant-title>{{ current_variant.title }}</span>
+                  <span data-mh-variant-title>{% if mh_product.has_only_default_variant %}{{ mh_product.title }}{% else %}{{ current_variant.title }}{% endif %}</span>
                   <span class="mh-waitlist__selection-price" data-mh-price>{{ current_variant.price | money }}</span>
                 </span>
                 {% render 'mh-base-price', mh_variant: current_variant, mh_dynamic: true %}

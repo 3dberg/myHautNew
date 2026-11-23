@@ -365,7 +365,15 @@
       "lightbox_close": "Close",
       "lightbox_prev": "Previous image",
       "lightbox_next": "Next image",
-      "lightbox_zoom": "Zoom in"
+      "lightbox_zoom": "Zoom in",
+      "gift_heading": "Giving it as a gift?"
+    },
+    "gift_promo": {
+      "eyebrow": "Christmas edition",
+      "heading": "The gift of\nsmooth skin",
+      "text": "Three MyHaut sprays in a decorative basket, plus three snowflakes for the tree – ready to give.",
+      "items": "3 × MyHaut hair removal spray (100 ml each)\nDecorative storage basket, reusable\n3 white 3D-printed snowflake ornaments",
+      "button": "See the gift set"
     },
     "benefits": {
       "heading": "",

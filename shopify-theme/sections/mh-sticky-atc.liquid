@@ -126,7 +126,7 @@
         <div class="mh-atc__mobile">
           <div class="mh-atc__summary">
             <div class="mh-atc__summary-title">
-              <span data-mh-variant-title>{{ current_variant.title }}</span>
+              <span data-mh-variant-title>{% if mh_product.has_only_default_variant %}{{ mh_product.title }}{% else %}{{ current_variant.title }}{% endif %}</span>
               <span class="mh-atc__save" data-mh-save-note {% unless discount_percent > 0 %}hidden{% endunless %}>
                 {%- if discount_percent > 0 -%}
                   {{ 'sections.bundles.save_percent' | t: percent: discount_percent }}

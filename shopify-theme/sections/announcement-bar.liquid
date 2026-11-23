@@ -47,12 +47,34 @@
   endif
   assign item_2 = section.settings.item_2 | default: fallback_2
   assign item_3 = section.settings.item_3 | default: fallback_3
+
+  comment
+    Seasonal promo: when set it takes the first slot (the only one phones
+    show) and the other messages move one place to the right.
+  endcomment
+  assign promo = section.settings.promo_text
+  if promo != blank
+    comment
+      Four messages do not fit one line on a laptop; the promo replaces the third.
+    endcomment
+    assign item_3 = ''
+  endif
 -%}
 
-{%- if item_1 != blank -%}
-  <div class="mh-announcement">
+{%- if item_1 != blank or promo != blank -%}
+  <div class="mh-announcement{% if promo != blank %} mh-announcement--promo{% endif %}">
     <div class="mh-announcement__list">
-      <span class="mh-announcement__item{% if shipping_line != blank %} mh-announcement__item--strong{% endif %}">{{ item_1 }}</span>
+      {%- if promo != blank -%}
+        {%- if section.settings.promo_link != blank -%}
+          <a class="mh-announcement__item mh-announcement__promo" href="{{ section.settings.promo_link }}">{{ promo }}<span aria-hidden="true"> →</span></a>
+        {%- else -%}
+          <span class="mh-announcement__item mh-announcement__promo">{{ promo }}</span>
+        {%- endif -%}
+        {%- if item_1 != blank -%}<span class="mh-announcement__sep">·</span>{%- endif -%}
+      {%- endif -%}
+      {%- if item_1 != blank -%}
+        <span class="mh-announcement__item{% if shipping_line != blank %} mh-announcement__item--strong{% endif %}">{{ item_1 }}</span>
+      {%- endif -%}
       {%- if item_2 != blank -%}
         <span class="mh-announcement__sep">·</span>
         <span class="mh-announcement__item">{{ item_2 }}</span>
@@ -75,6 +97,14 @@
       "type": "paragraph",
       "content": "Only the first message is shown on mobile, exactly as in the design."
     },
+    { "type": "header", "content": "Promo (seasonal)" },
+    {
+      "type": "text",
+      "id": "promo_text",
+      "label": "Promo message",
+      "info": "e.g. “🎄 Das Weihnachts-Set ist da”. Takes the first slot, also on phones. Empty = no promo."
+    },
+    { "type": "url", "id": "promo_link", "label": "Promo link" },
     {
       "type": "select",
       "id": "free_shipping_style",

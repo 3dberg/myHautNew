@@ -3031,3 +3031,82 @@ html.mh-lightbox-open { overflow: hidden; }
 @media print {
   .mh-atc, .mh-drawer, .mh-announcement { display: none !important; }
 }
+
+/* =========================================================================
+   Gift: announcement promo, buy box gift card, gift promo section
+   ========================================================================= */
+
+.mh-announcement__promo { color: inherit; font-weight: 600; text-decoration: none; }
+a.mh-announcement__promo:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.mh-giftcard {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px dashed var(--mh-rose-soft);
+  border-radius: 6px;
+  background: var(--mh-rose-tint);
+  color: var(--mh-ink);
+  text-decoration: none;
+  transition: border-color .18s ease, background .18s ease;
+}
+.mh-giftcard:hover { border-color: var(--mh-rose); border-style: solid; }
+.mh-giftcard:focus-visible { outline: 2px solid var(--mh-rose); outline-offset: 2px; }
+.mh-giftcard__thumb { width: 52px; height: 52px; border-radius: 4px; overflow: hidden; background: #fff; }
+.mh-giftcard__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mh-giftcard__main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.mh-giftcard__heading { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--mh-rose); }
+.mh-giftcard__text { font-size: 14.5px; line-height: 1.35; }
+.mh-giftcard__price { display: inline-flex; align-items: center; gap: 4px; font-size: 15px; font-weight: 500; white-space: nowrap; }
+
+.mh-gift { padding: 40px 0; background: var(--mh-bg); }
+.mh-gift__card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  overflow: hidden;
+  border-radius: var(--mh-radius);
+  background: var(--mh-blush);
+  color: var(--mh-ink);
+}
+.mh-gift--rose .mh-gift__card { background: var(--mh-rose); color: #fff; }
+.mh-gift--dark .mh-gift__card { background: var(--mh-ink); color: #fff; }
+.mh-gift__media { display: block; aspect-ratio: 1 / 1; background: var(--mh-sand); }
+.mh-gift__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mh-gift__content { display: flex; flex-direction: column; gap: 14px; padding: 26px 22px 30px; }
+.mh-gift__eyebrow { margin: 0; }
+.mh-gift--rose .mh-gift__eyebrow,
+.mh-gift--dark .mh-gift__eyebrow { color: var(--mh-rose-soft); }
+.mh-gift--rose .mh-gift__eyebrow { color: #fff; opacity: .85; }
+.mh-gift__title { margin: 0; font-size: 34px; line-height: 1.05; color: inherit; }
+.mh-gift__text { margin: 0; font-size: 15px; line-height: 1.6; opacity: .9; }
+.mh-gift__items { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 15px; }
+.mh-gift__items li { display: flex; align-items: flex-start; gap: 10px; }
+.mh-gift__items svg { flex: 0 0 auto; margin-top: 2px; color: var(--mh-rose); }
+.mh-gift--rose .mh-gift__items svg,
+.mh-gift--dark .mh-gift__items svg { color: var(--mh-rose-soft); }
+.mh-gift--rose .mh-gift__items svg { color: #fff; }
+.mh-gift__buy { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-top: 6px; }
+.mh-gift__price { display: flex; align-items: baseline; gap: 10px; }
+.mh-gift__price-current { font-family: var(--mh-serif); font-size: 32px; line-height: 1; }
+.mh-gift__price-compare { font-size: 15px; opacity: .7; }
+.mh-gift--rose .mh-gift__btn,
+.mh-gift--dark .mh-gift__btn { background: #fff; color: var(--mh-ink); }
+.mh-gift--rose .mh-gift__btn:hover,
+.mh-gift--dark .mh-gift__btn:hover { background: var(--mh-ink); color: #fff; }
+.mh-gift--dark .mh-gift__btn:hover { background: var(--mh-rose); }
+.mh-gift__deadline { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 13.5px; opacity: .9; }
+
+@media (min-width: 1000px) {
+  .mh-gift { padding: 56px 0; }
+  .mh-gift__card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; }
+  .mh-gift__media { aspect-ratio: auto; min-height: 460px; }
+  .mh-gift--image-right .mh-gift__media { order: 2; }
+  .mh-gift__content { justify-content: center; padding: 48px 56px; gap: 16px; }
+  .mh-gift__title { font-size: 44px; }
+}
+.mh-gift__legal { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: -6px; font-size: 12.5px; opacity: .85; }
+.mh-gift__legal > * { margin: 0; }
+.mh-gift--rose .mh-gift__legal a,
+.mh-gift--dark .mh-gift__legal a { color: inherit; }

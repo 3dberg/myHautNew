@@ -644,10 +644,29 @@
         "button_link": "",
         "note": ""
       }
+    },
+    "gift": {
+      "type": "mh-gift-promo",
+      "settings": {
+        "product": "myhaut-christmas-starter-pack-🎄",
+        "image_right": false,
+        "style": "rose",
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "items": "",
+        "show_price": true,
+        "button_label": "",
+        "link": "",
+        "deadline": "",
+        "anchor": "mh-gift",
+        "base_price_bottles": 3
+      }
     }
   },
   "order": [
     "hero",
+    "gift",
     "sticky",
     "marquee",
     "proof",

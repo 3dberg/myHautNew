@@ -364,7 +364,15 @@
       "lightbox_close": "Schließen",
       "lightbox_prev": "Vorheriges Bild",
       "lightbox_next": "Nächstes Bild",
-      "lightbox_zoom": "Hineinzoomen"
+      "lightbox_zoom": "Hineinzoomen",
+      "gift_heading": "Zum Verschenken?"
+    },
+    "gift_promo": {
+      "eyebrow": "Weihnachtsedition",
+      "heading": "Das Geschenk für\nglatte Haut",
+      "text": "Drei MyHaut Sprays im dekorativen Korb, dazu drei Schneeflocken für den Baum – fertig zum Verschenken.",
+      "items": "3 × MyHaut Haarentfernungsspray (je 100 ml)\nDekorativer Aufbewahrungskorb, wiederverwendbar\n3 weiße 3D-gedruckte Schneeflocken-Anhänger",
+      "button": "Zum Geschenkset"
     },
     "benefits": {
       "heading": "",

@@ -7,6 +7,8 @@
     mh_product            a product object
     mh_default_position   1-based variant position to preselect when the URL
                           carries no ?variant= (0 / blank = first available)
+    mh_bottles            bottles per variant for the unit / base price
+                          (0 / blank = read each variant's title)
 {%- endcomment -%}
 
 {%- liquid
@@ -24,7 +26,7 @@
   assign single_cents = 0
   for variant in mh_product.variants
     capture variant_bottles
-      render 'mh-bottles', mh_variant: variant
+      render 'mh-bottles', mh_variant: variant, mh_bottles: mh_bottles
     endcapture
     assign variant_bottles = variant_bottles | plus: 0
     if variant_bottles == 1 and single_cents == 0
@@ -58,7 +60,7 @@
         {%- for variant in mh_product.variants -%}
           {%- liquid
             capture bottles
-              render 'mh-bottles', mh_variant: variant
+              render 'mh-bottles', mh_variant: variant, mh_bottles: mh_bottles
             endcapture
             assign bottles = bottles | plus: 0
             assign unit_cents = variant.price | divided_by: bottles
@@ -100,7 +102,7 @@
           -%}
           {
             "id": {{ variant.id }},
-            "title": {{ variant.title | json }},
+            "title": {% if mh_product.has_only_default_variant %}{{ mh_product.title | json }}{% else %}{{ variant.title | json }}{% endif %},
             "available": {{ variant.available }},
             "price": {{ variant.price | money | json }},
             "compare_at": {% if discount_percent > 0 %}{{ variant.compare_at_price | money | json }}{% else %}null{% endif %},

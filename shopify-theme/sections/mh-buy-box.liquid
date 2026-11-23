@@ -82,7 +82,7 @@
 
 {%- if mh_product != blank -%}
   <div class="mh-buybox" id="mh-buy">
-    {% render 'mh-product-data', mh_product: mh_product, mh_default_position: section.settings.default_position %}
+    {% render 'mh-product-data', mh_product: mh_product, mh_default_position: section.settings.default_position, mh_bottles: section.settings.base_price_bottles %}
     <div class="mh-container">
       <div class="mh-buybox__grid">
 
@@ -228,7 +228,9 @@
           {% render 'mh-price', mh_variant: current_variant, mh_class: 'mh-buybox__price', mh_show_base: false, mh_show_tax: false %}
           {% render 'mh-free-shipping', mh_class: 'mh-buybox__ship' %}
           <div class="mh-buybox__legal">
-            {% render 'mh-base-price', mh_variant: current_variant, mh_dynamic: true %}
+            {%- unless section.settings.hide_base_price -%}
+              {% render 'mh-base-price', mh_variant: current_variant, mh_bottles: section.settings.base_price_bottles, mh_dynamic: true %}
+            {%- endunless -%}
             {% render 'mh-tax-note', mh_hide_shipping: true %}
           </div>
 
@@ -327,6 +329,40 @@
               mh_context: 'buybox'
             %}
           {%- endform -%}
+
+          {%- comment -%}
+            Cross-link to a gift set. Hidden on the gift product's own page.
+          {%- endcomment -%}
+          {%- liquid
+            # product_list settings do not support .first, so take the one entry with a loop
+            assign gift = nil
+            for item in section.settings.gift_product limit: 1
+              assign gift = item
+            endfor
+          -%}
+          {%- if gift != blank and gift.id != mh_product.id -%}
+            {%- liquid
+              assign fallback_gift_heading = 'sections.buybox.gift_heading' | t
+              assign gift_heading = section.settings.gift_heading | default: fallback_gift_heading
+              assign gift_text = section.settings.gift_text | default: gift.title
+              assign gift_image = section.settings.gift_image | default: gift.featured_image
+            -%}
+            <a class="mh-giftcard" href="{{ gift.url }}">
+              <span class="mh-giftcard__thumb">
+                {%- if gift_image != blank -%}
+                  {{ gift_image | image_url: width: 160, height: 160, crop: 'center' | image_tag: loading: 'lazy', widths: '80, 160', alt: '' }}
+                {%- endif -%}
+              </span>
+              <span class="mh-giftcard__main">
+                <span class="mh-giftcard__heading">{{ gift_heading }}</span>
+                <span class="mh-giftcard__text">{{ gift_text }}</span>
+              </span>
+              <span class="mh-giftcard__price">
+                {{- gift.price | money -}}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg>
+              </span>
+            </a>
+          {%- endif -%}
 
           <ul class="mh-buybox__trust">
             {%- for i in (1..5) -%}
@@ -466,6 +502,29 @@
     { "type": "text", "id": "bullet_1", "label": "Bullet 1 (delivery)" },
     { "type": "text", "id": "bullet_2", "label": "Bullet 2 (returns)" },
     { "type": "text", "id": "buy_label", "label": "Button label", "info": "Leave empty for “In den Warenkorb”." },
+    { "type": "header", "content": "Base price (Grundpreis)" },
+    {
+      "type": "range",
+      "id": "base_price_bottles",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 0,
+      "label": "Bottles in this product",
+      "info": "0 = read from the variant name (“3 Flaschen”). Set it for products with a single variant, e.g. a 3-bottle gift set."
+    },
+    { "type": "checkbox", "id": "hide_base_price", "label": "Hide the base price", "default": false },
+    { "type": "header", "content": "Gift set link" },
+    {
+      "type": "product_list",
+      "id": "gift_product",
+      "limit": 1,
+      "label": "Gift product",
+      "info": "Shows a small card under the button that links to this product. Empty = no card. Hidden on the gift product's own page."
+    },
+    { "type": "text", "id": "gift_heading", "label": "Card headline", "info": "Empty = “Zum Verschenken?”" },
+    { "type": "text", "id": "gift_text", "label": "Card text", "info": "Empty = the product title." },
+    { "type": "image_picker", "id": "gift_image", "label": "Card image", "info": "Empty = the product's main photo." },
     { "type": "header", "content": "Trust list" },
     { "type": "text", "id": "trust_1", "label": "Line 1", "info": "Empty = “Versandkostenfrei ab …” from the theme settings." },
     { "type": "text", "id": "trust_2", "label": "Line 2" },
