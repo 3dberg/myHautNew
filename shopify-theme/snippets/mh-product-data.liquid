@@ -7,6 +7,8 @@
     mh_product            a product object
     mh_default_position   1-based variant position to preselect when the URL
                           carries no ?variant= (0 / blank = first available)
+    mh_extras             value in € of non-spray items in the set, taken
+                          off before the unit / base price is worked out
     mh_bottles            bottles per variant for the unit / base price
                           (0 / blank = read each variant's title)
 {%- endcomment -%}
@@ -63,7 +65,12 @@
               render 'mh-bottles', mh_variant: variant, mh_bottles: mh_bottles
             endcapture
             assign bottles = bottles | plus: 0
-            assign unit_cents = variant.price | divided_by: bottles
+            assign extras_cents = mh_extras | default: 0 | times: 100 | round
+            assign spray_cents = variant.price | minus: extras_cents
+            if spray_cents < 0
+              assign spray_cents = 0
+            endif
+            assign unit_cents = spray_cents | divided_by: bottles
             assign unit_price = ''
             if bottles > 1
               assign unit_price = unit_cents | money

@@ -660,7 +660,8 @@
         "link": "",
         "deadline": "",
         "anchor": "mh-gift",
-        "base_price_bottles": 3
+        "base_price_bottles": 3,
+        "base_price_extras": 20
       }
     }
   },

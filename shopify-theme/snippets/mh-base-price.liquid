@@ -8,6 +8,8 @@
   Accepts:
     mh_variant   a variant object
     mh_bottles   bottles in this variant (0 / blank = read it from the title)
+    mh_extras    value in € of items in the set that are not spray (basket,
+                 ornaments…); subtracted before the price per 100 ml is worked out
     mh_class     extra class names
     mh_dynamic   true to let myhaut.js keep it in sync with the selected variant
 {%- endcomment -%}
@@ -24,7 +26,12 @@
       assign volume = 100
     endif
 
-    assign per_bottle_cents = mh_variant.price | divided_by: bottles
+    assign extras_cents = mh_extras | default: 0 | times: 100 | round
+    assign spray_cents = mh_variant.price | minus: extras_cents
+    if spray_cents < 0
+      assign spray_cents = 0
+    endif
+    assign per_bottle_cents = spray_cents | divided_by: bottles
     assign per_unit_cents = per_bottle_cents | times: 100 | divided_by: volume
     assign base_price = per_unit_cents | money
   -%}

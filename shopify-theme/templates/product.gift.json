@@ -40,7 +40,8 @@
         "acc_2_body": "",
         "base_price_bottles": 3,
         "hide_base_price": false,
-        "gift_product": []
+        "gift_product": [],
+        "base_price_extras": 20
       }
     },
     "sticky": {

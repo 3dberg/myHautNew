@@ -3110,3 +3110,8 @@ a.mh-announcement__promo:hover { text-decoration: underline; text-underline-offs
 .mh-gift__legal > * { margin: 0; }
 .mh-gift--rose .mh-gift__legal a,
 .mh-gift--dark .mh-gift__legal a { color: inherit; }
+.mh-gift--rose .mh-gift__legal .mh-base-price,
+.mh-gift--rose .mh-gift__legal .mh-tax-note,
+.mh-gift--dark .mh-gift__legal .mh-base-price,
+.mh-gift--dark .mh-gift__legal .mh-tax-note { color: rgba(255, 255, 255, .9); }
+.mh-gift__legal { opacity: 1; }

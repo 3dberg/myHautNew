@@ -82,7 +82,7 @@
 
 {%- if mh_product != blank -%}
   <div class="mh-buybox" id="mh-buy">
-    {% render 'mh-product-data', mh_product: mh_product, mh_default_position: section.settings.default_position, mh_bottles: section.settings.base_price_bottles %}
+    {% render 'mh-product-data', mh_product: mh_product, mh_default_position: section.settings.default_position, mh_bottles: section.settings.base_price_bottles, mh_extras: section.settings.base_price_extras %}
     <div class="mh-container">
       <div class="mh-buybox__grid">
 
@@ -229,7 +229,7 @@
           {% render 'mh-free-shipping', mh_class: 'mh-buybox__ship' %}
           <div class="mh-buybox__legal">
             {%- unless section.settings.hide_base_price -%}
-              {% render 'mh-base-price', mh_variant: current_variant, mh_bottles: section.settings.base_price_bottles, mh_dynamic: true %}
+              {% render 'mh-base-price', mh_variant: current_variant, mh_bottles: section.settings.base_price_bottles, mh_extras: section.settings.base_price_extras, mh_dynamic: true %}
             {%- endunless -%}
             {% render 'mh-tax-note', mh_hide_shipping: true %}
           </div>
@@ -512,6 +512,12 @@
       "default": 0,
       "label": "Bottles in this product",
       "info": "0 = read from the variant name (“3 Flaschen”). Set it for products with a single variant, e.g. a 3-bottle gift set."
+    },
+    {
+      "type": "number",
+      "id": "base_price_extras",
+      "label": "Value of the non-spray items (€)",
+      "info": "For sets with extras like a basket or ornaments: this amount is taken off the price before the base price per 100 ml is worked out. 0 = none."
     },
     { "type": "checkbox", "id": "hide_base_price", "label": "Hide the base price", "default": false },
     { "type": "header", "content": "Gift set link" },

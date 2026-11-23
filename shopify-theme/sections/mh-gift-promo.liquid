@@ -74,7 +74,7 @@
           </div>
           {%- if gift != blank and section.settings.show_price -%}
             <div class="mh-gift__legal">
-              {% render 'mh-base-price', mh_variant: gift.selected_or_first_available_variant, mh_bottles: section.settings.base_price_bottles %}
+              {% render 'mh-base-price', mh_variant: gift.selected_or_first_available_variant, mh_bottles: section.settings.base_price_bottles, mh_extras: section.settings.base_price_extras %}
               {% render 'mh-tax-note' %}
             </div>
           {%- endif -%}
@@ -129,6 +129,12 @@
       "default": 3,
       "label": "Bottles in the gift set",
       "info": "For the base price (Grundpreis) under the price. 0 = read from the variant name."
+    },
+    {
+      "type": "number",
+      "id": "base_price_extras",
+      "label": "Value of the non-spray items (€)",
+      "info": "Basket, ornaments… Taken off the price before the base price per 100 ml is worked out."
     },
     { "type": "text", "id": "button_label", "label": "Button label" },
     { "type": "url", "id": "link", "label": "Button link", "info": "Empty = the gift product's page." },
