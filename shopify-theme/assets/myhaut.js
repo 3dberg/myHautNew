@@ -93,6 +93,7 @@
     if (!variant) return;
 
     $$('[data-mh-form-variant]').forEach(function (input) { input.value = variant.id; });
+    syncGiftOption();
 
     $$('[data-mh-price]').forEach(function (el) { el.textContent = variant.price; });
 
@@ -288,9 +289,80 @@
       });
   }
 
+  /* ------------------------------------------------------- gift option */
+
+  // The buy box can carry a "buy it as a gift" checkbox. On the swap set (the
+  // one with the same bottles as the gift set) ticking it replaces the order
+  // with the gift set; on any other set the gift set is added on top. The
+  // recipient's name rides along as a visible line item property.
+  function giftOption() {
+    var el = $('[data-mh-gift-option]');
+    if (!el) return null;
+    var toggle = el.querySelector('[data-mh-gift-toggle]');
+    return { el: el, checked: !!(toggle && toggle.checked), toggle: toggle };
+  }
+
+  function syncGiftOption() {
+    var opt = giftOption();
+    if (!opt) return;
+    var swapId = opt.el.getAttribute('data-mh-gift-swap');
+    var mode = swapId && String(swapId) === String(selectedId) ? 'swap' : 'add';
+    opt.el.setAttribute('data-mh-gift-mode', mode);
+    var nameWrap = opt.el.querySelector('[data-mh-gift-name-wrap]');
+    if (nameWrap) nameWrap.hidden = !opt.checked;
+    opt.el.classList.toggle('is-checked', opt.checked);
+  }
+
+  function cartItemsFor(variant) {
+    var items = [{ id: Number(variant.id), quantity: 1 }];
+    var opt = giftOption();
+    if (!opt || !opt.checked) return items;
+
+    var giftId = Number(opt.el.getAttribute('data-mh-gift-variant'));
+    if (!giftId) return items;
+    var giftItem = { id: giftId, quantity: 1 };
+    var nameInput = opt.el.querySelector('[data-mh-gift-name]');
+    var name = nameInput ? nameInput.value.trim().slice(0, 60) : '';
+    if (name) {
+      giftItem.properties = {};
+      giftItem.properties[opt.el.getAttribute('data-mh-gift-property') || 'Geschenk für'] = name;
+    }
+
+    if (opt.el.getAttribute('data-mh-gift-mode') === 'swap') return [giftItem];
+    return items.concat(giftItem);
+  }
+
+  function resetGiftOption() {
+    var opt = giftOption();
+    if (!opt || !opt.toggle) return;
+    opt.toggle.checked = false;
+    var nameInput = opt.el.querySelector('[data-mh-gift-name]');
+    if (nameInput) nameInput.value = '';
+    syncGiftOption();
+  }
+
+  document.addEventListener('change', function (event) {
+    if (event.target && event.target.matches && event.target.matches('[data-mh-gift-toggle]')) {
+      syncGiftOption();
+      if (event.target.checked) {
+        var nameInput = event.target.closest('[data-mh-gift-option]').querySelector('[data-mh-gift-name]');
+        // Do not pull the page around on phones; just make the field ready.
+        if (nameInput && window.matchMedia && window.matchMedia('(pointer: fine)').matches) nameInput.focus({ preventScroll: true });
+      }
+    }
+  });
+
+  // Enter in the name field must not submit the product form without the gift.
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' && event.target && event.target.matches && event.target.matches('[data-mh-gift-name]')) {
+      event.preventDefault();
+    }
+  });
+
   function addToCart(button) {
     var variant = variantsById[selectedId];
     if (!variant || !variant.available) return;
+    var cartItems = cartItemsFor(variant);
 
     var label = button.querySelector('[data-mh-add-label]') || button;
     var originalHtml = label.innerHTML;
@@ -301,7 +373,7 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       credentials: 'same-origin',
-      body: JSON.stringify({ items: [{ id: Number(variant.id), quantity: 1 }] })
+      body: JSON.stringify({ items: cartItems })
     })
       .then(function (response) {
         if (!response.ok) throw new Error('add-to-cart failed');
@@ -309,6 +381,8 @@
       })
       .then(function () { return refreshDrawer(); })
       .then(function () {
+        // The gift was added once; a second click should not add it again.
+        if (cartItems.length > 1 || cartItems[0].id !== Number(variant.id)) resetGiftOption();
         label.textContent = strings.added || label.textContent;
         if (CONFIG.cartDrawer !== false) openDrawer();
         window.setTimeout(function () { label.innerHTML = originalHtml; }, 1600);

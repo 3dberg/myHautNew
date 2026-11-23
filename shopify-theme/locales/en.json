@@ -366,7 +366,14 @@
       "lightbox_prev": "Previous image",
       "lightbox_next": "Next image",
       "lightbox_zoom": "Zoom in",
-      "gift_heading": "Giving it as a gift?"
+      "gift_heading": "Giving it as a gift?",
+      "giftopt_swap_title": "🎁 Pack it as a gift",
+      "giftopt_swap_text": "Your 3 bottles come as the Christmas Starter Pack – with basket & snowflakes (+{{ diff }})",
+      "giftopt_add_title": "🎄 Add the Christmas set as a gift",
+      "giftopt_add_text": "For a friend, family or your loved one – 3 sprays with basket & snowflakes (+{{ price }})",
+      "giftopt_name_label": "Who is the gift for? (optional)",
+      "giftopt_name_placeholder": "Name, e.g. Anna",
+      "giftopt_property": "Gift for"
     },
     "gift_promo": {
       "eyebrow": "Christmas edition",

@@ -316,6 +316,102 @@
               </div>
             {%- endif -%}
 
+            {%- comment -%}
+              Gift option next to the button. One checkbox, two meanings:
+              - on the "swap" variant (the 3-bottle set) the order becomes the
+                gift set instead (same 3 sprays, plus basket and ornaments);
+              - on every other variant the gift set is added on top, for
+                someone else.
+              The recipient's name goes on the gift set's cart line as a
+              visible property. myhaut.js reads all of this when any add-to-cart
+              button on the page is pressed (buy box, sticky bar, bundles).
+            {%- endcomment -%}
+            {%- liquid
+              assign gift_option = nil
+              if section.settings.enable_gift_option and settings.preorder_mode == false
+                for item in section.settings.gift_product limit: 1
+                  assign gift_option = item
+                endfor
+              endif
+              if gift_option != blank
+                if gift_option.id == mh_product.id or gift_option.available == false
+                  assign gift_option = nil
+                endif
+              endif
+            -%}
+            {%- if gift_option != blank -%}
+              {%- liquid
+                assign gift_variant = gift_option.selected_or_first_available_variant
+                assign swap_variant = nil
+                assign swap_position = section.settings.gift_swap_position | default: 0 | plus: 0
+                if swap_position > 0
+                  assign swap_index = swap_position | minus: 1
+                  assign swap_variant = mh_product.variants[swap_index]
+                endif
+                assign gift_price = gift_variant.price | money
+                assign swap_diff = ''
+                if swap_variant != blank and gift_variant.price > swap_variant.price
+                  assign swap_diff = gift_variant.price | minus: swap_variant.price | money
+                endif
+                assign gift_mode = 'add'
+                if swap_variant != blank and swap_variant.id == current_variant.id
+                  assign gift_mode = 'swap'
+                endif
+
+                assign t_swap_title = 'sections.buybox.giftopt_swap_title' | t
+                assign t_swap_text = 'sections.buybox.giftopt_swap_text' | t: diff: swap_diff
+                assign t_add_title = 'sections.buybox.giftopt_add_title' | t
+                assign t_add_text = 'sections.buybox.giftopt_add_text' | t: price: gift_price
+                assign swap_title = t_swap_title
+                assign swap_text = t_swap_text
+                assign add_title = t_add_title
+                assign add_text = t_add_text
+                assign name_label = 'sections.buybox.giftopt_name_label' | t
+                assign name_placeholder = 'sections.buybox.giftopt_name_placeholder' | t
+                assign property_name = 'sections.buybox.giftopt_property' | t
+              -%}
+              <div
+                class="mh-giftopt"
+                data-mh-gift-option
+                data-mh-gift-mode="{{ gift_mode }}"
+                data-mh-gift-variant="{{ gift_variant.id }}"
+                data-mh-gift-swap="{% if swap_variant != blank %}{{ swap_variant.id }}{% endif %}"
+                data-mh-gift-property="{{ property_name | escape }}">
+                <label class="mh-giftopt__check">
+                  <input type="checkbox" class="mh-giftopt__input" data-mh-gift-toggle>
+                  <span class="mh-giftopt__box" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+                  </span>
+                  <span class="mh-giftopt__copy">
+                    <span class="mh-giftopt__mode mh-giftopt__mode--swap">
+                      <span class="mh-giftopt__title">{{ swap_title }}</span>
+                      <span class="mh-giftopt__text">{{ swap_text }}</span>
+                    </span>
+                    <span class="mh-giftopt__mode mh-giftopt__mode--add">
+                      <span class="mh-giftopt__title">{{ add_title }}</span>
+                      <span class="mh-giftopt__text">{{ add_text }}</span>
+                    </span>
+                  </span>
+                  {%- if gift_option.featured_image != blank -%}
+                    <span class="mh-giftopt__thumb">
+                      {{ gift_option.featured_image | image_url: width: 120, height: 120, crop: 'center' | image_tag: loading: 'lazy', widths: '60, 120', alt: '' }}
+                    </span>
+                  {%- endif -%}
+                </label>
+                <div class="mh-giftopt__name" data-mh-gift-name-wrap hidden>
+                  <label class="mh-giftopt__name-label" for="MhGiftName-{{ section.id }}">{{ name_label }}</label>
+                  <input
+                    type="text"
+                    id="MhGiftName-{{ section.id }}"
+                    class="mh-giftopt__name-input"
+                    data-mh-gift-name
+                    maxlength="60"
+                    autocomplete="off"
+                    placeholder="{{ name_placeholder | escape }}">
+                </div>
+              </div>
+            {%- endif -%}
+
             <ul class="mh-buybox__bullets">
               {%- if bullet_1 != blank -%}<li>{{ bullet_1 }}</li>{%- endif -%}
               {%- if bullet_2 != blank -%}<li>{{ bullet_2 }}</li>{%- endif -%}
@@ -531,6 +627,24 @@
     { "type": "text", "id": "gift_heading", "label": "Card headline", "info": "Empty = “Zum Verschenken?”" },
     { "type": "text", "id": "gift_text", "label": "Card text", "info": "Empty = the product title." },
     { "type": "image_picker", "id": "gift_image", "label": "Card image", "info": "Empty = the product's main photo." },
+    { "type": "header", "content": "Gift option at the button" },
+    {
+      "type": "checkbox",
+      "id": "enable_gift_option",
+      "label": "Show the gift checkbox",
+      "default": false,
+      "info": "Uses the gift product above. On the swap set it turns the order into the gift set; on every other set it adds the gift set on top. Shoppers can enter the recipient's name. Texts: Online Store → Themes → … → Edit default theme content, search “giftopt”."
+    },
+    {
+      "type": "range",
+      "id": "gift_swap_position",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "Set that becomes the gift set (position)",
+      "info": "The set with the same bottles as the gift set, e.g. 3 = “3 Flaschen”. 0 = always add on top."
+    },
     { "type": "header", "content": "Trust list" },
     { "type": "text", "id": "trust_1", "label": "Line 1", "info": "Empty = “Versandkostenfrei ab …” from the theme settings." },
     { "type": "text", "id": "trust_2", "label": "Line 2" },

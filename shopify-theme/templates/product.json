@@ -40,7 +40,9 @@
         "acc_2_body": "",
         "gift_product": [
           "myhaut-christmas-starter-pack-🎄"
-        ]
+        ],
+        "enable_gift_option": true,
+        "gift_swap_position": 3
       }
     },
     "sticky": {

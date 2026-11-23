@@ -365,7 +365,14 @@
       "lightbox_prev": "Vorheriges Bild",
       "lightbox_next": "Nächstes Bild",
       "lightbox_zoom": "Hineinzoomen",
-      "gift_heading": "Zum Verschenken?"
+      "gift_heading": "Zum Verschenken?",
+      "giftopt_swap_title": "🎁 Als Geschenk verpacken",
+      "giftopt_swap_text": "Deine 3 Flaschen kommen als Christmas Starter Pack – mit Korb & Schneeflocken (+{{ diff }})",
+      "giftopt_add_title": "🎄 Weihnachts-Set als Geschenk dazu",
+      "giftopt_add_text": "Für Freundin, Familie oder deine:n Liebste:n – 3 Sprays mit Korb & Schneeflocken (+{{ price }})",
+      "giftopt_name_label": "Für wen ist das Geschenk? (optional)",
+      "giftopt_name_placeholder": "Name, z. B. Anna",
+      "giftopt_property": "Geschenk für"
     },
     "gift_promo": {
       "eyebrow": "Weihnachtsedition",
