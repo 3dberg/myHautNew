@@ -1,0 +1,156 @@
+{%- comment -%}
+  Real-use video carousel — portrait clips (Instagram / TikTok exports)
+  hosted on Shopify. No third-party embeds: an Instagram or TikTok iframe
+  would load their scripts and cookies before consent and slow the page down.
+
+  Each slide renders its own <video> through snippets/mh-video-player, which
+  hands every rendition Shopify made to myhaut.js. The script fetches the
+  first clip before the section scrolls in, picks the rendition the visitor's
+  connection can carry, and once a clip has held their attention for a moment
+  either starts it muted (autoplay) or fades in its play control — one clip at
+  a time, never a poster that silently does nothing.
+
+  With no video uploaded the section renders nothing on the storefront.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_eyebrow = 'sections.video.eyebrow' | t
+  assign fallback_heading = 'sections.video.heading' | t
+  assign fallback_body = 'sections.video.body' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign intro = section.settings.body | default: fallback_body
+
+  assign has_videos = false
+  assign video_count = 0
+  for block in section.blocks
+    if block.settings.video != blank
+      assign has_videos = true
+      assign video_count = video_count | plus: 1
+    endif
+  endfor
+  assign attention_ms = section.settings.attention_delay | default: 1.5 | times: 1000 | round
+-%}
+
+{%- if has_videos or request.design_mode -%}
+  <div class="mh-videos" id="{{ section.settings.anchor | default: 'mh-videos' }}">
+    <div class="mh-container">
+      <div class="mh-videos__head">
+        <div>
+          {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+          <h2 class="mh-videos__title">{{ heading | newline_to_br }}</h2>
+          {%- if intro != blank -%}<p class="mh-videos__intro">{{ intro }}</p>{%- endif -%}
+        </div>
+        {%- if has_videos -%}
+          <div class="mh-videos__nav">
+            <button type="button" class="mh-videos__btn" data-mh-carousel-prev aria-label="{{ 'sections.video.prev' | t }}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+            </button>
+            <button type="button" class="mh-videos__btn" data-mh-carousel-next aria-label="{{ 'sections.video.next' | t }}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if has_videos -%}
+        <div
+          class="mh-videos__carousel"
+          data-mh-carousel
+          data-mh-autoplay="{{ section.settings.autoplay }}"
+          data-mh-attention="{{ attention_ms }}"
+          data-mh-quality="{{ section.settings.quality | default: 'auto' }}">
+          <ul class="mh-videos__track" data-mh-carousel-track>
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign vid = block.settings.video
+                if vid == blank
+                  continue
+                endif
+                assign caption = block.settings.caption
+              -%}
+              <li class="mh-video" data-mh-video-slide {{ block.shopify_attributes }}>
+                {% render 'mh-video-player', mh_video: vid, mh_poster: block.settings.poster, mh_label: caption %}
+                {%- if section.settings.show_captions and caption != blank -%}
+                  <p class="mh-video__caption">{{ caption }}</p>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+        {%- if video_count > 1 -%}
+          <div class="mh-videos__dots" role="tablist" aria-label="{{ 'sections.video.dots' | t }}">
+            {%- for i in (1..video_count) -%}
+              <button type="button" class="mh-videos__dot" data-mh-carousel-dot aria-label="{{ 'sections.video.dot' | t: n: i, total: video_count }}"></button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- elsif request.design_mode -%}
+        <p class="mh-videos__hint">{{ 'sections.video.editor_hint' | t }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Video carousel",
+  "tag": "section",
+  "class": "mh-section-videos",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Portrait clips of the product in use, hosted on Shopify. Export them from Instagram or TikTok as MP4 (9:16, up to 30 s) and upload one per block. Shopify makes 480p, 720p and streaming versions; the theme picks what the visitor's connection can carry and buffers the first clip before the section is on screen. With no video uploaded the section is hidden on the storefront."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave empty to use the built-in translation." },
+    { "type": "textarea", "id": "heading", "label": "Headline", "info": "Line breaks are kept." },
+    { "type": "textarea", "id": "body", "label": "Intro text" },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Play clips automatically while in view (muted)",
+      "default": true,
+      "info": "On: the clip in front of the visitor starts by itself after the delay below. Off: its play control fades in instead. Never plays automatically for visitors who have “reduce motion” switched on."
+    },
+    {
+      "type": "range",
+      "id": "attention_delay",
+      "min": 0,
+      "max": 4,
+      "step": 0.5,
+      "unit": "s",
+      "label": "Delay before a clip starts / shows its play control",
+      "default": 1.5,
+      "info": "Counted from the moment the clip is in view, so people scrolling past are not interrupted. The clip is already buffering during the delay."
+    },
+    {
+      "type": "select",
+      "id": "quality",
+      "label": "Video quality",
+      "default": "auto",
+      "options": [
+        { "value": "auto", "label": "Auto (720p, 480p on slow connections)" },
+        { "value": "sd", "label": "Always 480p (fastest start)" },
+        { "value": "hd", "label": "Always 720p" }
+      ],
+      "info": "Auto also switches a clip down to 480p by itself when it has not started after a few seconds."
+    },
+    { "type": "checkbox", "id": "show_captions", "label": "Show captions under the clips", "default": true },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-videos" }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video", "info": "MP4, portrait 9:16." },
+        { "type": "image_picker", "id": "poster", "label": "Poster image (optional)", "info": "Shown before the clip plays. Defaults to the video's own preview frame." },
+        { "type": "text", "id": "caption", "label": "Caption", "info": "e.g. “Unterschenkel, 8 Minuten, ungeschnitten”." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "Video carousel" }]
+}
+{% endschema %}

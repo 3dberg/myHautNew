@@ -1,0 +1,133 @@
+{%- comment -%}
+  "Ohne Risiko bestellen" — the return terms, shipping facts and contact in
+  plain words, right under the offer. The return promise is deliberately
+  precise (unopened bottles, original packaging, 30 days); it must never read
+  as a satisfaction guarantee.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_eyebrow = 'sections.guarantee.eyebrow' | t
+  assign fallback_heading = 'sections.guarantee.heading' | t
+  assign fallback_body = 'sections.guarantee.body' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign intro = section.settings.body | default: fallback_body
+
+  assign free_threshold = settings.free_shipping_threshold | default: 0 | plus: 0
+  assign free_line = ''
+  if settings.free_shipping_all
+    assign free_line = 'sections.guarantee.free_shipping_line_all' | t
+  elsif free_threshold > 0
+    assign free_amount = free_threshold | times: 100 | money_without_trailing_zeros
+    assign free_line = 'sections.guarantee.free_shipping_line' | t: amount: free_amount
+  endif
+-%}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="mh-guarantee" id="{{ section.settings.anchor | default: 'mh-garantie' }}">
+    <div class="mh-container">
+      <div class="mh-guarantee__head">
+        {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+        <h2 class="mh-guarantee__title">{{ heading | newline_to_br }}</h2>
+        {%- if intro != blank -%}<p class="mh-guarantee__intro">{{ intro }}</p>{%- endif -%}
+      </div>
+
+      <div class="mh-guarantee__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign i = forloop.index
+            assign title_key = 'sections.guarantee.item_' | append: i | append: '_title'
+            assign body_key = 'sections.guarantee.item_' | append: i | append: '_body'
+            assign link_key = 'sections.guarantee.item_' | append: i | append: '_link'
+            assign fallback_title = title_key | t
+            assign fallback_item_body = body_key | t
+            assign fallback_link = link_key | t
+            if fallback_title contains 'translation missing'
+              assign fallback_title = ''
+            endif
+            if fallback_item_body contains 'translation missing'
+              assign fallback_item_body = ''
+            endif
+            if fallback_link contains 'translation missing'
+              assign fallback_link = ''
+            endif
+            assign item_title = block.settings.title | default: fallback_title
+            assign item_body = block.settings.body | default: fallback_item_body
+            assign link_label = block.settings.link_label | default: fallback_link
+            assign link_url = block.settings.link
+            comment
+              The first two items link to the legal pages picked in the theme
+              settings unless the block sets its own link.
+            endcomment
+            if link_url == blank and i == 1
+              assign link_url = settings.returns_page
+            endif
+            if link_url == blank and i == 2
+              assign link_url = settings.shipping_page
+            endif
+            if i == 2 and free_line != blank
+              assign item_body = item_body | append: ' ' | append: free_line
+            endif
+          -%}
+          {%- if item_title != blank -%}
+            <div class="mh-guarantee__item" {{ block.shopify_attributes }}>
+              <h3 class="mh-guarantee__item-title">{{ item_title }}</h3>
+              {%- if item_body != blank -%}<p class="mh-guarantee__body">{{ item_body }}</p>{%- endif -%}
+              {%- if link_url != blank and link_label != blank -%}
+                <a class="mh-guarantee__link" href="{{ link_url }}">{{ link_label }}</a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <div class="mh-guarantee__payments" aria-label="{{ 'sections.guarantee.payments_label' | t }}">
+          <span class="mh-guarantee__payments-label">{{ 'sections.guarantee.payments_label' | t }}</span>
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'mh-guarantee__pay' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Return & shipping terms",
+  "tag": "section",
+  "class": "mh-section-guarantee",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "The return promise here has to match your Widerruf / AGB page word for word: unopened bottles, undamaged original packaging, 30 days from delivery. Links go to the pages picked under Theme settings → Versand, Preise & Rückgabe."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave empty to use the built-in translation." },
+    { "type": "textarea", "id": "heading", "label": "Headline", "info": "Line breaks are kept." },
+    { "type": "textarea", "id": "body", "label": "Intro text" },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show the accepted payment methods", "default": true },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-garantie" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Text" },
+        { "type": "text", "id": "link_label", "label": "Link label" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Items 1 and 2 default to the return and shipping pages from the theme settings." }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Return & shipping terms",
+      "blocks": [{ "type": "item" }, { "type": "item" }, { "type": "item" }]
+    }
+  ]
+}
+{% endschema %}

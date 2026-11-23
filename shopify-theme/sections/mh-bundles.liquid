@@ -10,8 +10,29 @@
   assign fallback_eyebrow = 'sections.bundles.eyebrow' | t
   assign fallback_heading = 'sections.bundles.heading' | t
   assign fallback_body = 'sections.bundles.body' | t
-  assign fallback_select = 'sections.bundles.select' | t
   assign bestseller_word = 'sections.bundles.badge_bestseller' | t
+
+  comment
+    In pre-order mode picking a bundle is not a purchase — it sets which
+    variant the waitlist form will be tagged with and scrolls the visitor to
+    it. The cta_action setting below only applies once pre-order mode is off.
+  endcomment
+  assign card_action = section.settings.cta_action | default: 'add'
+  assign card_scroll = '#mh-buy'
+  assign fallback_select = 'sections.bundles.select' | t
+
+  assign hide_discounts = true
+  if settings.show_compare_prices
+    assign hide_discounts = false
+  endif
+
+  assign lock_unavailable = true
+  if settings.preorder_mode
+    assign lock_unavailable = false
+    assign card_action = 'scroll'
+    assign card_scroll = settings.waitlist_anchor | default: '#mh-vormerken'
+    assign fallback_select = 'sections.bundles.select_preorder' | t
+  endif
 
   assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
   assign heading = section.settings.heading | default: fallback_heading
@@ -21,6 +42,19 @@
   assign fallback_trust_1 = 'sections.bundles.trust_1' | t
   assign fallback_trust_2 = 'sections.bundles.trust_2' | t
   assign fallback_trust_3 = 'sections.bundles.trust_3' | t
+
+  comment
+    The single-bottle price every set is measured against, and the
+    free-shipping threshold in cents (0 = off).
+  endcomment
+  assign single_index = section.settings.single_position | default: 1 | minus: 1
+  assign single_variant = mh_product.variants[single_index]
+  assign single_cents = single_variant.price | default: 0
+  assign free_cents = settings.free_shipping_threshold | default: 0 | times: 100
+  assign volume = settings.bottle_volume_ml | default: 100 | plus: 0
+  if volume < 1
+    assign volume = 100
+  endif
 -%}
 
 <div class="mh-bundles" id="{{ section.settings.anchor | default: 'mh-bundles' }}">
@@ -36,7 +70,9 @@
     {%- else -%}
       {% render 'mh-product-data', mh_product: mh_product %}
 
-      <div class="mh-bundles__grid">
+      <div
+        class="mh-bundles__grid"
+        style="--mh-bundle-image-height: {{ section.settings.image_height | default: 160 }}px">
         {%- for block in section.blocks -%}
           {%- liquid
             assign position = block.settings.variant_position | default: forloop.index
@@ -44,28 +80,56 @@
             assign variant = mh_product.variants[index]
 
             assign eyebrow_key = 'sections.bundles.card_' | append: forloop.index | append: '_eyebrow'
+            assign title_key = 'sections.bundles.card_' | append: forloop.index | append: '_title'
             assign fallback_card_eyebrow = eyebrow_key | t
+            assign fallback_card_title = title_key | t
             if fallback_card_eyebrow contains 'translation missing'
               assign fallback_card_eyebrow = ''
             endif
+            if fallback_card_title contains 'translation missing'
+              assign fallback_card_title = ''
+            endif
             assign card_eyebrow = block.settings.eyebrow | default: fallback_card_eyebrow
-            assign card_title = block.settings.title | default: variant.title
 
-            assign bottles = block.settings.bottles | default: 0
-            if bottles < 1
-              assign bottles = variant.title | split: ' ' | first | remove: '×' | remove: 'x' | remove: 'X' | remove: '*' | plus: 0
-            endif
-            if bottles < 1
-              assign bottles = 1
-            endif
+            comment
+              Card image: the variant's own image when one is assigned in the
+              Shopify admin, otherwise the product's featured image. The block
+              setting overrides both, for a bundle shot showing three bottles
+              where the variant only has a single-bottle photo.
+            endcomment
+            assign card_image = block.settings.image | default: variant.image | default: mh_product.featured_image
+
+            capture bottles
+              render 'mh-bottles', mh_variant: variant, mh_bottles: block.settings.bottles
+            endcapture
+            assign bottles = bottles | plus: 0
+
+            comment
+              Card title: block setting, then the translated "3 Flaschen", then
+              the variant title as it is in the admin.
+            endcomment
+            assign card_title = block.settings.title | default: fallback_card_title | default: variant.title
+
+            assign unit_cents = variant.price | divided_by: bottles
             assign unit_price = ''
             if bottles > 1
-              assign unit_cents = variant.price | divided_by: bottles
               assign unit_price = unit_cents | money
+            endif
+            assign single_price = single_cents | money
+
+            assign saving_cents = single_cents | times: bottles | minus: variant.price
+            assign saving = ''
+            if bottles > 1 and saving_cents > 0
+              assign saving = saving_cents | money
+            endif
+
+            assign free_shipping = false
+            if free_cents > 0 and variant.price >= free_cents
+              assign free_shipping = true
             endif
 
             assign discount_percent = 0
-            if variant.compare_at_price > variant.price
+            if variant.compare_at_price > variant.price and hide_discounts == false
               assign price_difference = variant.compare_at_price | minus: variant.price
               assign rounding = variant.compare_at_price | divided_by: 2
               assign discount_percent = price_difference | times: 100 | plus: rounding | divided_by: variant.compare_at_price
@@ -74,9 +138,12 @@
             assign flag_text = block.settings.flag
             if flag_text == blank and block.settings.featured
               assign flag_text = bestseller_word
-              if discount_percent > 0
-                assign saving = 'sections.bundles.save_percent' | t: percent: discount_percent
-                assign flag_text = flag_text | append: ' · ' | append: saving
+              comment
+                Nothing has sold yet, so nothing is a bestseller — in pre-order
+                mode the highlighted card says it is our recommendation instead.
+              endcomment
+              if settings.preorder_mode
+                assign flag_text = 'sections.bundles.badge_recommended' | t
               endif
             endif
           -%}
@@ -89,11 +156,29 @@
                 <div class="mh-bundle__flag">{{ flag_text }}</div>
               {%- endif -%}
 
+              {%- if section.settings.show_images -%}
+                <div class="mh-bundle__media">
+                  {% render 'mh-media',
+                    mh_image: card_image,
+                    mh_fallback: 'mh-demo-product.png',
+                    mh_class: 'mh-media--contain',
+                    mh_alt: card_title,
+                    mh_sizes: '(min-width: 1000px) 300px, 45vw'
+                  %}
+                  {%- if discount_percent > 0 -%}
+                    <span class="mh-bundle__off">{{ 'products.product.save_percent' | t: percent: discount_percent }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
               {%- if card_eyebrow != blank -%}
                 <div class="mh-bundle__eyebrow">{{ card_eyebrow }}</div>
               {%- endif -%}
-
               <div class="mh-bundle__title">{{ card_title }}</div>
+              <div class="mh-bundle__sub">
+                {{- 'sections.bundles.bottles_volume' | t: count: bottles, volume: volume -}}
+                {%- if free_shipping %} <span class="mh-bundle__ship">{{ 'sections.bundles.free_shipping_badge' | t }}</span>{% endif -%}
+              </div>
 
               <div class="mh-bundle__price">
                 <span class="mh-bundle__price-current">{{ variant.price | money }}</span>
@@ -103,20 +188,31 @@
               </div>
 
               {%- if unit_price != blank -%}
-                <div class="mh-bundle__unit">{{ 'sections.bundles.per_bottle' | t: price: unit_price }}</div>
+                <div class="mh-bundle__unit">
+                  {{- 'sections.bundles.per_bottle' | t: price: unit_price }}
+                  {%- if single_cents > unit_cents %} <span class="mh-bundle__vs">{{ 'sections.bundles.vs_single' | t: price: single_price }}</span>{% endif -%}
+                </div>
               {%- endif -%}
+              {%- if saving != blank -%}
+                <div class="mh-bundle__saving">{{ 'sections.bundles.saving' | t: amount: saving }}</div>
+              {%- endif -%}
+              {% render 'mh-base-price', mh_variant: variant, mh_bottles: bottles, mh_class: 'mh-bundle__base' %}
 
               <button
                 type="button"
                 class="mh-btn mh-bundle__cta {% if block.settings.featured %}mh-btn--primary{% else %}mh-btn--outline{% endif %}"
                 data-mh-select="{{ variant.id }}"
-                data-mh-select-action="{{ section.settings.cta_action }}"
-                data-mh-select-scroll="#mh-buy"
+                data-mh-select-action="{{ card_action }}"
+                data-mh-select-scroll="{{ card_scroll }}"
                 data-mh-add-label-text="{{ select_label | escape }}"
                 aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
-                {% unless variant.available %}disabled{% endunless %}>
+                {% if lock_unavailable and variant.available == false %}disabled{% endif %}>
                 <span data-mh-add-label>
-                  {%- if variant.available %}{{ select_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif -%}
+                  {%- if variant.available or settings.preorder_mode -%}
+                    {{ select_label }}
+                  {%- else -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- endif -%}
                 </span>
               </button>
             </div>
@@ -124,6 +220,8 @@
         {%- endfor -%}
       </div>
     {%- endif -%}
+
+    {% render 'mh-tax-note', mh_class: 'mh-bundles__tax' %}
 
     <div class="mh-bundles__trust">
       {%- assign trust_1 = section.settings.trust_1 | default: fallback_trust_1 -%}
@@ -153,9 +251,37 @@
     { "type": "textarea", "id": "body", "label": "Intro text" },
     { "type": "text", "id": "select_label", "label": "Button label" },
     {
+      "type": "checkbox",
+      "id": "show_images",
+      "label": "Show a product image on each card",
+      "default": true,
+      "info": "Uses the image assigned to that variant in the Shopify admin, falling back to the product's featured image. Assign a photo per variant (Products → Variants → image) so each bundle shows the right number of bottles."
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "min": 100,
+      "max": 260,
+      "step": 10,
+      "unit": "px",
+      "label": "Image height",
+      "default": 160
+    },
+    {
+      "type": "range",
+      "id": "single_position",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "label": "Single-bottle variant (position in the admin)",
+      "default": 1,
+      "info": "The sets show what they save against buying this many single bottles."
+    },
+    {
       "type": "select",
       "id": "cta_action",
       "label": "What the button does",
+      "info": "Ignored while pre-order mode is on: the card then selects the bundle and scrolls to the waitlist.",
       "options": [
         { "value": "select", "label": "Select the bundle" },
         { "value": "scroll", "label": "Select and scroll to the buy box" },
@@ -185,6 +311,12 @@
         },
         { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
         { "type": "text", "id": "title", "label": "Title", "info": "Defaults to the variant name." },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Optional. Overrides the variant image — use it for a bundle shot showing the actual number of bottles."
+        },
         {
           "type": "range",
           "id": "bottles",

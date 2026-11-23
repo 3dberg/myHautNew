@@ -1,0 +1,151 @@
+{%- comment -%}
+  Produktdetails — the block of information a cosmetic product has to carry
+  when it is offered in Germany.
+
+  The first two rows (Nettofüllmenge, Grundpreis) are generated from the
+  product and the theme's pre-order settings so they can never drift out of
+  sync with the price. Everything else is an editable block, pre-filled with
+  the correct German headings and a [[PLATZHALTER: …]] where only you have the
+  real data — the INCI list, the responsible person under EU 1223/2009 Art. 19
+  and the durability information.
+
+  Nothing here is legal advice; it is the structure. Have the final wording and
+  the CPSR checked by whoever signs off your product safety report.
+{%- endcomment -%}
+
+{%- liquid
+  assign mh_product = section.settings.product | default: product | default: collections.all.products.first
+  assign current_variant = mh_product.selected_or_first_available_variant
+
+  assign fallback_eyebrow = 'sections.details.eyebrow' | t
+  assign fallback_heading = 'sections.details.heading' | t
+  assign fallback_body = 'sections.details.body' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign intro = section.settings.body | default: fallback_body
+
+  assign volume = settings.bottle_volume_ml | default: 100 | plus: 0
+  if volume < 1
+    assign volume = 100
+  endif
+-%}
+
+<div class="mh-details" id="{{ section.settings.anchor | default: 'mh-produktdetails' }}">
+  <div class="mh-container">
+    <div class="mh-details__grid">
+      <div class="mh-details__head">
+        {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+        <h2 class="mh-details__title">{{ heading | newline_to_br }}</h2>
+        {%- if intro != blank -%}<p class="mh-details__body">{{ intro }}</p>{%- endif -%}
+
+        {%- if section.settings.show_summary and mh_product != blank -%}
+          <dl class="mh-details__summary">
+            <div class="mh-details__row">
+              <dt>{{ 'sections.details.net_content' | t }}</dt>
+              <dd>{{ volume }} ml</dd>
+            </div>
+            {%- if settings.show_base_price -%}
+              <div class="mh-details__row">
+                <dt>{{ 'sections.details.base_price' | t }}</dt>
+                <dd>{% render 'mh-base-price', mh_variant: current_variant, mh_dynamic: true %}</dd>
+              </div>
+            {%- endif -%}
+            {%- if settings.preorder_mode and settings.preorder_ship_text != blank -%}
+              <div class="mh-details__row">
+                <dt>{{ 'sections.details.availability' | t }}</dt>
+                <dd>{{ settings.preorder_ship_text }}</dd>
+              </div>
+            {%- endif -%}
+          </dl>
+        {%- endif -%}
+      </div>
+
+      <div class="mh-details__list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign title_key = 'sections.details.item_' | append: forloop.index | append: '_title'
+            comment
+              The _html suffix matters: Shopify HTML-escapes a translation
+              unless the key ends in _html, so without it the <p> tags in the
+              fallback text render as visible markup.
+            endcomment
+            assign body_key = 'sections.details.item_' | append: forloop.index | append: '_body_html'
+            assign fallback_title = title_key | t
+            assign fallback_item_body = body_key | t
+            if fallback_title contains 'translation missing'
+              assign fallback_title = ''
+            endif
+            if fallback_item_body contains 'translation missing'
+              assign fallback_item_body = ''
+            endif
+            assign item_title = block.settings.title | default: fallback_title
+            assign item_body = block.settings.body | default: fallback_item_body
+          -%}
+          {%- if item_title != blank -%}
+            <details class="mh-details__item" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary class="mh-details__q">
+                <span>{{ item_title }}</span>
+                <span class="mh-faq__sign" aria-hidden="true">
+                  <span class="mh-faq__sign-plus">+</span>
+                  <span class="mh-faq__sign-minus">−</span>
+                </span>
+              </summary>
+              <div class="mh-details__a mh-rte">{{ item_body }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product details (DE)",
+  "tag": "section",
+  "class": "mh-section-details",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Everything a cosmetic needs on a German product page. Search the blocks for [[PLATZHALTER and replace each one with your real data before you run ads."
+    },
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Headline" },
+    { "type": "textarea", "id": "body", "label": "Intro text" },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "label": "Show the generated summary (net content, Grundpreis, availability)",
+      "default": true
+    },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-produktdetails" }
+  ],
+  "blocks": [
+    {
+      "type": "detail",
+      "name": "Detail",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "info": "Leave empty to use the built-in translation." },
+        { "type": "richtext", "id": "body", "label": "Text" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "Product details (DE)",
+      "blocks": [
+        { "type": "detail", "settings": { "open": true } },
+        { "type": "detail" },
+        { "type": "detail" },
+        { "type": "detail" },
+        { "type": "detail" },
+        { "type": "detail" }
+      ]
+    }
+  ]
+}
+{% endschema %}

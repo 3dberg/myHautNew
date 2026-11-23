@@ -1,0 +1,226 @@
+{%- comment -%}
+  "Erzähl uns mehr" — the long-form half of the interest capture.
+
+  Uses Shopify's contact form, so every answer arrives as an email at the
+  address under Settings → Store details → Customer email. Nothing here
+  subscribes anybody: put the Waitlist section above this one on the page so
+  the marketing opt-in stays a separate, explicit action.
+
+  The questions are blocks, so you can change what you are testing for without
+  touching Liquid. Any answer is submitted as contact[<label>] and shows up in
+  the email under that label.
+{%- endcomment -%}
+
+{%- liquid
+  assign mh_product = section.settings.product | default: product | default: collections.all.products.first
+
+  assign fallback_eyebrow = 'sections.interest.eyebrow' | t
+  assign fallback_heading = 'sections.interest.heading' | t
+  assign fallback_body = 'sections.interest.body' | t
+  assign fallback_submit = 'sections.interest.submit' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign intro = section.settings.body | default: fallback_body
+  assign submit_label = section.settings.submit_label | default: fallback_submit
+
+  assign privacy_url = settings.privacy_page
+-%}
+
+<div class="mh-interest" id="{{ section.settings.anchor | default: 'mh-interesse' }}">
+  <div class="mh-container">
+    <div class="mh-interest__head">
+      {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+      <h2 class="mh-interest__title">{{ heading | newline_to_br }}</h2>
+      {%- if intro != blank -%}<p class="mh-interest__body">{{ intro }}</p>{%- endif -%}
+    </div>
+
+    {%- form 'contact', id: 'mh-interest-form', class: 'mh-interest__form' -%}
+      {%- if form.posted_successfully? -%}
+        <div class="mh-interest__success" role="status">
+          <h3 class="mh-interest__success-title">{{ 'sections.interest.success_heading' | t }}</h3>
+          <p>{{ 'sections.interest.success_body' | t }}</p>
+        </div>
+      {%- else -%}
+        {%- if form.errors -%}
+          <div class="mh-errors" role="alert">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+
+        <div class="mh-interest__grid">
+          <div class="mh-field">
+            <label for="mh-interest-name">{{ 'sections.interest.name' | t }}</label>
+            <input type="text" id="mh-interest-name" name="contact[name]" autocomplete="name">
+          </div>
+
+          <div class="mh-field">
+            <label for="mh-interest-email">{{ 'sections.interest.email' | t }}</label>
+            <input type="email" id="mh-interest-email" name="contact[email]" required autocomplete="email">
+          </div>
+
+          {%- if section.settings.show_bundle_select and mh_product.variants.size > 0 -%}
+            <div class="mh-field">
+              <label for="mh-interest-bundle">{{ 'sections.interest.bundle' | t }}</label>
+              <select id="mh-interest-bundle" name="contact[{{ 'sections.interest.bundle' | t }}]">
+                <option value="">{{ 'sections.interest.no_answer' | t }}</option>
+                {%- for variant in mh_product.variants -%}
+                  <option value="{{ variant.title }} ({{ variant.price | money }})">
+                    {{ variant.title }} — {{ variant.price | money }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- endif -%}
+
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign label = block.settings.label
+              assign field_id = 'mh-interest-' | append: block.id
+              assign field_name = 'contact[' | append: label | append: ']'
+              assign options = block.settings.options | newline_to_br | split: '<br />'
+            -%}
+            {%- if label != blank -%}
+              <div
+                class="mh-field{% if block.settings.full_width %} mh-field--wide{% endif %}"
+                {{ block.shopify_attributes }}>
+                {%- case block.type -%}
+                  {%- when 'select' -%}
+                    <label for="{{ field_id }}">{{ label }}</label>
+                    <select id="{{ field_id }}" name="{{ field_name }}" {% if block.settings.required %}required{% endif %}>
+                      <option value="">{{ 'sections.interest.no_answer' | t }}</option>
+                      {%- for option in options -%}
+                        {%- assign option_text = option | strip -%}
+                        {%- if option_text != blank -%}
+                          <option value="{{ option_text | escape }}">{{ option_text }}</option>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </select>
+
+                  {%- when 'checkboxes' -%}
+                    <span class="mh-field__legend">{{ label }}</span>
+                    <div class="mh-checkboxes">
+                      {%- for option in options -%}
+                        {%- liquid
+                          assign option_text = option | strip
+                          assign option_id = field_id | append: '-' | append: forloop.index
+                          assign option_name = 'contact[' | append: label | append: ': ' | append: option_text | append: ']'
+                        -%}
+                        {%- if option_text != blank -%}
+                          <label class="mh-checkbox" for="{{ option_id }}">
+                            <input type="checkbox" id="{{ option_id }}" name="{{ option_name }}" value="{{ 'sections.interest.yes' | t }}">
+                            <span>{{ option_text }}</span>
+                          </label>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+
+                  {%- when 'textarea' -%}
+                    <label for="{{ field_id }}">{{ label }}</label>
+                    <textarea
+                      id="{{ field_id }}"
+                      name="{{ field_name }}"
+                      rows="4"
+                      {% if block.settings.required %}required{% endif %}></textarea>
+
+                  {%- else -%}
+                    <label for="{{ field_id }}">{{ label }}</label>
+                    <input
+                      type="text"
+                      id="{{ field_id }}"
+                      name="{{ field_name }}"
+                      {% if block.settings.required %}required{% endif %}>
+                {%- endcase -%}
+                {%- if block.settings.help != blank -%}
+                  <span class="mh-field__help">{{ block.settings.help }}</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+
+          <div class="mh-field mh-field--wide">
+            <label for="mh-interest-message">{{ 'sections.interest.message' | t }}</label>
+            <textarea id="mh-interest-message" name="contact[body]" rows="4"></textarea>
+          </div>
+        </div>
+
+        <label class="mh-consent" for="mh-interest-consent">
+          <input type="checkbox" id="mh-interest-consent" required>
+          <span>
+            {{ 'sections.interest.consent' | t }}
+            {%- if privacy_url != blank %}
+              {{ 'sections.waitlist.consent_privacy' | t }}
+              <a href="{{ privacy_url }}" target="_blank" rel="noopener">{{ 'sections.waitlist.consent_link' | t }}</a>.
+            {%- endif -%}
+          </span>
+        </label>
+
+        <button type="submit" class="mh-btn mh-btn--primary">{{ submit_label }}</button>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Interest form",
+  "tag": "section",
+  "class": "mh-section-interest",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Answers arrive by email at Settings → Store details → Customer email. This form does not subscribe anyone — keep the Waitlist section above it for the marketing opt-in."
+    },
+    { "type": "product", "id": "product", "label": "Product", "info": "Used to fill the bundle dropdown." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Headline" },
+    { "type": "textarea", "id": "body", "label": "Intro text" },
+    { "type": "checkbox", "id": "show_bundle_select", "label": "Ask which bundle they would take", "default": true },
+    { "type": "text", "id": "submit_label", "label": "Button label" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-interesse" }
+  ],
+  "blocks": [
+    {
+      "type": "select",
+      "name": "Question: one answer",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Question" },
+        { "type": "textarea", "id": "options", "label": "Answers", "info": "One per line." },
+        { "type": "text", "id": "help", "label": "Help text" },
+        { "type": "checkbox", "id": "required", "label": "Required", "default": false },
+        { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false }
+      ]
+    },
+    {
+      "type": "checkboxes",
+      "name": "Question: many answers",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Question" },
+        { "type": "textarea", "id": "options", "label": "Answers", "info": "One per line." },
+        { "type": "text", "id": "help", "label": "Help text" },
+        { "type": "checkbox", "id": "full_width", "label": "Full width", "default": true }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Question: short text",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Question" },
+        { "type": "text", "id": "help", "label": "Help text" },
+        { "type": "checkbox", "id": "required", "label": "Required", "default": false },
+        { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false }
+      ]
+    },
+    {
+      "type": "textarea",
+      "name": "Question: long text",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Question" },
+        { "type": "text", "id": "help", "label": "Help text" },
+        { "type": "checkbox", "id": "required", "label": "Required", "default": false },
+        { "type": "checkbox", "id": "full_width", "label": "Full width", "default": true }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [{ "name": "Interest form" }]
+}
+{% endschema %}

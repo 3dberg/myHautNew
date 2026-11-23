@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "Footer",
   "type": "footer",
@@ -5,15 +14,40 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "column-1": { "type": "column", "settings": { "menu": "footer" } },
-        "column-2": { "type": "column", "settings": { "menu": "footer" } },
-        "column-3": { "type": "column", "settings": { "menu": "footer" } }
+        "column-1": {
+          "type": "column",
+          "settings": {
+            "title": "Rechtliches",
+            "menu": "footer"
+          }
+        },
+        "column-2": {
+          "type": "column",
+          "settings": {
+            "title": "FAQ und Kontakt",
+            "menu": "main-menu"
+          }
+        }
       },
-      "block_order": ["column-1", "column-2", "column-3"],
+      "block_order": [
+        "column-1",
+        "column-2"
+      ],
+      "custom_css": [
+        ".mh-footer__brand img {display: block; width: auto; float: left;}"
+      ],
       "settings": {
-        "show_payment_icons": true
+        "tagline": "",
+        "show_terms": true,
+        "show_payment_icons": true,
+        "show_social": true,
+        "logo": "shopify://shop_images/Logo_MyHaut_new.png",
+        "logo_width": 0,
+        "logo_height": 105
       }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }

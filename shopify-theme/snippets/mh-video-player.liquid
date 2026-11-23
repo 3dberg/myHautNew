@@ -1,0 +1,110 @@
+{%- comment -%}
+  One Shopify-hosted clip in a 9:16 or 4:5 frame. The markup carries every
+  rendition Shopify made (HLS, 720p, 480p) as data attributes and no <source>,
+  so myhaut.js can pick what the connection can actually carry and attach it
+  only when the visitor is about to look at it. Until then only the poster
+  loads. Shopify's 1080p file (7 Mbit/s) is never used: inside a 300 px frame
+  it costs three times the data for nothing.
+
+  The frame is a small state machine, driven by data-mh-video-state:
+    idle      poster with the duration badge
+    loading   spinner, the clip is buffering
+    ready     buffered; the play control shows once the visitor has settled
+    playing   progress bar and sound control
+    paused    play control
+    error     message and retry
+  Shared by the video carousel and the tester-quote cards.
+
+  Accepts:
+    mh_video    video setting (required)
+    mh_poster   image_picker setting (optional, overrides the preview frame)
+    mh_label    accessible label / caption text (optional)
+    mh_class    extra class names on the frame (optional)
+{%- endcomment -%}
+
+{%- liquid
+  assign src_hls = ''
+  assign src_hd = ''
+  assign src_sd = ''
+  assign hd_height = 0
+  assign sd_height = 0
+  for source in mh_video.sources
+    if source.format == 'm3u8'
+      assign src_hls = source.url
+    elsif source.format == 'mp4'
+      if source.height <= 720 and source.height > hd_height
+        assign src_hd = source.url
+        assign hd_height = source.height
+      endif
+      if sd_height == 0 or source.height < sd_height
+        assign src_sd = source.url
+        assign sd_height = source.height
+      endif
+    endif
+  endfor
+  if src_hd == blank
+    assign src_hd = src_sd
+  endif
+
+  assign poster = mh_poster | default: mh_video.preview_image
+
+  comment
+    Shopify reports the duration in milliseconds.
+  endcomment
+  assign seconds = mh_video.duration | default: 0 | times: 1.0 | divided_by: 1000 | round
+  assign minutes = seconds | divided_by: 60
+  assign rest = seconds | modulo: 60
+  if rest < 10
+    assign rest = '0' | append: rest
+  endif
+-%}
+
+<div class="mh-video__frame {{ mh_class }}" data-mh-video-frame data-mh-video-state="idle">
+  <video
+    class="mh-video__player"
+    data-mh-video
+    data-mh-src-hls="{{ src_hls }}"
+    data-mh-src-hd="{{ src_hd }}"
+    data-mh-src-sd="{{ src_sd }}"
+    muted
+    playsinline
+    loop
+    preload="none"
+    {% if poster != blank %}poster="{{ poster | image_url: width: 720 }}"{% endif %}
+    {% if mh_label != blank %}aria-label="{{ mh_label | escape }}"{% endif %}></video>
+
+  {%- comment -%} Poster hint: a short clip, not a photo. {%- endcomment -%}
+  <span class="mh-video__hint" aria-hidden="true">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>
+    {%- if seconds > 0 %}<span>{{ minutes }}:{{ rest }}</span>{% endif -%}
+  </span>
+
+  <button type="button" class="mh-video__play" data-mh-video-play aria-label="{{ 'sections.video.play' | t }}">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>
+  </button>
+
+  <div class="mh-video__loading" aria-hidden="true">
+    <span class="mh-video__ring"></span>
+    <span class="mh-video__loading-text">{{ 'sections.video.loading' | t }}</span>
+    <span class="mh-video__loading-slow">{{ 'sections.video.loading_slow' | t }}</span>
+  </div>
+
+  <div class="mh-video__error" role="alert">
+    <p>{{ 'sections.video.error' | t }}</p>
+    <button type="button" class="mh-video__retry" data-mh-video-retry>{{ 'sections.video.retry' | t }}</button>
+  </div>
+
+  <div class="mh-video__controls">
+    <button
+      type="button"
+      class="mh-video__sound"
+      data-mh-video-sound
+      aria-pressed="false"
+      aria-label="{{ 'sections.video.unmute' | t }}">
+      <svg class="mh-video__icon mh-video__icon--muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+      <svg class="mh-video__icon mh-video__icon--sound" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+      <span data-mh-video-sound-label>{{ 'sections.video.unmute' | t }}</span>
+    </button>
+    <div class="mh-video__progress"><span class="mh-video__bar" data-mh-video-progress></span></div>
+  </div>
+</div>

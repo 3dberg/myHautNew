@@ -35,7 +35,7 @@
         "type": "checkbox",
         "id": "use_demo_images",
         "label": "Show the bundled demo images where no image is set",
-        "default": true,
+        "default": false,
         "info": "Placeholder photography shipped with the theme. Switch off once you have uploaded your own images."
       },
       {
@@ -48,6 +48,119 @@
         "label": "Maximum page width",
         "default": 1280,
         "info": "The design was drawn at 1280 px."
+      }
+    ]
+  },
+  {
+    "name": "Vorbestellung (Pre-order)",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Pre-launch mode. The primary call to action everywhere becomes the waitlist form; the real checkout stays wired up but hidden behind a small secondary link you can switch on the day you start taking money."
+      },
+      {
+        "type": "checkbox",
+        "id": "preorder_mode",
+        "label": "Vorbestell-Modus aktiv",
+        "default": false,
+        "info": "On: waitlist is the primary action, prices are labelled as expected prices, the pre-order badge replaces the star rating. Off: the theme behaves like a normal shop."
+      },
+      {
+        "type": "checkbox",
+        "id": "preorder_show_checkout",
+        "label": "Kaufen-Link zusätzlich anzeigen",
+        "default": false,
+        "info": "Shows the small “Jetzt vorbestellen →” link next to the waitlist button, which really adds to the cart. Only switch this on once Impressum, AGB, Widerrufsbelehrung, Versandkosten and the binding delivery date are live — a paid pre-order is a distance-selling contract under German law."
+      },
+      {
+        "type": "text",
+        "id": "preorder_ship_text",
+        "label": "Voraussichtlicher Liefertermin",
+        "default": "Voraussichtlich lieferbar ab September 2026",
+        "info": "Replace the placeholder with a real date before you run ads. If you take money (checkout link on) this has to be a binding date, not an estimate."
+      },
+      {
+        "type": "text",
+        "id": "waitlist_anchor",
+        "label": "Anker der Vormerk-Sektion",
+        "default": "#mh-vormerken",
+        "info": "Every pre-order button scrolls here. Must match the anchor set on the “Waitlist” section."
+      },
+      {
+        "type": "url",
+        "id": "interest_page",
+        "label": "Seite „Mehr erzählen“",
+        "info": "Optional. Linked from the waitlist confirmation — point it at the page using the “Interest form” template."
+      }
+    ]
+  },
+  {
+    "name": "Versand, Preise & Rückgabe",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Everything the price lines, the offer cards and the return section read from. Keep the numbers in sync with Settings → Versand and with the Widerruf / AGB page."
+      },
+      {
+        "type": "checkbox",
+        "id": "free_shipping_all",
+        "label": "Versandkostenfrei f\u00fcr jede Bestellung",
+        "default": true,
+        "info": "An: alle Zeilen sagen \u201eVersandkostenfrei\u201c und \u201eEndpreis\u201c statt \u201eab X \u20ac\u201c. Nur einschalten, wenn der kostenlose Versand in Einstellungen \u2192 Versand wirklich f\u00fcr die kleinstm\u00f6gliche Bestellung gilt."
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Versandkostenfrei ab (€)",
+        "default": 30,
+        "info": "0 = off. Shown in the announcement bar, on the set cards and in the return section. Must match the free-shipping rate in Settings → Versand."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_compare_prices",
+        "label": "Streichpreise anzeigen",
+        "default": false,
+        "info": "Off: no struck-through prices and no −X % badges anywhere. Only switch on if the compare-at price was really charged in the last 30 days — § 11 PAngV."
+      },
+      {
+        "type": "header",
+        "content": "Preisangaben (PAngV)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_base_price",
+        "label": "Grundpreis anzeigen",
+        "default": true,
+        "info": "Required in Germany for cosmetics sold by volume: the price per 100 ml next to every price."
+      },
+      {
+        "type": "number",
+        "id": "bottle_volume_ml",
+        "label": "Füllmenge pro Flasche (ml)",
+        "default": 100,
+        "info": "Used to calculate the Grundpreis per 100 ml and to read old volume-only variant titles (300 ml = 3 bottles)."
+      },
+      {
+        "type": "header",
+        "content": "Rechtliche Seiten"
+      },
+      {
+        "type": "url",
+        "id": "shipping_page",
+        "label": "Seite „Versand & Zahlung“",
+        "info": "Linked from the “inkl. MwSt., zzgl. Versand” line (§ 6 PAngV) and from the return section."
+      },
+      {
+        "type": "url",
+        "id": "returns_page",
+        "label": "Seite „Widerruf & Rückgabe“",
+        "info": "Linked from the 30-day return item in the return section."
+      },
+      {
+        "type": "url",
+        "id": "privacy_page",
+        "label": "Seite „Datenschutz“",
+        "info": "Linked from the consent checkbox on every form."
       }
     ]
   },
@@ -167,16 +280,38 @@
         "type": "richtext",
         "id": "cart_note",
         "label": "Note under the checkout button",
-        "default": "<p>Kostenloser Versand ab 25 € · 30 Tage Geld-zurück-Garantie</p>"
+        "default": "<p>30 Tage Rückgabe für ungeöffnete Flaschen · Versand aus Deutschland</p>"
       }
     ]
   },
   {
     "name": "Social media",
     "settings": [
-      { "type": "text", "id": "social_instagram_link", "label": "Instagram" },
-      { "type": "text", "id": "social_facebook_link", "label": "Facebook" },
-      { "type": "text", "id": "social_tiktok_link", "label": "TikTok" }
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "YouTube"
+      }
     ]
   }
 ]

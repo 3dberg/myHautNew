@@ -1,0 +1,402 @@
+{%- comment -%}
+  Product page top: media gallery on the left, buy box on the right.
+
+  The buy box is the whole decision in one column — title, price, three
+  benefit chips, the set selector, delivery / return bullets, the button, a
+  trust list, the short description and two accordions. Selecting a set
+  updates every price node on the page (myhaut.js) and swaps the gallery to
+  that variant's photo.
+{%- endcomment -%}
+
+{%- liquid
+  assign mh_product = section.settings.product | default: product | default: collections.all.products.first
+
+  comment
+    Preselected set: a variant id in the URL wins, then the section setting
+    default_position, then the first available variant.
+  endcomment
+  assign current_variant = mh_product.selected_variant
+  if current_variant == nil or current_variant == blank
+    assign default_position = section.settings.default_position | default: 0 | plus: 0
+    if default_position > 0
+      assign default_index = default_position | minus: 1
+      assign preset_variant = mh_product.variants[default_index]
+      if preset_variant != blank and preset_variant.available
+        assign current_variant = preset_variant
+      endif
+    endif
+  endif
+  if current_variant == nil or current_variant == blank
+    assign current_variant = mh_product.selected_or_first_available_variant
+  endif
+
+  assign fallback_subtitle = 'sections.buybox.subtitle' | t
+  assign fallback_description = 'sections.buybox.description' | t
+  assign fallback_chip_1 = 'sections.buybox.chip_1' | t
+  assign fallback_chip_2 = 'sections.buybox.chip_2' | t
+  assign fallback_chip_3 = 'sections.buybox.chip_3' | t
+  assign fallback_bullet_1 = 'sections.buybox.bullet_1' | t
+  assign fallback_bullet_2 = 'sections.buybox.bullet_2' | t
+
+  assign title = section.settings.title | default: mh_product.title
+  assign subtitle = section.settings.subtitle | default: fallback_subtitle
+  assign chip_1 = section.settings.chip_1 | default: fallback_chip_1
+  assign chip_2 = section.settings.chip_2 | default: fallback_chip_2
+  assign chip_3 = section.settings.chip_3 | default: fallback_chip_3
+  assign bullet_1 = section.settings.bullet_1 | default: fallback_bullet_1
+  assign bullet_2 = section.settings.bullet_2 | default: fallback_bullet_2
+
+  assign description = section.settings.description
+  if description == blank and section.settings.use_product_description
+    assign description = mh_product.description
+  endif
+  if description == blank
+    assign description = fallback_description
+  endif
+
+  assign hide_discounts = true
+  if settings.show_compare_prices
+    assign hide_discounts = false
+  endif
+  assign lock_unavailable = true
+  if settings.preorder_mode
+    assign lock_unavailable = false
+  endif
+
+  assign free_threshold = settings.free_shipping_threshold | default: 0 | plus: 0
+  assign free_cents = free_threshold | times: 100
+  assign free_amount = ''
+  if free_threshold > 0
+    assign free_amount = free_cents | money_without_trailing_zeros
+  endif
+  assign volume = settings.bottle_volume_ml | default: 100 | plus: 0
+  if volume < 1
+    assign volume = 100
+  endif
+
+  assign single_index = section.settings.single_position | default: 1 | minus: 1
+  assign single_cents = mh_product.variants[single_index].price | default: 0
+  assign featured_position = section.settings.featured_position | default: 2
+  assign best_position = mh_product.variants.size
+-%}
+
+{%- if mh_product != blank -%}
+  <div class="mh-buybox" id="mh-buy">
+    {% render 'mh-product-data', mh_product: mh_product, mh_default_position: section.settings.default_position %}
+    <div class="mh-container">
+      <div class="mh-buybox__grid">
+
+        {%- comment -%} ---------------------------------------- gallery {%- endcomment -%}
+        <div class="mh-gallery" data-mh-gallery aria-label="{{ 'sections.buybox.gallery_label' | t }}">
+          <div class="mh-gallery__main">
+            {%- for media in mh_product.media -%}
+              {%- liquid
+                assign is_active = false
+                if current_variant.featured_media != blank
+                  if media.id == current_variant.featured_media.id
+                    assign is_active = true
+                  endif
+                elsif forloop.first
+                  assign is_active = true
+                endif
+              -%}
+              <div class="mh-gallery__slide{% if is_active %} is-active{% endif %}" data-mh-gallery-slide="{{ media.id }}">
+                {%- case media.media_type -%}
+                  {%- when 'video' -%}
+                    {{ media | video_tag: image_size: '1200x', controls: true, muted: true, playsinline: true, preload: 'metadata' }}
+                  {%- when 'external_video' -%}
+                    {{ media | external_video_tag }}
+                  {%- else -%}
+                    {{ media | image_url: width: 1400 | image_tag: loading: 'eager', sizes: '(min-width: 1000px) 560px, 100vw', widths: '400, 600, 800, 1000, 1400', alt: media.alt | default: title }}
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+            {%- if mh_product.media.size == 0 -%}
+              {% render 'mh-media', mh_image: mh_product.featured_image, mh_fallback: 'mh-demo-product.png', mh_alt: title, mh_ratio: '1 / 1' %}
+            {%- endif -%}
+          </div>
+          {%- if mh_product.media.size > 1 -%}
+            <div class="mh-gallery__thumbs" role="list">
+              {%- for media in mh_product.media -%}
+                {%- liquid
+                  assign is_active = false
+                  if current_variant.featured_media != blank
+                    if media.id == current_variant.featured_media.id
+                      assign is_active = true
+                    endif
+                  elsif forloop.first
+                    assign is_active = true
+                  endif
+                -%}
+                <button
+                  type="button"
+                  class="mh-gallery__thumb{% if is_active %} is-active{% endif %}{% if media.media_type == 'video' or media.media_type == 'external_video' %} mh-gallery__thumb--video{% endif %}"
+                  data-mh-gallery-thumb="{{ media.id }}"
+                  aria-label="{{ 'sections.buybox.thumb_label' | t: index: forloop.index }}"
+                  aria-pressed="{% if is_active %}true{% else %}false{% endif %}">
+                  {{ media.preview_image | image_url: width: 160, height: 160, crop: 'center' | image_tag: loading: 'lazy', widths: '80, 160', alt: '' }}
+                </button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} ---------------------------------------- buy box {%- endcomment -%}
+        <div class="mh-buybox__panel">
+          {%- comment -%}
+            Rating row above the title. With no app block added the theme
+            renders the Loox star rating itself; an app block replaces it.
+          {%- endcomment -%}
+          {%- if section.blocks.size > 0 -%}
+            <div class="mh-buybox__rating">
+              {%- for block in section.blocks -%}
+                {%- if block.type == '@app' -%}{% render block %}{%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- elsif section.settings.show_rating -%}
+            {% render 'mh-loox-rating',
+              mh_product: mh_product,
+              mh_class: 'mh-buybox__rating',
+              mh_note: section.settings.rating_note,
+              mh_target: section.settings.rating_target
+            %}
+          {%- endif -%}
+
+          <h1 class="mh-buybox__title">{{ title }}</h1>
+          {%- if subtitle != blank -%}<p class="mh-buybox__subtitle">{{ subtitle }}</p>{%- endif -%}
+
+          {% render 'mh-price', mh_variant: current_variant, mh_class: 'mh-buybox__price', mh_show_base: false, mh_show_tax: false %}
+          {% render 'mh-free-shipping', mh_class: 'mh-buybox__ship' %}
+          <div class="mh-buybox__legal">
+            {% render 'mh-base-price', mh_variant: current_variant, mh_dynamic: true %}
+            {% render 'mh-tax-note', mh_hide_shipping: true %}
+          </div>
+
+          <div class="mh-buybox__chips">
+            {%- if chip_1 != blank -%}<span>{{ chip_1 }}</span>{%- endif -%}
+            {%- if chip_2 != blank -%}<span>{{ chip_2 }}</span>{%- endif -%}
+            {%- if chip_3 != blank -%}<span>{{ chip_3 }}</span>{%- endif -%}
+          </div>
+
+          {%- form 'product', mh_product, class: 'mh-buybox__form', data-mh-form: 'true' -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-mh-form-variant>
+            <input type="hidden" name="quantity" value="1">
+
+            {%- if mh_product.variants.size > 1 -%}
+              <div class="mh-tiers" role="group" aria-label="{{ 'sections.buybox.selector_label' | t }}">
+                <span class="mh-tiers__label">{{ 'sections.buybox.selector_label' | t }}</span>
+                {%- for variant in mh_product.variants -%}
+                  {%- liquid
+                    capture bottles
+                      render 'mh-bottles', mh_variant: variant
+                    endcapture
+                    assign bottles = bottles | plus: 0
+                    assign unit_cents = variant.price | divided_by: bottles
+                    assign unit_price = unit_cents | money
+                    assign saving_cents = single_cents | times: bottles | minus: variant.price
+                    assign saving = ''
+                    if bottles > 1 and saving_cents > 0
+                      assign saving = saving_cents | money
+                    endif
+                    assign discount_percent = 0
+                    if variant.compare_at_price > variant.price and hide_discounts == false
+                      assign price_difference = variant.compare_at_price | minus: variant.price
+                      assign rounding = variant.compare_at_price | divided_by: 2
+                      assign discount_percent = price_difference | times: 100 | plus: rounding | divided_by: variant.compare_at_price
+                    endif
+                    assign free_shipping = false
+                    if free_cents > 0 and variant.price >= free_cents
+                      assign free_shipping = true
+                    endif
+                    assign tier_image = variant.featured_media.preview_image | default: mh_product.featured_image
+                    assign badge = ''
+                    if forloop.index == featured_position
+                      assign badge = 'sections.bundles.badge_bestseller' | t
+                    elsif forloop.index == best_position and bottles > 1
+                      assign badge = 'sections.buybox.badge_best_price' | t
+                    endif
+                  -%}
+                  <button
+                    type="button"
+                    class="mh-tier{% if variant.id == current_variant.id %} is-active{% endif %}"
+                    data-mh-select="{{ variant.id }}"
+                    data-mh-select-action="select"
+                    aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
+                    {% if lock_unavailable and variant.available == false %}disabled{% endif %}>
+                    <span class="mh-tier__thumb">
+                      {%- if tier_image != blank -%}
+                        {{ tier_image | image_url: width: 120, height: 120, crop: 'center' | image_tag: loading: 'lazy', widths: '60, 120', alt: '' }}
+                      {%- endif -%}
+                    </span>
+                    <span class="mh-tier__main">
+                      <span class="mh-tier__title">
+                        {{- variant.title -}}
+                        {%- if badge != blank %} <span class="mh-tier__badge">{{ badge }}</span>{% endif -%}
+                      </span>
+                      <span class="mh-tier__meta">
+                        {{- 'sections.bundles.bottles_volume' | t: count: bottles, volume: volume -}}
+                        {%- if saving != blank %} · {{ 'sections.bundles.saving' | t: amount: saving }}{% endif -%}
+                        {%- if free_shipping %} · <span class="mh-tier__ship">{{ 'sections.bundles.free_shipping_badge' | t }}</span>{% endif -%}
+                      </span>
+                    </span>
+                    <span class="mh-tier__price">
+                      <span class="mh-tier__price-current">{{ variant.price | money }}</span>
+                      {%- if discount_percent > 0 -%}
+                        <s class="mh-tier__price-compare">{{ variant.compare_at_price | money }}</s>
+                        <span class="mh-tier__off">{{ 'products.product.save_percent' | t: percent: discount_percent }}</span>
+                      {%- endif -%}
+                      {%- if bottles > 1 -%}
+                        <span class="mh-tier__unit">{{ 'sections.buybox.per_bottle' | t: price: unit_price }}</span>
+                      {%- endif -%}
+                    </span>
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            <ul class="mh-buybox__bullets">
+              {%- if bullet_1 != blank -%}<li>{{ bullet_1 }}</li>{%- endif -%}
+              {%- if bullet_2 != blank -%}<li>{{ bullet_2 }}</li>{%- endif -%}
+            </ul>
+
+            {% render 'mh-buy-actions',
+              mh_variant: current_variant,
+              mh_label: section.settings.buy_label,
+              mh_modifier: 'mh-btn--primary mh-btn--block',
+              mh_submit: true,
+              mh_context: 'buybox'
+            %}
+          {%- endform -%}
+
+          <ul class="mh-buybox__trust">
+            {%- for i in (1..5) -%}
+              {%- liquid
+                assign key = 'sections.buybox.trust_' | append: i
+                assign setting_key = 'trust_' | append: i
+                assign item = section.settings[setting_key]
+                if item == blank
+                  if i == 1
+                    if settings.free_shipping_all
+                      assign item = 'sections.buybox.trust_1_all' | t
+                    elsif free_amount != blank
+                      assign item = key | t: amount: free_amount
+                    else
+                      assign item = ''
+                    endif
+                  else
+                    assign item = key | t
+                  endif
+                endif
+              -%}
+              {%- if item != blank -%}
+                <li>
+                  <svg class="mh-buybox__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    {%- case i -%}
+                      {%- when 1 -%}<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/>
+                      {%- when 2 -%}<path d="M4 6h16v12H4z"/><path d="M4 10h16M8 14h3"/>
+                      {%- when 3 -%}<path d="M12 3l8 3v6c0 4.5-3.5 8-8 9-4.5-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>
+                      {%- when 4 -%}<path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/>
+                      {%- else -%}<path d="M12 21s-7-4.5-7-11a7 7 0 0 1 14 0c0 6.5-7 11-7 11z"/><path d="M9.5 10.5l1.8 1.8 3.4-3.6"/>
+                    {%- endcase -%}
+                  </svg>
+                  <span>{{ item }}</span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+
+          {%- if description != blank -%}
+            <div class="mh-buybox__description mh-rte">{{ description }}</div>
+          {%- endif -%}
+
+          <div class="mh-buybox__accordions">
+            {%- for i in (1..2) -%}
+              {%- liquid
+                assign t_key = 'sections.buybox.acc_' | append: i | append: '_title'
+                assign b_key = 'sections.buybox.acc_' | append: i | append: '_body_html'
+                if i == 1
+                  assign b_key = 'sections.details.item_2_body_html'
+                endif
+                assign t_setting = 'acc_' | append: i | append: '_title'
+                assign b_setting = 'acc_' | append: i | append: '_body'
+                assign acc_title = section.settings[t_setting] | default: t_key | t
+                if acc_title == t_key
+                  assign acc_title = t_key | t
+                endif
+                assign acc_body = section.settings[b_setting]
+                if acc_body == blank
+                  assign acc_body = b_key | t
+                endif
+              -%}
+              {%- if acc_title != blank and acc_body != blank -%}
+                <details class="mh-faq__item mh-buybox__acc">
+                  <summary class="mh-faq__q">
+                    <span>{{ acc_title }}</span>
+                    <span class="mh-faq__sign" aria-hidden="true"><span class="mh-faq__sign-plus">+</span><span class="mh-faq__sign-minus">−</span></span>
+                  </summary>
+                  <div class="mh-faq__a mh-rte">{{ acc_body }}</div>
+                </details>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product buy box",
+  "tag": "section",
+  "class": "mh-section-buybox",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product", "info": "On the product template the current product is used automatically when this is empty." },
+    { "type": "text", "id": "title", "label": "Title", "info": "Leave empty to use the product title." },
+    { "type": "text", "id": "subtitle", "label": "Subtitle" },
+    { "type": "header", "content": "Reviews" },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show the Loox star rating above the title",
+      "default": true,
+      "info": "Needs the Loox app embed switched on under Theme settings → App embeds. The row stays hidden until the product has its first review. Adding a review app block with “Add block → Apps” replaces it."
+    },
+    { "type": "text", "id": "rating_note", "label": "Small line next to the stars", "info": "Optional, e.g. “Echte Kundenbewertungen”. Only shown once the product has a review." },
+    {
+      "type": "text",
+      "id": "rating_target",
+      "label": "The stars link to",
+      "default": "#mh-reviews",
+      "info": "Anchor of the review section on this page. Leave empty to make the stars a plain, unclickable row."
+    },
+    { "type": "header", "content": "Benefit chips" },
+    { "type": "text", "id": "chip_1", "label": "Chip 1" },
+    { "type": "text", "id": "chip_2", "label": "Chip 2" },
+    { "type": "text", "id": "chip_3", "label": "Chip 3" },
+    { "type": "header", "content": "Set selector" },
+    { "type": "range", "id": "default_position", "min": 0, "max": 6, "step": 1, "default": 2, "label": "Preselected variant (position)", "info": "Which set is selected when the page opens. 0 = the first available variant. A ?variant= link always wins." },
+    { "type": "range", "id": "featured_position", "min": 0, "max": 6, "step": 1, "default": 2, "label": "“Beliebteste Wahl” on variant (position)", "info": "0 = none." },
+    { "type": "range", "id": "single_position", "min": 1, "max": 12, "step": 1, "default": 1, "label": "Single-bottle variant (position)", "info": "Savings are calculated against this many single bottles." },
+    { "type": "text", "id": "bullet_1", "label": "Bullet 1 (delivery)" },
+    { "type": "text", "id": "bullet_2", "label": "Bullet 2 (returns)" },
+    { "type": "text", "id": "buy_label", "label": "Button label", "info": "Leave empty for “In den Warenkorb”." },
+    { "type": "header", "content": "Trust list" },
+    { "type": "text", "id": "trust_1", "label": "Line 1", "info": "Empty = “Versandkostenfrei ab …” from the theme settings." },
+    { "type": "text", "id": "trust_2", "label": "Line 2" },
+    { "type": "text", "id": "trust_3", "label": "Line 3" },
+    { "type": "text", "id": "trust_4", "label": "Line 4" },
+    { "type": "text", "id": "trust_5", "label": "Line 5" },
+    { "type": "header", "content": "Description and accordions" },
+    { "type": "checkbox", "id": "use_product_description", "label": "Use the product description from the admin", "default": false, "info": "Off: the built-in short description is used unless you write one below." },
+    { "type": "richtext", "id": "description", "label": "Short description" },
+    { "type": "text", "id": "acc_1_title", "label": "Accordion 1 title", "info": "Default: Anwendung, with the text from Produktdetails." },
+    { "type": "richtext", "id": "acc_1_body", "label": "Accordion 1 text" },
+    { "type": "text", "id": "acc_2_title", "label": "Accordion 2 title", "info": "Default: Versand & Rückgabe." },
+    { "type": "richtext", "id": "acc_2_body", "label": "Accordion 2 text" }
+  ],
+  "blocks": [{ "type": "@app" }],
+  "max_blocks": 1,
+  "presets": [{ "name": "Product buy box" }]
+}
+{% endschema %}

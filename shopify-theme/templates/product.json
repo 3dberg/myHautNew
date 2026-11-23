@@ -1,30 +1,252 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "hero": {
-      "type": "mh-hero",
+    "buybox": {
+      "type": "mh-buy-box",
       "settings": {
+        "product": "myhaut-haarentfernung-shaum",
+        "title": "Haarentfernungsspray für Körper & Bikinizone",
+        "subtitle": "Für seidig glatte Haut – ohne Schmerzen",
         "show_rating": true,
-        "rating_stars": 5,
-        "featured_position": 3,
-        "secondary_target": "#mh-bundles",
-        "full_width": false,
-        "height_mode": "image",
-        "height": 660,
-        "height_mobile": 400
+        "rating_note": "",
+        "rating_target": "#mh-reviews",
+        "chip_1": "",
+        "chip_2": "",
+        "chip_3": "",
+        "default_position": 1,
+        "featured_position": 2,
+        "single_position": 1,
+        "bullet_1": "",
+        "bullet_2": "sicherer Versand mit DHL-Sendungsverfolgung",
+        "buy_label": "",
+        "trust_1": "",
+        "trust_2": "",
+        "trust_3": "Sichere Zahlung: PayPal, Klarna, Kreditkarte, Apple Pay, Google Pay  &  Überweisung",
+        "trust_4": "30-Tage-Geld-zurück-Garantie",
+        "trust_5": "",
+        "use_product_description": false,
+        "description": "<p><strong>Glatte Haut – ohne Rasieren, Waxing oder Epilieren. 💗</strong></p><p>Mit dem MyHaut Haarentfernungsspray wird Haarentfernung endlich unkompliziert: <strong>aufsprühen, 8 Minuten einwirken lassen, die Haare mit einem Waschlappen abwischen und die Haut abspülen. Fertig.</strong></p><p>Kein schmerzhaftes Waxing oder Epilieren. Keine lästigen Stoppeln direkt nach dem Rasieren. Kein Termin und kein ständiges Nachrasieren – einfach glatte Haut bequem von zu Hause aus genießen.</p><p>Während das Spray die unerwünschten Haare entfernt, pflegen <strong>Aloe Vera und Allantoin</strong> deine Haut bereits während der Einwirkzeit. Das Ergebnis: ein angenehm glattes Hautgefühl und Haare, die sich beim Nachwachsen weicher anfühlen.</p><p>Ob für den nächsten Urlaub, dein Lieblingskleid oder einfach nur für dich selbst – <strong>du entscheidest, wann du glatte Haut möchtest.</strong></p><p>✨ Für Frauen und Männer<br/>✨ Für Beine, Arme & Achseln<br/>✨ Für Brust & Rücken<br/>✨ Für die Bikinizone geeignet</p><p><strong>Weniger Zeit mit Haarentfernung verbringen. Mehr Zeit, dich in deiner Haut wohlzufühlen.</strong></p>",
+        "acc_1_title": "",
+        "acc_1_body": "",
+        "acc_2_title": "",
+        "acc_2_body": ""
       }
     },
     "sticky": {
       "type": "mh-sticky-atc",
       "settings": {
+        "product": "myhaut-haarentfernung-shaum",
         "show_thumbnail": true,
+        "title": "",
+        "meta": "",
+        "buy_label": "",
         "show_chip_savings": true,
-        "reveal_after": ".mh-hero"
+        "reveal_after": ".mh-buybox"
       }
     },
-    "marquee": {
-      "type": "mh-marquee",
+    "reviews": {
+      "type": "mh-reviews",
+      "blocks": {
+        "loox_reviews_loox_card_carousel_section_Wbx7pX": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-card-carousel-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "maxWidth": 1100,
+            "borderRadius": 8,
+            "itemsPerView": 4,
+            "mobileItemsPerView": 1,
+            "maxNumberOfCharacters": 100,
+            "imageRatio": "0.72",
+            "reviewerNameColor": "#000000",
+            "textColor": "#000000",
+            "itemBackgroundColor": "#ffffff",
+            "starsColor": "",
+            "starsBackgroundColor": "#ffffff",
+            "arrows_backgroundColor": "#ffffff",
+            "arrows_iconColor": "#9a9a9a",
+            "shadow": "offset-dark",
+            "border_active": false,
+            "border_width": 2,
+            "border_color": "#000000",
+            "productIds": ""
+          }
+        }
+      },
+      "block_order": [
+        "loox_reviews_loox_card_carousel_section_Wbx7pX"
+      ],
+      "custom_css": [
+        "#mh-reviews {background: #f0e4dc;}"
+      ],
       "settings": {
-        "speed": 28
+        "show_loox": true,
+        "product": "",
+        "eyebrow": "★★★★★ 5.00  (13) ✅ Verifiziert",
+        "heading": "Kund:innenstimmen:",
+        "body": "",
+        "dark": false,
+        "anchor": "mh-reviews"
+      }
+    },
+    "benefits": {
+      "type": "mh-benefits",
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "people",
+            "title": "",
+            "body": ""
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "spray",
+            "title": "",
+            "body": ""
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "leaf",
+            "title": "",
+            "body": ""
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "clock",
+            "title": "",
+            "body": ""
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "custom_css": [
+        "#mh-vorteile {background: #fbf7f4;}"
+      ],
+      "settings": {
+        "heading": "",
+        "anchor": "mh-vorteile"
+      }
+    },
+    "proof": {
+      "type": "mh-proof-strip",
+      "disabled": true,
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "disclaimer": "",
+        "anchor": "mh-stimmen"
+      }
+    },
+    "compare": {
+      "type": "mh-compare",
+      "blocks": {
+        "row-1": {
+          "type": "row",
+          "settings": {
+            "label": "",
+            "value_1": "",
+            "tone_1": "good",
+            "value_2": "",
+            "tone_2": "neutral",
+            "value_3": "",
+            "tone_3": "bad",
+            "value_4": "",
+            "tone_4": "neutral"
+          }
+        },
+        "row-2": {
+          "type": "row",
+          "settings": {
+            "label": "",
+            "value_1": "",
+            "tone_1": "good",
+            "value_2": "",
+            "tone_2": "neutral",
+            "value_3": "",
+            "tone_3": "bad",
+            "value_4": "",
+            "tone_4": "good"
+          }
+        },
+        "row-3": {
+          "type": "row",
+          "settings": {
+            "label": "",
+            "value_1": "",
+            "tone_1": "good",
+            "value_2": "",
+            "tone_2": "bad",
+            "value_3": "",
+            "tone_3": "bad",
+            "value_4": "",
+            "tone_4": "neutral"
+          }
+        },
+        "row-4": {
+          "type": "row",
+          "settings": {
+            "label": "",
+            "value_1": "",
+            "tone_1": "good",
+            "value_2": "",
+            "tone_2": "bad",
+            "value_3": "",
+            "tone_3": "good",
+            "value_4": "",
+            "tone_4": "good"
+          }
+        },
+        "row-5": {
+          "type": "row",
+          "settings": {
+            "label": "",
+            "value_1": "",
+            "tone_1": "good",
+            "value_2": "",
+            "tone_2": "neutral",
+            "value_3": "",
+            "tone_3": "bad",
+            "value_4": "",
+            "tone_4": "neutral"
+          }
+        }
+      },
+      "block_order": [
+        "row-1",
+        "row-2",
+        "row-3",
+        "row-4",
+        "row-5"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "col_1": "",
+        "col_2": "",
+        "col_3": "",
+        "col_4": "",
+        "footnote": "",
+        "anchor": "mh-vergleich"
       }
     },
     "steps": {
@@ -33,19 +255,31 @@
         "step-1": {
           "type": "step",
           "settings": {
-            "placeholder": "Schritt 1 \u2014 Spr\u00fchen aufs Bein"
+            "image": "shopify://shop_images/armpit_1.png",
+            "placeholder": "Schritt 1 — Sprühen aufs Bein",
+            "title": "",
+            "body": "",
+            "number": ""
           }
         },
         "step-2": {
           "type": "step",
           "settings": {
-            "placeholder": "Schritt 2 \u2014 Timer / 8 Minuten warten"
+            "image": "shopify://shop_images/Untitled_design_19.png",
+            "placeholder": "Schritt 2 — Timer / 8 Minuten warten",
+            "title": "",
+            "body": "",
+            "number": ""
           }
         },
         "step-3": {
           "type": "step",
           "settings": {
-            "placeholder": "Schritt 3 \u2014 Abwischen mit feuchtem Tuch"
+            "image": "shopify://shop_images/armpit_3.png",
+            "placeholder": "Schritt 3 — Abwischen mit feuchtem Tuch",
+            "title": "",
+            "body": "",
+            "number": ""
           }
         }
       },
@@ -55,7 +289,63 @@
         "step-3"
       ],
       "settings": {
+        "eyebrow": "",
+        "heading": "Haarfrei\nin nur 3 Schritten",
+        "body": "",
         "anchor": "mh-steps"
+      }
+    },
+    "videos": {
+      "type": "mh-video-carousel",
+      "blocks": {
+        "video_RFwKtd": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Video 11.09.26, 22 13 51.mov",
+            "caption": ""
+          }
+        },
+        "video_hdwTaM": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Video 11.09.26, 22 05 38.mov",
+            "caption": ""
+          }
+        },
+        "video_C48E8M": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Video 11.09.26, 22 08 05.mov",
+            "caption": ""
+          }
+        },
+        "video_w4c4BU": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Video 11.09.26, 21 58 19.mov",
+            "poster": "shopify://shop_images/Photo_11.09.26_21_59_14.jpg",
+            "caption": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_RFwKtd",
+        "video_hdwTaM",
+        "video_C48E8M",
+        "video_w4c4BU"
+      ],
+      "custom_css": [
+        "#mh-videos {background: #fbf7f4;}"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "autoplay": false,
+        "attention_delay": 1.5,
+        "quality": "auto",
+        "show_captions": true,
+        "anchor": "mh-videos"
       }
     },
     "before-after": {
@@ -63,15 +353,24 @@
       "blocks": {
         "stat-1": {
           "type": "stat",
-          "settings": {}
+          "settings": {
+            "value": "",
+            "label": ""
+          }
         },
         "stat-2": {
           "type": "stat",
-          "settings": {}
+          "settings": {
+            "value": "",
+            "label": ""
+          }
         },
         "stat-3": {
           "type": "stat",
-          "settings": {}
+          "settings": {
+            "value": "",
+            "label": ""
+          }
         }
       },
       "block_order": [
@@ -80,68 +379,16 @@
         "stat-3"
       ],
       "settings": {
-        "placeholder_before": "Vorher \u2014 Nahaufnahme Bein",
-        "placeholder_after": "Nachher \u2014 dieselbe Stelle, 8 Min sp\u00e4ter",
+        "eyebrow": "",
+        "heading": "",
+        "image_before": "shopify://shop_images/download_8.png",
+        "placeholder_before": "Vorher — Nahaufnahme Bein",
+        "image_after": "shopify://shop_images/ChatGPT_Image_Sep_8_2026_01_56_55_PM.png",
+        "placeholder_after": "Nachher — dieselbe Stelle, 8 Min später",
+        "label_before": "",
+        "label_after": "",
+        "footnote": "",
         "anchor": "mh-results"
-      }
-    },
-    "facts": {
-      "type": "mh-facts",
-      "blocks": {
-        "fact-1": {
-          "type": "fact",
-          "settings": {}
-        },
-        "fact-2": {
-          "type": "fact",
-          "settings": {}
-        },
-        "fact-3": {
-          "type": "fact",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "fact-1",
-        "fact-2",
-        "fact-3"
-      ],
-      "settings": {
-        "placeholder": "Produktfoto MyHaut Flasche",
-        "anchor": "mh-ingredients"
-      }
-    },
-    "reviews": {
-      "type": "mh-reviews",
-      "blocks": {
-        "review-1": {
-          "type": "review",
-          "settings": {
-            "stars": 5
-          }
-        },
-        "review-2": {
-          "type": "review",
-          "settings": {
-            "stars": 5
-          }
-        },
-        "review-3": {
-          "type": "review",
-          "settings": {
-            "stars": 4
-          }
-        }
-      },
-      "block_order": [
-        "review-1",
-        "review-2",
-        "review-3"
-      ],
-      "settings": {
-        "show_summary": true,
-        "rating_stars": 5,
-        "anchor": "mh-reviews"
       }
     },
     "bundles": {
@@ -151,29 +398,44 @@
           "type": "bundle",
           "settings": {
             "variant_position": 1,
-            "bottles": 1
+            "eyebrow": "",
+            "title": "",
+            "bottles": 1,
+            "featured": false,
+            "flag": ""
           }
         },
         "bundle-2": {
           "type": "bundle",
           "settings": {
             "variant_position": 2,
-            "bottles": 2
+            "eyebrow": "",
+            "title": "",
+            "bottles": 2,
+            "featured": true,
+            "flag": ""
           }
         },
         "bundle-3": {
           "type": "bundle",
           "settings": {
             "variant_position": 3,
+            "eyebrow": "",
+            "title": "",
             "bottles": 3,
-            "featured": true
+            "featured": false,
+            "flag": ""
           }
         },
         "bundle-4": {
           "type": "bundle",
           "settings": {
             "variant_position": 4,
-            "bottles": 5
+            "eyebrow": "",
+            "title": "",
+            "bottles": 5,
+            "featured": false,
+            "flag": ""
           }
         }
       },
@@ -184,8 +446,132 @@
         "bundle-4"
       ],
       "settings": {
+        "product": "myhaut-haarentfernung-shaum",
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "select_label": "",
+        "show_images": true,
+        "image_height": 160,
+        "single_position": 1,
         "cta_action": "add",
+        "trust_1": "",
+        "trust_2": "",
+        "trust_3": "",
         "anchor": "mh-bundles"
+      }
+    },
+    "facts": {
+      "type": "mh-facts",
+      "blocks": {
+        "fact-1": {
+          "type": "fact",
+          "settings": {
+            "label": "",
+            "title": "",
+            "body": ""
+          }
+        },
+        "fact-2": {
+          "type": "fact",
+          "settings": {
+            "label": "",
+            "title": "",
+            "body": ""
+          }
+        },
+        "fact-3": {
+          "type": "fact",
+          "settings": {
+            "label": "",
+            "title": "",
+            "body": ""
+          }
+        }
+      },
+      "block_order": [
+        "fact-1",
+        "fact-2",
+        "fact-3"
+      ],
+      "custom_css": [
+        "#mh-ingredients {background: #f0e4dc;}"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/UnoBath_MyHaut.png",
+        "placeholder": "Produktfoto MyHaut Flasche",
+        "eyebrow": "",
+        "heading": "",
+        "anchor": "mh-ingredients"
+      }
+    },
+    "details": {
+      "type": "mh-product-details",
+      "blocks": {
+        "detail-1": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "",
+            "open": true
+          }
+        },
+        "detail-2": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "",
+            "open": false
+          }
+        },
+        "detail-3": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "",
+            "open": false
+          }
+        },
+        "detail-4": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "",
+            "open": false
+          }
+        },
+        "detail-5": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "",
+            "open": false
+          }
+        },
+        "detail-6": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "detail-1",
+        "detail-2",
+        "detail-3",
+        "detail-4",
+        "detail-5",
+        "detail-6"
+      ],
+      "settings": {
+        "product": "",
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "show_summary": true,
+        "anchor": "mh-produktdetails"
       }
     },
     "faq": {
@@ -193,25 +579,67 @@
       "blocks": {
         "q-1": {
           "type": "question",
-          "settings": {}
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": true
+          }
         },
         "q-2": {
           "type": "question",
           "settings": {
-            "open": true
+            "question": "",
+            "answer": "",
+            "open": false
           }
         },
         "q-3": {
           "type": "question",
-          "settings": {}
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
         },
         "q-4": {
           "type": "question",
-          "settings": {}
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
         },
         "q-5": {
           "type": "question",
-          "settings": {}
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-6": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-7": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-8": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
         }
       },
       "block_order": [
@@ -219,30 +647,46 @@
         "q-2",
         "q-3",
         "q-4",
-        "q-5"
+        "q-5",
+        "q-6",
+        "q-7",
+        "q-8"
       ],
       "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
         "anchor": "mh-faq"
       }
     },
     "cta": {
       "type": "mh-cta",
       "settings": {
-        "button_action": "add",
+        "product": "myhaut-haarentfernung-shaum",
+        "full_width": false,
+        "image": "shopify://shop_images/MyHaut_Pink_Shower_Beauty_Scene.png",
         "placeholder": "Lifestyle-Foto quer (Beine, Badezimmer, warmes Licht)",
-        "full_width": true
+        "heading": "Genieße glatte Haut in nur 8 Minuten",
+        "button_label": "",
+        "button_action": "add",
+        "button_link": "",
+        "note": "30-Tage-Geld-zurück-Garantie"
       }
     }
   },
   "order": [
-    "hero",
+    "buybox",
     "sticky",
-    "marquee",
-    "steps",
-    "before-after",
-    "facts",
     "reviews",
+    "benefits",
+    "proof",
+    "compare",
+    "steps",
+    "videos",
+    "before-after",
     "bundles",
+    "facts",
+    "details",
     "faq",
     "cta"
   ]

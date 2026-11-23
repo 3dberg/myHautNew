@@ -1,8 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
-    "logo_width": 140,
+    "logo_width": 95,
+    "favicon": "shopify://shop_images/Front_Mockup_e350158c-85e1-49e2-a718-8f3771f5765b.jpg",
     "use_demo_images": true,
     "page_width": 1280,
+    "preorder_mode": false,
+    "preorder_show_checkout": false,
+    "preorder_ship_text": "Voraussichtlich lieferbar ab September 2026",
+    "waitlist_anchor": "#mh-vormerken",
+    "free_shipping_threshold": 9,
+    "show_compare_prices": true,
+    "show_base_price": true,
+    "bottle_volume_ml": 100,
     "color_accent": "#C43C61",
     "color_accent_dark": "#8E2544",
     "color_accent_tint": "#FBEEF2",
@@ -17,6 +35,43 @@
     "font_heading": "assistant_n4",
     "font_body": "assistant_n4",
     "cart_drawer": true,
-    "cart_note": "<p>Kostenloser Versand ab 25 € · 30 Tage Geld-zurück-Garantie</p>"
+    "cart_note": "<p>30 Tage Rückgabe für ungeöffnete Flaschen · Versand aus Deutschland</p>",
+    "social_instagram_link": "https://www.instagram.com/myhaut_de/",
+    "social_facebook_link": "https://www.facebook.com/profile.php?id=61551952475749",
+    "social_tiktok_link": "https://www.tiktok.com/@myhaut.de",
+    "sections": {
+      "mh-cart-drawer": {
+        "type": "mh-cart-drawer",
+        "settings": {}
+      }
+    },
+    "content_for_index": [],
+    "blocks": {
+      "2153490007123654574": {
+        "type": "shopify://apps/consentmo-gdpr/blocks/gdpr_cookie_consent/4fbe573f-a377-4fea-9801-3ee0858cae41",
+        "disabled": false,
+        "settings": {}
+      },
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      },
+      "11532412952436166569": {
+        "type": "shopify://apps/loox-reviews/blocks/loox-inject/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+        "disabled": false,
+        "settings": {}
+      },
+      "2567389343055140935": {
+        "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      },
+      "2200952712151285029": {
+        "type": "shopify://apps/microsoft-clarity/blocks/brandAgents_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      }
+    }
   }
 }

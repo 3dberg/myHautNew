@@ -1,20 +1,90 @@
 {%- liquid
   assign fallback_tagline = 'sections.footer.tagline' | t
   assign tagline = section.settings.tagline | default: fallback_tagline
+
+  # The footer logo is its own image and its own size, independent of the
+  # header's. It had no size control at all before, so 0 keeps the old
+  # behaviour — the image sizes itself, capped at the 400 px it is served at.
+  assign logo = section.settings.logo | default: settings.logo
+  assign logo_width = section.settings.logo_width
+  assign logo_height = section.settings.logo_height
+
+  capture logo_style
+    if logo_width > 0
+      echo 'width:'
+      echo logo_width
+      echo 'px;'
+    endif
+    if logo_height > 0
+      echo 'height:'
+      echo logo_height
+      echo 'px;object-fit:contain;'
+    endif
+  endcapture
+-%}
+
+{%- liquid
+  # Return / shipping / contact in the footer itself, so the promise sits
+  # next to the payment icons instead of repeating them in a section above.
+  assign free_threshold = settings.free_shipping_threshold | default: 0 | plus: 0
+  assign free_line = ''
+  if settings.free_shipping_all
+    assign free_line = 'sections.guarantee.free_shipping_line_all' | t
+  elsif free_threshold > 0
+    assign free_amount = free_threshold | times: 100 | money_without_trailing_zeros
+    assign free_line = 'sections.guarantee.free_shipping_line' | t: amount: free_amount
+  endif
 -%}
 
 <footer class="mh-footer">
   <div class="mh-container">
+    {%- if section.settings.show_terms -%}
+      <div class="mh-footer__terms">
+        {%- for i in (1..3) -%}
+          {%- liquid
+            assign title_key = 'sections.guarantee.item_' | append: i | append: '_title'
+            assign body_key = 'sections.guarantee.item_' | append: i | append: '_body'
+            assign link_key = 'sections.guarantee.item_' | append: i | append: '_link'
+            assign term_title = title_key | t
+            assign term_body = body_key | t
+            assign term_link = link_key | t
+            if term_link contains 'translation missing'
+              assign term_link = ''
+            endif
+            assign term_url = ''
+            if i == 1
+              assign term_url = settings.returns_page
+            elsif i == 2
+              assign term_url = settings.shipping_page
+              if free_line != blank
+                assign term_body = term_body | append: ' ' | append: free_line
+              endif
+            endif
+          -%}
+          <div class="mh-footer__term">
+            <span class="mh-footer__term-title">{{ term_title }}</span>
+            <p class="mh-footer__term-body">{{ term_body }}</p>
+            {%- if term_url != blank and term_link != blank -%}
+              <a class="mh-footer__term-link" href="{{ term_url }}">{{ term_link }}</a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
     <div class="mh-footer__grid">
       <div>
         <div class="mh-footer__brand">
-          {%- if settings.logo != blank -%}
-            {{ settings.logo | image_url: width: 400 | image_tag: alt: shop.name, widths: '160, 320, 400' }}
+          {%- if logo != blank -%}
+            {{ logo | image_url: width: 400 | image_tag: alt: shop.name, widths: '160, 320, 400', style: logo_style }}
           {%- else -%}
             {{ shop.name }}
           {%- endif -%}
         </div>
         {%- if tagline != blank -%}<p class="mh-footer__tagline">{{ tagline }}</p>{%- endif -%}
+        {%- if section.settings.show_social -%}
+          {% render 'mh-social', mh_social_modifier: 'mh-social--footer' %}
+        {%- endif -%}
       </div>
 
       {%- for block in section.blocks -%}
@@ -57,7 +127,50 @@
   "class": "mh-section-footer",
   "settings": [
     { "type": "textarea", "id": "tagline", "label": "Tagline", "info": "Leave empty to use the built-in translation." },
-    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true }
+    {
+      "type": "checkbox",
+      "id": "show_terms",
+      "label": "Show return, shipping and contact terms at the top of the footer",
+      "default": true,
+      "info": "The three texts come from the built-in translation (sections.guarantee). Links go to the pages picked under Theme settings → Versand, Preise & Rückgabe."
+    },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show social icons",
+      "default": true,
+      "info": "Links come from Theme settings → Social media."
+    },
+    { "type": "header", "content": "Logo" },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Optional. Leave empty to use Theme settings → Brand → Logo."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 0,
+      "max": 400,
+      "step": 5,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = the width the footer has always used (up to 400 px)."
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = automatic, keeps the image's own proportions. Set a height and the logo is fitted inside it without distorting."
+    }
   ],
   "blocks": [
     {

@@ -1,0 +1,145 @@
+{%- comment -%}
+  Comparison table — MyHaut against the three things people use today.
+  Columns are section settings, rows are blocks; every cell carries a tone
+  (good / neutral / bad) so the table reads at a glance. No brand names in the
+  other columns: comparative advertising against a named product needs
+  substantiation for every claim.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_eyebrow = 'sections.compare.eyebrow' | t
+  assign fallback_heading = 'sections.compare.heading' | t
+  assign fallback_body = 'sections.compare.body' | t
+  assign fallback_footnote = 'sections.compare.footnote' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign intro = section.settings.body | default: fallback_body
+  assign footnote = section.settings.footnote | default: fallback_footnote
+
+  assign col_1 = section.settings.col_1 | default: shop.name
+  assign fallback_col_2 = 'sections.compare.col_2' | t
+  assign fallback_col_3 = 'sections.compare.col_3' | t
+  assign fallback_col_4 = 'sections.compare.col_4' | t
+  assign col_2 = section.settings.col_2 | default: fallback_col_2
+  assign col_3 = section.settings.col_3 | default: fallback_col_3
+  assign col_4 = section.settings.col_4 | default: fallback_col_4
+-%}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="mh-compare" id="{{ section.settings.anchor | default: 'mh-vergleich' }}" data-mh-compare-table data-mh-compare-active="2">
+    <div class="mh-container">
+      <div class="mh-compare__head">
+        {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+        <h2 class="mh-compare__title">{{ heading | newline_to_br }}</h2>
+        {%- if intro != blank -%}<p class="mh-compare__intro">{{ intro }}</p>{%- endif -%}
+      </div>
+
+      {%- comment -%}
+        Phones show MyHaut against one method at a time; these tabs pick the
+        method. Desktop shows all four columns and hides the tabs.
+      {%- endcomment -%}
+      <div class="mh-compare__tabs" role="tablist" aria-label="{{ 'sections.compare.eyebrow' | t }}">
+        <button type="button" class="mh-compare__tab is-active" role="tab" aria-selected="true" data-mh-compare-tab="2">{{ col_2 }}</button>
+        <button type="button" class="mh-compare__tab" role="tab" aria-selected="false" data-mh-compare-tab="3">{{ col_3 }}</button>
+        <button type="button" class="mh-compare__tab" role="tab" aria-selected="false" data-mh-compare-tab="4">{{ col_4 }}</button>
+      </div>
+
+      <div class="mh-compare__scroll">
+        <table class="mh-compare__table">
+          <caption class="mh-visually-hidden">{{ heading | strip_newlines }}</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="mh-compare__corner"><span class="mh-visually-hidden">{{ 'sections.compare.eyebrow' | t }}</span></th>
+              <th scope="col" class="is-us" data-col="1">{{ col_1 }}</th>
+              <th scope="col" data-col="2">{{ col_2 }}</th>
+              <th scope="col" data-col="3">{{ col_3 }}</th>
+              <th scope="col" data-col="4">{{ col_4 }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign label_key = 'sections.compare.row_' | append: forloop.index | append: '_label'
+                assign fallback_label = label_key | t
+                if fallback_label contains 'translation missing'
+                  assign fallback_label = ''
+                endif
+                assign row_label = block.settings.label | default: fallback_label
+              -%}
+              <tr {{ block.shopify_attributes }}>
+                <th scope="row">{{ row_label }}</th>
+                {%- for col in (1..4) -%}
+                  {%- liquid
+                    assign value_key = 'sections.compare.row_' | append: forloop.parentloop.index | append: '_value_' | append: col
+                    assign fallback_value = value_key | t
+                    if fallback_value contains 'translation missing'
+                      assign fallback_value = ''
+                    endif
+                    assign value_id = 'value_' | append: col
+                    assign tone_id = 'tone_' | append: col
+                    assign value = block.settings[value_id] | default: fallback_value
+                    assign tone = block.settings[tone_id] | default: 'neutral'
+                  -%}
+                  <td class="tone-{{ tone }}{% if col == 1 %} is-us{% endif %}" data-col="{{ col }}">{{ value }}</td>
+                {%- endfor -%}
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+
+      {%- if footnote != blank -%}<p class="mh-compare__footnote">{{ footnote }}</p>{%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Comparison",
+  "tag": "section",
+  "class": "mh-section-compare",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave empty to use the built-in translation." },
+    { "type": "textarea", "id": "heading", "label": "Headline", "info": "Line breaks are kept." },
+    { "type": "textarea", "id": "body", "label": "Intro text" },
+    { "type": "header", "content": "Columns" },
+    { "type": "text", "id": "col_1", "label": "Column 1 (you)", "info": "Defaults to the shop name." },
+    { "type": "text", "id": "col_2", "label": "Column 2" },
+    { "type": "text", "id": "col_3", "label": "Column 3" },
+    { "type": "text", "id": "col_4", "label": "Column 4" },
+    { "type": "textarea", "id": "footnote", "label": "Footnote" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-vergleich" }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Row label" },
+        { "type": "text", "id": "value_1", "label": "Column 1" },
+        { "type": "select", "id": "tone_1", "label": "Tone 1", "options": [ { "value": "good", "label": "Good" }, { "value": "neutral", "label": "Neutral" }, { "value": "bad", "label": "Bad" } ], "default": "good" },
+        { "type": "text", "id": "value_2", "label": "Column 2" },
+        { "type": "select", "id": "tone_2", "label": "Tone 2", "options": [ { "value": "good", "label": "Good" }, { "value": "neutral", "label": "Neutral" }, { "value": "bad", "label": "Bad" } ], "default": "neutral" },
+        { "type": "text", "id": "value_3", "label": "Column 3" },
+        { "type": "select", "id": "tone_3", "label": "Tone 3", "options": [ { "value": "good", "label": "Good" }, { "value": "neutral", "label": "Neutral" }, { "value": "bad", "label": "Bad" } ], "default": "neutral" },
+        { "type": "text", "id": "value_4", "label": "Column 4" },
+        { "type": "select", "id": "tone_4", "label": "Tone 4", "options": [ { "value": "good", "label": "Good" }, { "value": "neutral", "label": "Neutral" }, { "value": "bad", "label": "Bad" } ], "default": "neutral" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Comparison",
+      "blocks": [
+        { "type": "row", "settings": { "tone_1": "good", "tone_2": "neutral", "tone_3": "bad", "tone_4": "neutral" } },
+        { "type": "row", "settings": { "tone_1": "good", "tone_2": "neutral", "tone_3": "bad", "tone_4": "good" } },
+        { "type": "row", "settings": { "tone_1": "good", "tone_2": "bad", "tone_3": "bad", "tone_4": "neutral" } },
+        { "type": "row", "settings": { "tone_1": "good", "tone_2": "bad", "tone_3": "good", "tone_4": "good" } },
+        { "type": "row", "settings": { "tone_1": "good", "tone_2": "neutral", "tone_3": "bad", "tone_4": "neutral" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

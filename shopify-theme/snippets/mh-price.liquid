@@ -1,18 +1,42 @@
 {%- comment -%}
-  Price + compare-at + discount badge for one variant.
-  myhaut.js keeps these three nodes in sync when another variant is selected.
+  Price + compare-at + discount badge for one variant, followed by the two
+  lines German law asks for next to a price: the Grundpreis per 100 ml and the
+  VAT / shipping note.
+  myhaut.js keeps these nodes in sync when another variant is selected.
 
   Accepts:
-    mh_variant   a variant object
-    mh_class     extra class names
+    mh_variant    a variant object
+    mh_class      extra class names
+    mh_bottles    bottles in this variant (0 / blank = read it from the title)
+    mh_show_base  false to hide the Grundpreis line (default: show)
+    mh_show_tax   false to hide the VAT / shipping line (default: show)
 {%- endcomment -%}
 
 {%- liquid
+  comment
+    Struck-through prices only when "Streichpreise anzeigen" is on — § 11
+    PAngV needs the lowest price of the last 30 days behind them.
+  endcomment
+  assign hide_discounts = true
+  if settings.show_compare_prices
+    assign hide_discounts = false
+  endif
+
   assign discount_percent = 0
-  if mh_variant.compare_at_price > mh_variant.price
+  if mh_variant.compare_at_price > mh_variant.price and hide_discounts == false
     assign price_difference = mh_variant.compare_at_price | minus: mh_variant.price
     assign rounding = mh_variant.compare_at_price | divided_by: 2
     assign discount_percent = price_difference | times: 100 | plus: rounding | divided_by: mh_variant.compare_at_price
+  endif
+
+  assign show_base = true
+  if mh_show_base == false
+    assign show_base = false
+  endif
+
+  assign show_tax = true
+  if mh_show_tax == false
+    assign show_tax = false
   endif
 -%}
 
@@ -25,3 +49,11 @@
     {%- if discount_percent > 0 %}{{ 'products.product.save_percent' | t: percent: discount_percent }}{% endif -%}
   </span>
 </div>
+
+{%- if show_base -%}
+  {% render 'mh-base-price', mh_variant: mh_variant, mh_bottles: mh_bottles, mh_dynamic: true %}
+{%- endif -%}
+
+{%- if show_tax -%}
+  {% render 'mh-tax-note' %}
+{%- endif -%}

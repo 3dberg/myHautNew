@@ -4,33 +4,98 @@
   format and currency always win.
 
   Accepts:
-    mh_product   a product object
+    mh_product            a product object
+    mh_default_position   1-based variant position to preselect when the URL
+                          carries no ?variant= (0 / blank = first available)
 {%- endcomment -%}
+
+{%- liquid
+  assign hide_discounts = true
+  if settings.show_compare_prices
+    assign hide_discounts = false
+  endif
+-%}
+
+{%- liquid
+  comment
+    Price of one bottle: the first variant that holds exactly one, else the
+    cheapest variant. Sets show their saving against this.
+  endcomment
+  assign single_cents = 0
+  for variant in mh_product.variants
+    capture variant_bottles
+      render 'mh-bottles', mh_variant: variant
+    endcapture
+    assign variant_bottles = variant_bottles | plus: 0
+    if variant_bottles == 1 and single_cents == 0
+      assign single_cents = variant.price
+    endif
+  endfor
+  if single_cents == 0
+    assign single_cents = mh_product.variants | map: 'price' | sort | first | default: 0
+  endif
+  assign free_cents = settings.free_shipping_threshold | default: 0 | times: 100
+
+  assign default_variant = mh_product.first_available_variant | default: mh_product.variants.first
+  assign default_position = mh_default_position | default: 0 | plus: 0
+  if default_position > 0
+    assign default_index = default_position | minus: 1
+    assign preset_variant = mh_product.variants[default_index]
+    if preset_variant != blank and preset_variant.available
+      assign default_variant = preset_variant
+    endif
+  endif
+-%}
 
 {%- if mh_product != blank -%}
   <script type="application/json" data-mh-product-data>
     {
       "id": {{ mh_product.id }},
       "url": {{ mh_product.url | json }},
-      "default_id": {{ mh_product.first_available_variant.id | default: mh_product.variants.first.id | json }},
+      "default_id": {{ default_variant.id | json }},
       "selected_id": {{ mh_product.selected_variant.id | json }},
       "variants": [
         {%- for variant in mh_product.variants -%}
           {%- liquid
-            assign bottles = variant.title | split: ' ' | first | remove: '×' | remove: 'x' | remove: 'X' | remove: '*' | plus: 0
-            if bottles < 1
-              assign bottles = 1
-            endif
+            capture bottles
+              render 'mh-bottles', mh_variant: variant
+            endcapture
+            assign bottles = bottles | plus: 0
+            assign unit_cents = variant.price | divided_by: bottles
             assign unit_price = ''
             if bottles > 1
-              assign unit_cents = variant.price | divided_by: bottles
               assign unit_price = unit_cents | money
             endif
+
+            comment
+              Grundpreis per 100 ml — see snippets/mh-base-price.liquid.
+            endcomment
+            assign volume = settings.bottle_volume_ml | default: 100 | plus: 0
+            if volume < 1
+              assign volume = 100
+            endif
+            assign base_cents = unit_cents | times: 100 | divided_by: volume
+            assign base_price = base_cents | money
+
             assign discount_percent = 0
-            if variant.compare_at_price > variant.price
+            if variant.compare_at_price > variant.price and hide_discounts == false
               assign price_difference = variant.compare_at_price | minus: variant.price
               assign rounding = variant.compare_at_price | divided_by: 2
               assign discount_percent = price_difference | times: 100 | plus: rounding | divided_by: variant.compare_at_price
+            endif
+
+            comment
+              What a set saves against buying the same number of single
+              bottles, and whether it clears the free-shipping threshold.
+            endcomment
+            assign saving_cents = single_cents | times: bottles | minus: variant.price
+            assign saving = ''
+            if bottles > 1 and saving_cents > 0
+              assign saving = saving_cents | money
+            endif
+            assign free_shipping = false
+            if free_cents > 0 and variant.price >= free_cents
+              assign free_shipping = true
             endif
           -%}
           {
@@ -38,10 +103,15 @@
             "title": {{ variant.title | json }},
             "available": {{ variant.available }},
             "price": {{ variant.price | money | json }},
-            "compare_at": {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | json }}{% else %}null{% endif %},
+            "compare_at": {% if discount_percent > 0 %}{{ variant.compare_at_price | money | json }}{% else %}null{% endif %},
             "discount_percent": {{ discount_percent }},
             "bottles": {{ bottles }},
-            "unit_price": {% if unit_price != blank %}{{ unit_price | json }}{% else %}null{% endif %}
+            "unit_price": {% if unit_price != blank %}{{ unit_price | json }}{% else %}null{% endif %},
+            "base_price": {{ base_price | json }},
+            "saving": {% if saving != blank %}{{ saving | json }}{% else %}null{% endif %},
+            "saving_cents": {{ saving_cents | at_least: 0 }},
+            "free_shipping": {{ free_shipping }},
+            "media_id": {{ variant.featured_media.id | default: 0 }}
           }{% unless forloop.last %},{% endunless %}
         {%- endfor -%}
       ]

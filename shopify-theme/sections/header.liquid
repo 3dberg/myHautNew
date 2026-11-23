@@ -1,7 +1,46 @@
+{%- comment -%}
+  In pre-order mode there is nothing to buy, so the cart button is dead weight
+  and the social icons take its place. The exception is the "Jetzt vorbestellen
+  →" link (preorder_show_checkout), which really does add to the cart — with
+  that on the cart has to stay reachable and the icons sit to its left instead.
+{%- endcomment -%}
+
 {%- liquid
   assign menu = section.settings.menu
   assign cart_label = 'sections.header.cart' | t
   assign cart_label_short = 'sections.header.cart_short' | t
+
+  assign show_cart = true
+  if settings.preorder_mode and settings.preorder_show_checkout != true
+    assign show_cart = false
+  endif
+
+  assign social_modifier = 'mh-social--header'
+  unless show_cart
+    assign social_modifier = 'mh-social--header mh-social--header-solo'
+  endunless
+
+  # The header logo is its own image and its own size, independent of the
+  # footer's. Both fall back to the shop-wide logo so an untouched theme looks
+  # exactly as before: width 0 means "use Theme settings → Brand", height 0
+  # means "keep the image's proportions".
+  assign logo = section.settings.logo | default: settings.logo
+  assign logo_width = section.settings.logo_width
+  if logo_width == 0 or logo_width == blank
+    assign logo_width = settings.logo_width
+  endif
+  assign logo_height = section.settings.logo_height
+
+  capture logo_style
+    echo 'width:'
+    echo logo_width
+    echo 'px;'
+    if logo_height > 0
+      echo 'height:'
+      echo logo_height
+      echo 'px;object-fit:contain;'
+    endif
+  endcapture
 -%}
 
 <header class="mh-header">
@@ -26,10 +65,9 @@
 
     <div class="mh-header__logo">
       <a href="{{ routes.root_url }}" style="color: inherit">
-        {%- if settings.logo != blank -%}
-          {%- assign logo_style = 'width:' | append: settings.logo_width | append: 'px' -%}
+        {%- if logo != blank -%}
           {{
-            settings.logo
+            logo
             | image_url: width: 600
             | image_tag: widths: '140, 280, 420, 600', sizes: '220px', alt: shop.name, style: logo_style
           }}
@@ -59,11 +97,17 @@
         </div>
       {%- endif -%}
 
-      <a href="{{ routes.cart_url }}" class="mh-header__cart" data-mh-cart-open>
-        <span class="mh-header__cart-label--long">{{ cart_label }}</span>
-        <span class="mh-header__cart-label--short">{{ cart_label_short }}</span>
-        <span class="mh-header__count" data-mh-cart-count>{{ cart.item_count }}</span>
-      </a>
+      {%- if section.settings.show_social -%}
+        {% render 'mh-social', mh_social_modifier: social_modifier %}
+      {%- endif -%}
+
+      {%- if show_cart -%}
+        <a href="{{ routes.cart_url }}" class="mh-header__cart" data-mh-cart-open>
+          <span class="mh-header__cart-label--long">{{ cart_label }}</span>
+          <span class="mh-header__cart-label--short">{{ cart_label_short }}</span>
+          <span class="mh-header__count" data-mh-cart-count>{{ cart.item_count }}</span>
+        </a>
+      {%- endif -%}
     </div>
   </div>
 
@@ -81,7 +125,43 @@
   "class": "mh-section-header",
   "settings": [
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
-    { "type": "checkbox", "id": "show_locale_switcher", "label": "Show language switcher", "default": true }
+    { "type": "checkbox", "id": "show_locale_switcher", "label": "Show language switcher", "default": true },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show social icons",
+      "default": true,
+      "info": "Links come from Theme settings → Social media. In pre-order mode they replace the cart button; in normal sales mode they sit to its left."
+    },
+    { "type": "header", "content": "Logo" },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Optional. Leave empty to use Theme settings → Brand → Logo."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 0,
+      "max": 400,
+      "step": 5,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = use the width from Theme settings → Brand."
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = automatic, keeps the image's own proportions. Set a height and the logo is fitted inside it without distorting."
+    }
   ]
 }
 {% endschema %}

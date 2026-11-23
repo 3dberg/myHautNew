@@ -1,0 +1,117 @@
+{%- comment -%}
+  Tester quotes — short statements from the pre-launch user test, shown as a
+  strip between the hero and the offer. Not customer reviews, and the
+  disclaimer under the strip says so (§ 5b UWG).
+
+  With no quote entered the section renders nothing on the storefront, so an
+  empty strip can never go live. Real reviews go into the "Reviews" section
+  (Loox) once they exist.
+{%- endcomment -%}
+
+{%- liquid
+  assign fallback_eyebrow = 'sections.proof_strip.eyebrow' | t
+  assign fallback_heading = 'sections.proof_strip.heading' | t
+  assign fallback_body = 'sections.proof_strip.body' | t
+  assign fallback_disclaimer = 'sections.proof_strip.disclaimer' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign intro = section.settings.body | default: fallback_body
+  assign disclaimer = section.settings.disclaimer | default: fallback_disclaimer
+
+  assign has_quotes = false
+  for block in section.blocks
+    if block.settings.quote != blank
+      assign has_quotes = true
+    endif
+  endfor
+-%}
+
+{%- if has_quotes or request.design_mode -%}
+  <div class="mh-proof" id="{{ section.settings.anchor | default: 'mh-stimmen' }}">
+    <div class="mh-container">
+      <div class="mh-proof__head">
+        {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+        <h2 class="mh-proof__title">{{ heading | newline_to_br }}</h2>
+        {%- if intro != blank -%}<p class="mh-proof__intro">{{ intro }}</p>{%- endif -%}
+      </div>
+
+      {%- if has_quotes -%}
+        <ul class="mh-proof__list">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.quote != blank -%}
+              {%- liquid
+                assign has_media = false
+                if block.settings.video != blank or block.settings.photo != blank
+                  assign has_media = true
+                endif
+              -%}
+              <li class="mh-proof__card{% if has_media %} mh-proof__card--photo{% endif %}" data-mh-video-slide {{ block.shopify_attributes }}>
+                {%- if block.settings.video != blank -%}
+                  <div class="mh-proof__photo mh-proof__photo--video">
+                    {% render 'mh-video-player', mh_video: block.settings.video, mh_poster: block.settings.photo, mh_label: block.settings.name, mh_class: 'mh-video__frame--fill' %}
+                  </div>
+                {%- elsif block.settings.photo != blank -%}
+                  <div class="mh-proof__photo">
+                    {{ block.settings.photo | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 380px, 82vw', widths: '400, 600, 900', alt: block.settings.name | default: '' }}
+                  </div>
+                {%- endif -%}
+                <blockquote class="mh-proof__quote">„{{ block.settings.quote | strip }}“</blockquote>
+                <div class="mh-proof__who">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 96, height: 96, crop: 'center' | image_tag: class: 'mh-proof__avatar', alt: block.settings.name, loading: 'lazy', widths: '48, 96' }}
+                  {%- endif -%}
+                  <span>
+                    {%- if block.settings.name != blank -%}<strong>{{ block.settings.name }}</strong>{%- endif -%}
+                    {%- if block.settings.detail != blank -%}<span class="mh-proof__detail">{{ block.settings.detail }}</span>{%- endif -%}
+                  </span>
+                </div>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- elsif request.design_mode -%}
+        <p class="mh-proof__hint">{{ 'sections.proof_strip.editor_hint' | t }}</p>
+      {%- endif -%}
+
+      {%- if disclaimer != blank and has_quotes -%}
+        <p class="mh-proof__disclaimer">{{ disclaimer }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Tester quotes",
+  "tag": "section",
+  "class": "mh-section-proof",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Short quotes from real testers. Only enter statements people actually made — the line under the strip labels them as test feedback, not customer reviews. With no quote entered the section is hidden on the storefront."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave empty to use the built-in translation." },
+    { "type": "textarea", "id": "heading", "label": "Headline", "info": "Line breaks are kept." },
+    { "type": "textarea", "id": "body", "label": "Intro text" },
+    { "type": "text", "id": "disclaimer", "label": "Disclaimer under the quotes" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-stimmen" }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Quote",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote", "info": "One or two sentences, in the tester's own words." },
+        { "type": "text", "id": "name", "label": "First name" },
+        { "type": "text", "id": "detail", "label": "Detail", "info": "e.g. “Beine, kräftiges Haar” or the city." },
+        { "type": "video", "id": "video", "label": "Video (optional)", "info": "Shopify-hosted MP4, portrait. Plays muted while in view, tap for sound. If set, it replaces the large photo; the photo is then used as the poster frame." },
+        { "type": "image_picker", "id": "photo", "label": "Large photo (optional)", "info": "Shown above the quote, e.g. the tester's legs after use or the tester holding the bottle. Portrait 4:5 works best." },
+        { "type": "image_picker", "id": "image", "label": "Small avatar (optional, square)" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [{ "name": "Tester quotes" }]
+}
+{% endschema %}

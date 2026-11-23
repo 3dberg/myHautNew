@@ -1,0 +1,27 @@
+{%- comment -%}
+  "inkl. MwSt., zzgl. Versand" — § 6 PAngV wants this next to every price, with
+  the shipping costs one click away. The link points at whichever page you
+  picked under Theme settings → Vorbestellung → Seite „Versand & Zahlung“.
+
+  Accepts:
+    mh_class   extra class names
+{%- endcomment -%}
+
+{%- liquid
+  assign shipping_url = settings.shipping_page
+  assign note = 'products.product.tax_note' | t
+  if settings.free_shipping_all
+    assign note = 'products.product.tax_note_free' | t
+    if mh_hide_shipping
+      assign note = 'products.product.tax_note_incl' | t
+    endif
+  endif
+  assign link_label = 'products.product.shipping_link' | t
+-%}
+
+<div class="mh-tax-note {{ mh_class }}">
+  {{- note }}
+  {%- if shipping_url != blank %}
+    <a href="{{ shipping_url }}">{{ link_label }}</a>
+  {%- endif -%}
+</div>

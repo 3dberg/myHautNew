@@ -1,0 +1,19 @@
+{%- comment -%}
+  Free-shipping highlight, meant to sit right under the price where the buying
+  decision happens. It only renders when the theme setting says every order
+  ships free, so it can never promise something the checkout does not honour.
+
+  Accepts:
+    mh_class   extra class names
+{%- endcomment -%}
+
+{%- if settings.free_shipping_all -%}
+  <p class="mh-ship-free {{ mh_class }}">
+    <svg class="mh-ship-free__icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/>
+      <circle cx="7" cy="18" r="1.6"/>
+      <circle cx="17" cy="18" r="1.6"/>
+    </svg>
+    <span>{{ 'products.product.free_shipping_highlight' | t }}</span>
+  </p>
+{%- endif -%}

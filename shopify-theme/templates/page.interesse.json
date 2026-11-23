@@ -1,0 +1,89 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "waitlist": {
+      "type": "mh-waitlist",
+      "blocks": {
+        "perk-1": { "type": "perk", "settings": {} },
+        "perk-2": { "type": "perk", "settings": {} },
+        "perk-3": { "type": "perk", "settings": {} }
+      },
+      "block_order": ["perk-1", "perk-2", "perk-3"],
+      "settings": {
+        "show_selection": false,
+        "extra_tag": "interesse-seite",
+        "anchor": "mh-vormerken"
+      }
+    },
+    "interest": {
+      "type": "mh-interest-form",
+      "blocks": {
+        "q-current": {
+          "type": "select",
+          "settings": {
+            "label": "Womit entfernst du heute Haare?",
+            "options": "Rasierer\nEnthaarungscreme\nWaxing / Sugaring\nEpilierer\nLaser / IPL\nGar nicht"
+          }
+        },
+        "q-areas": {
+          "type": "checkboxes",
+          "settings": {
+            "label": "Für welche Stellen käme das Spray infrage?",
+            "options": "Beine\nArme\nAchseln\nBrust\nRücken\nBikinizone (äußerer Bereich)",
+            "full_width": true
+          }
+        },
+        "q-price": {
+          "type": "select",
+          "settings": {
+            "label": "Was wäre dir eine Flasche (100 ml, ca. 6 Anwendungen) wert?",
+            "options": "bis 15 €\n15–20 €\n20–25 €\n25–30 €\nüber 30 €",
+            "help": "Ehrliche Antwort hilft uns mehr als eine nette."
+          }
+        },
+        "q-frequency": {
+          "type": "select",
+          "settings": {
+            "label": "Wie oft entfernst du Haare?",
+            "options": "Mehrmals pro Woche\nEinmal pro Woche\nAlle zwei Wochen\nSeltener"
+          }
+        },
+        "q-source": {
+          "type": "select",
+          "settings": {
+            "label": "Wie hast du von MyHaut erfahren?",
+            "options": "Instagram\nTikTok\nFacebook\nGoogle\nEmpfehlung\nSonstiges"
+          }
+        },
+        "q-blocker": {
+          "type": "textarea",
+          "settings": {
+            "label": "Was müsste das Spray können, damit du es kaufst?",
+            "full_width": true
+          }
+        }
+      },
+      "block_order": [
+        "q-current",
+        "q-areas",
+        "q-price",
+        "q-frequency",
+        "q-source",
+        "q-blocker"
+      ],
+      "settings": {
+        "show_bundle_select": true,
+        "anchor": "mh-interesse"
+      }
+    }
+  },
+  "order": ["waitlist", "interest"]
+}

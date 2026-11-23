@@ -1,0 +1,216 @@
+{%- comment -%}
+  Waitlist — the primary conversion point while the shop is in pre-order mode.
+
+  Uses Shopify's built-in customer form, so signups land under
+  Customers → email subscribers and can be exported to Shopify Email, Klaviyo
+  or Mailchimp without any third-party script. The bundle the visitor picked
+  and the UTM campaign they arrived from are attached as customer tags by
+  myhaut.js, which is what makes a test campaign measurable.
+
+  Consent is an explicit, unticked checkbox. Switch on
+  Settings → Notifications → “Customer email marketing confirmation” in the
+  Shopify admin so the double opt-in that German law expects is on record.
+{%- endcomment -%}
+
+{%- liquid
+  assign mh_product = section.settings.product | default: product | default: collections.all.products.first
+  assign current_variant = mh_product.selected_or_first_available_variant
+
+  assign anchor = section.settings.anchor | default: 'mh-vormerken'
+
+  assign fallback_eyebrow = 'sections.waitlist.eyebrow' | t
+  assign fallback_heading = 'sections.waitlist.heading' | t
+  assign fallback_body = 'sections.waitlist.body' | t
+  assign fallback_submit = 'sections.waitlist.submit' | t
+  assign fallback_success_heading = 'sections.waitlist.success_heading' | t
+  assign fallback_success_body = 'sections.waitlist.success_body' | t
+
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
+  assign heading = section.settings.heading | default: fallback_heading
+  assign intro = section.settings.body | default: fallback_body
+  assign submit_label = section.settings.submit_label | default: fallback_submit
+  assign success_heading = section.settings.success_heading | default: fallback_success_heading
+  assign success_body = section.settings.success_body | default: fallback_success_body
+
+  assign privacy_url = settings.privacy_page
+  assign ship_text = settings.preorder_ship_text
+
+  comment
+    Tags travel with the signup: "newsletter" is what tells Shopify this is a
+    marketing subscription, the rest is ours to segment on later.
+  endcomment
+  assign base_tags = 'newsletter,vormerkliste'
+  if section.settings.extra_tag != blank
+    assign base_tags = base_tags | append: ',' | append: section.settings.extra_tag
+  endif
+-%}
+
+<div class="mh-waitlist" id="{{ anchor }}">
+  <div class="mh-container">
+    <div class="mh-waitlist__panel">
+      <div class="mh-waitlist__intro">
+        {%- if eyebrow != blank -%}<div class="mh-eyebrow">{{ eyebrow }}</div>{%- endif -%}
+        <h2 class="mh-waitlist__title">{{ heading | newline_to_br }}</h2>
+        {%- if intro != blank -%}<p class="mh-waitlist__body">{{ intro }}</p>{%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <ul class="mh-waitlist__perks">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign perk_key = 'sections.waitlist.perk_' | append: forloop.index
+                assign fallback_perk = perk_key | t
+                if fallback_perk contains 'translation missing'
+                  assign fallback_perk = ''
+                endif
+                assign perk = block.settings.text | default: fallback_perk
+              -%}
+              {%- if perk != blank -%}
+                <li {{ block.shopify_attributes }}>{{ perk }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <div class="mh-waitlist__card">
+        {%- form 'customer', id: 'mh-waitlist-form', class: 'mh-waitlist__form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="mh-waitlist__success" role="status">
+              <h3 class="mh-waitlist__success-title">{{ success_heading }}</h3>
+              <p class="mh-waitlist__success-body">{{ success_body }}</p>
+              {%- if settings.interest_page != blank -%}
+                <a class="mh-btn mh-btn--outline mh-btn--block" href="{{ settings.interest_page }}">
+                  {{ 'sections.waitlist.success_link' | t }}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- else -%}
+            {%- if form.errors -%}
+              <div class="mh-errors" role="alert">
+                {{ form.errors | default_errors }}
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.show_selection and mh_product != blank -%}
+              <div class="mh-waitlist__selection">
+                <span class="mh-waitlist__selection-label">{{ 'sections.waitlist.selection_label' | t }}</span>
+                <span class="mh-waitlist__selection-value">
+                  <span data-mh-variant-title>{{ current_variant.title }}</span>
+                  <span class="mh-waitlist__selection-price" data-mh-price>{{ current_variant.price | money }}</span>
+                </span>
+                {% render 'mh-base-price', mh_variant: current_variant, mh_dynamic: true %}
+                <a
+                  class="mh-waitlist__selection-change"
+                  href="#mh-bundles"
+                  data-mh-scroll="#mh-bundles">{{ 'sections.waitlist.selection_change' | t }}</a>
+              </div>
+            {%- endif -%}
+
+            <input
+              type="hidden"
+              name="contact[tags]"
+              value="{{ base_tags }}"
+              data-mh-waitlist-tags
+              data-mh-waitlist-tags-base="{{ base_tags }}">
+
+            <div class="mh-field">
+              <label for="mh-waitlist-first-name">{{ 'sections.waitlist.first_name' | t }}</label>
+              <input
+                type="text"
+                id="mh-waitlist-first-name"
+                name="contact[first_name]"
+                autocomplete="given-name"
+                placeholder="{{ 'sections.waitlist.first_name_placeholder' | t }}">
+            </div>
+
+            <div class="mh-field">
+              <label for="mh-waitlist-email">{{ 'sections.waitlist.email' | t }}</label>
+              <input
+                type="email"
+                id="mh-waitlist-email"
+                name="contact[email]"
+                required
+                autocomplete="email"
+                data-mh-waitlist-email
+                placeholder="{{ 'sections.waitlist.email_placeholder' | t }}">
+            </div>
+
+            <label class="mh-consent" for="mh-waitlist-consent">
+              <input type="checkbox" id="mh-waitlist-consent" required>
+              <span>
+                {{ 'sections.waitlist.consent' | t }}
+                {%- if privacy_url != blank %}
+                  {{ 'sections.waitlist.consent_privacy' | t }}
+                  <a href="{{ privacy_url }}" target="_blank" rel="noopener">{{ 'sections.waitlist.consent_link' | t }}</a>.
+                {%- endif -%}
+              </span>
+            </label>
+
+            <button type="submit" class="mh-btn mh-btn--primary mh-btn--block">{{ submit_label }}</button>
+
+            <p class="mh-waitlist__note">
+              {{- 'sections.waitlist.note' | t -}}
+              {%- if ship_text != blank %} {{ ship_text }}{% endif -%}
+            </p>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Waitlist",
+  "tag": "section",
+  "class": "mh-section-waitlist",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Signups land under Customers → email subscribers, tagged with the bundle the visitor picked and the UTM campaign they came from. Turn on double opt-in under Settings → Notifications before you run ads in Germany."
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Only used for the “your selection” summary. Required on the homepage."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Leave empty to use the built-in translation." },
+    { "type": "textarea", "id": "heading", "label": "Headline" },
+    { "type": "textarea", "id": "body", "label": "Intro text" },
+    { "type": "text", "id": "submit_label", "label": "Button label" },
+    {
+      "type": "checkbox",
+      "id": "show_selection",
+      "label": "Show the selected bundle above the form",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "extra_tag",
+      "label": "Extra customer tag",
+      "info": "Added to every signup from this section, e.g. “landing-a”. Useful for A/B testing two landing pages."
+    },
+    { "type": "header", "content": "After signing up" },
+    { "type": "text", "id": "success_heading", "label": "Confirmation headline" },
+    { "type": "textarea", "id": "success_body", "label": "Confirmation text" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-vormerken", "info": "Must match the anchor in the theme’s pre-order settings." }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Bullet",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "info": "Leave empty to use the built-in translation." }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Waitlist",
+      "blocks": [{ "type": "perk" }, { "type": "perk" }, { "type": "perk" }]
+    }
+  ]
+}
+{% endschema %}

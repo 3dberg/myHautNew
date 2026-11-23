@@ -1,57 +1,93 @@
 {%- comment -%}
-  Dark review band. Text reviews are theme content — swap them for a review
-  app's block once you collect real ones.
+  Review band — the real customer reviews from Loox.
+
+  The theme ships no review text of its own. With the Loox app embed switched
+  on (Theme settings → App embeds) the band renders Loox's own review widget
+  for the product below; the reviews themselves come from Loox and are pre-
+  rendered into the page through the loox.reviews metafield, so they are in the
+  HTML for search engines too. Another review app can be dropped in instead
+  with "Add block → Apps", which then replaces the Loox widget.
 {%- endcomment -%}
 
 {%- liquid
   assign fallback_heading = 'sections.reviews.heading' | t
-  assign fallback_summary = 'sections.reviews.rating_summary' | t
-  assign verified_label = 'sections.reviews.verified' | t
+  assign fallback_intro = 'sections.reviews.body' | t
 
   assign heading = section.settings.heading | default: fallback_heading
-  assign summary = section.settings.summary | default: fallback_summary
+  assign intro = section.settings.body | default: fallback_intro
+
+  assign has_blocks = false
+  if section.blocks.size > 0
+    assign has_blocks = true
+  endif
+
+  comment
+    The homepage has no product of its own, so the section setting decides
+    which product's reviews are shown; with a single-product shop the first
+    product is the right fallback.
+  endcomment
+  assign reviews_product = section.settings.product | default: product | default: collections.all.products.first
+
+  comment
+    Loox keeps the review count on the product, so a product without a single
+    review never renders the band at all. If that metafield cannot be read the
+    count comes out empty rather than zero — then the band is rendered and the
+    CSS hides it as long as Loox leaves the widget empty.
+  endcomment
+  capture loox_count_raw
+    echo reviews_product.metafields.loox.num_reviews
+  endcapture
+  assign loox_count_raw = loox_count_raw | strip
+  assign loox_count = loox_count_raw | plus: 0
+  assign has_reviews = false
+  if loox_count > 0 or loox_count_raw == blank
+    assign has_reviews = true
+  endif
+
+  assign show_loox = false
+  if has_blocks == false and section.settings.show_loox and reviews_product != blank and has_reviews
+    assign show_loox = true
+  endif
 -%}
 
-<div class="mh-reviews" id="{{ section.settings.anchor | default: 'mh-reviews' }}">
-  <div class="mh-container">
-    <div class="mh-reviews__head">
-      <h2 class="mh-reviews__title">{{ heading | newline_to_br }}</h2>
-      {%- if section.settings.show_summary -%}
-        <div class="mh-reviews__score">
-          <div class="mh-reviews__stars">{% render 'mh-stars', mh_rating: section.settings.rating_stars %}</div>
-          {%- if summary != blank -%}<div class="mh-reviews__summary">{{ summary }}</div>{%- endif -%}
-        </div>
-      {%- endif -%}
-    </div>
+{%- if has_blocks or show_loox or request.design_mode -%}
+  <div
+    class="mh-reviews{% unless section.settings.dark %} mh-reviews--light{% endunless %}{% if show_loox %} mh-reviews--auto{% endif %}"
+    id="{{ section.settings.anchor | default: 'mh-reviews' }}">
+    <div class="mh-container">
+      <div class="mh-reviews__head">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="mh-eyebrow">{{ section.settings.eyebrow }}</div>
+        {%- endif -%}
+        <h2 class="mh-reviews__title">{{ heading | newline_to_br }}</h2>
+        {%- if intro != blank -%}<p class="mh-reviews__intro">{{ intro }}</p>{%- endif -%}
+      </div>
 
-    <div class="mh-reviews__grid">
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign body_key = 'sections.reviews.review_' | append: forloop.index | append: '_body'
-          assign author_key = 'sections.reviews.review_' | append: forloop.index | append: '_author'
-          assign fallback_body = body_key | t
-          assign fallback_author = author_key | t
-          if fallback_body contains 'translation missing'
-            assign fallback_body = ''
-          endif
-          if fallback_author contains 'translation missing'
-            assign fallback_author = ''
-          endif
-          assign review_body = block.settings.body | default: fallback_body
-          assign review_author = block.settings.author | default: fallback_author
-        -%}
-        <div class="mh-review" {{ block.shopify_attributes }}>
-          <div class="mh-review__stars">{% render 'mh-stars', mh_rating: block.settings.stars %}</div>
-          <p class="mh-review__body">{{ review_body }}</p>
-          <div class="mh-review__author">
-            {{- review_author -}}
-            {%- if block.settings.show_verified %} · {{ verified_label }}{% endif -%}
+      <div class="mh-reviews__app">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {% render block %}
+          {%- endcase -%}
+        {%- endfor -%}
+
+        {%- if show_loox -%}
+          {%- comment -%}
+            Loox's own widget, on a light card so it stays readable on the dark
+            band. The markup is the one Loox documents for a manual install.
+          {%- endcomment -%}
+          <div class="mh-reviews__loox">
+            <div id="looxReviews" class="loox-reviews-default" data-product-id="{{ reviews_product.id }}">{{ reviews_product.metafields.loox.reviews }}</div>
           </div>
-        </div>
-      {%- endfor -%}
+        {%- endif -%}
+
+        {%- if has_blocks == false and show_loox == false and request.design_mode -%}
+          <p class="mh-reviews__hint">{{ 'sections.reviews.editor_hint' | t }}</p>
+        {%- endif -%}
+      </div>
     </div>
   </div>
-</div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -59,30 +95,29 @@
   "tag": "section",
   "class": "mh-section-reviews",
   "settings": [
-    { "type": "textarea", "id": "heading", "label": "Headline" },
-    { "type": "checkbox", "id": "show_summary", "label": "Show rating summary", "default": true },
-    { "type": "range", "id": "rating_stars", "min": 0, "max": 5, "step": 1, "label": "Stars", "default": 5 },
-    { "type": "text", "id": "summary", "label": "Rating summary" },
+    {
+      "type": "paragraph",
+      "content": "Shows the Loox review widget for the product below. It needs the Loox app embed switched on under Theme settings → App embeds. Until the product has its first review the whole section stays hidden on the storefront. Another review app can be added with “Add block → Apps”; its block then replaces the Loox widget."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_loox",
+      "label": "Show the Loox review widget",
+      "default": true
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Whose reviews are shown. On the product template the current product is used automatically when this is empty."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Headline", "info": "Leave empty to use the built-in translation." },
+    { "type": "textarea", "id": "body", "label": "Text under the headline" },
+    { "type": "checkbox", "id": "dark", "label": "Dark background", "default": true },
     { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-reviews" }
   ],
-  "blocks": [
-    {
-      "type": "review",
-      "name": "Review",
-      "settings": [
-        { "type": "range", "id": "stars", "min": 0, "max": 5, "step": 1, "label": "Stars", "default": 5 },
-        { "type": "textarea", "id": "body", "label": "Review" },
-        { "type": "text", "id": "author", "label": "Name" },
-        { "type": "checkbox", "id": "show_verified", "label": "Show “verified purchase”", "default": true }
-      ]
-    }
-  ],
-  "max_blocks": 9,
-  "presets": [
-    {
-      "name": "Reviews",
-      "blocks": [{ "type": "review" }, { "type": "review" }, { "type": "review" }]
-    }
-  ]
+  "blocks": [{ "type": "@app" }],
+  "presets": [{ "name": "Reviews" }]
 }
 {% endschema %}

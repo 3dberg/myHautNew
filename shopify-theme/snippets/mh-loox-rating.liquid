@@ -1,0 +1,140 @@
+{%- comment -%}
+  Loox star rating — the real score and review count from the review app.
+
+  Two layers, so the stars are on the page from the first paint:
+
+  1. The theme draws the stars itself from the metafields Loox keeps on the
+     product (loox.avg_rating / loox.num_reviews). No script needed, no layout
+     shift, and it still shows if the Loox script is blocked or slow.
+  2. Loox's own rating widget fills the .loox-rating element next to it once
+     its script has loaded (Theme settings → App embeds → Loox). myhaut.js then
+     drops the theme's version, so only one rating is ever visible.
+
+  A product without a single review renders nothing at all, so an empty star
+  row can never go live by accident.
+
+  Parameters
+    mh_product  the product whose score is shown (falls back to the page product)
+    mh_class    extra class on the row, e.g. 'mh-hero__rating'
+    mh_note     small line next to the stars (optional)
+    mh_target   anchor the stars link to; blank for no link (default #mh-reviews)
+{%- endcomment -%}
+
+{%- liquid
+  assign rating_product = mh_product | default: product | default: collections.all.products.first
+
+  capture loox_rating
+    echo rating_product.metafields.loox.avg_rating
+  endcapture
+  capture loox_raters
+    echo rating_product.metafields.loox.num_reviews
+  endcapture
+  assign loox_rating = loox_rating | strip
+  assign loox_raters = loox_raters | strip
+  assign rating_count = loox_raters | plus: 0
+  assign rating_tenths = loox_rating | times: 10 | round
+
+  comment
+    Without the metafields (Loox removed, or its data not readable) the theme
+    cannot know whether there are reviews. The row is then left to Loox alone
+    and the CSS hides it until Loox has filled it.
+  endcomment
+  assign rating_known = true
+  if loox_raters == blank
+    assign rating_known = false
+  endif
+
+  comment
+    An empty string means "no link"; only a target that was never passed at all
+    falls back to the review section.
+  endcomment
+  assign rating_target = mh_target
+  if rating_target == nil
+    assign rating_target = '#mh-reviews'
+  endif
+
+  assign show_rating = false
+  if rating_product != blank
+    if rating_known == false or rating_count > 0
+      assign show_rating = true
+    endif
+  endif
+-%}
+
+{%- if show_rating -%}
+  {%- comment -%}
+    data-pattern is the label Loox prints next to its stars. Without it Loox
+    writes a bare "(1)"; with it the row reads "1 Bewertung", in the shop's
+    language and with the right plural for the count the theme knows.
+  {%- endcomment -%}
+  {%- capture rating_pattern -%}
+    {%- if rating_known -%}{{ 'general.rating.pattern' | t: count: rating_count }}{%- endif -%}
+  {%- endcapture -%}
+
+  {%- capture rating_body -%}
+    <div
+      class="loox-rating"
+      data-id="{{ rating_product.id }}"
+      data-rating="{{ loox_rating }}"
+      data-raters="{{ loox_raters }}"
+      {% if rating_pattern != blank %}data-pattern="{{ rating_pattern | strip | escape }}"{% endif %}></div>
+
+    {%- if rating_known and rating_count > 0 -%}
+      <span class="mh-rating__own" data-mh-rating-fallback>
+        <span class="mh-rating__stars" role="img" aria-label="{{ 'general.rating.stars' | t: rating: loox_rating }}">
+          <svg viewBox="0 0 120 24" width="96" height="19.2" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="mh-star-half-{{ rating_product.id }}">
+                <stop offset="50%" stop-color="currentColor"/>
+                <stop offset="50%" stop-color="transparent"/>
+              </linearGradient>
+            </defs>
+            {%- for i in (1..5) -%}
+              {%- liquid
+                assign full_at = i | times: 10
+                assign half_at = full_at | minus: 5
+                assign star_x = forloop.index0 | times: 24
+                assign star_fill = 'none'
+                if rating_tenths >= full_at
+                  assign star_fill = 'currentColor'
+                elsif rating_tenths >= half_at
+                  capture star_fill
+                    echo 'url(#mh-star-half-'
+                    echo rating_product.id
+                    echo ')'
+                  endcapture
+                endif
+              -%}
+              <path
+                transform="translate({{ star_x }} 0)"
+                d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5-4.7-4.6 6.5-.9z"
+                fill="{{ star_fill }}"
+                stroke="currentColor"
+                stroke-width="1.2"
+                stroke-linejoin="round"/>
+            {%- endfor -%}
+          </svg>
+        </span>
+        <span class="mh-rating__count">{{ 'general.rating.count' | t: count: rating_count }}</span>
+      </span>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  <div class="mh-rating{% unless rating_known %} mh-rating--auto{% endunless %}{% if mh_class != blank %} {{ mh_class }}{% endif %}" data-mh-rating>
+    {%- if rating_target != blank -%}
+      <a
+        class="mh-rating__link"
+        href="{{ rating_target }}"
+        data-mh-scroll="{{ rating_target }}"
+        aria-label="{{ 'general.rating.link' | t }}">
+        {{ rating_body }}
+      </a>
+    {%- else -%}
+      {{ rating_body }}
+    {%- endif -%}
+
+    {%- if mh_note != blank and rating_count > 0 -%}
+      <span class="mh-rating__note">{{ mh_note }}</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

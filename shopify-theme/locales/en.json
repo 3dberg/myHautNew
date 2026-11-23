@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "accessibility": {
@@ -5,11 +14,24 @@
       "close": "Close",
       "open_menu": "Open menu",
       "open_cart": "Open cart",
+      "social_link": "Follow on {{ network }}",
       "previous": "Previous",
       "next": "Next"
     },
+    "rating": {
+      "link": "Jump to the reviews",
+      "stars": "Rated {{ rating }} out of 5",
+      "count": {
+        "one": "{{ count }} review",
+        "other": "{{ count }} reviews"
+      },
+      "pattern": {
+        "one": "[count] review",
+        "other": "[count] reviews"
+      }
+    },
     "meta": {
-      "tags": "Tagged: {{ tags }}",
+      "tags": "Tags: {{ tags }}",
       "page": "Page {{ page }}"
     },
     "pagination": {
@@ -33,147 +55,322 @@
       "label": "Country / region"
     },
     "newsletter": {
-      "success": "Thanks — you're on the list."
+      "success": "Thanks – you're in."
     },
     "continue_shopping": "Continue shopping"
   },
 
   "sections": {
     "announcement": {
-      "item_1": "Free shipping over €25",
-      "item_2": "30-day money-back guarantee",
-      "item_3": "Ships from Germany"
+      "item_1": "Shipped from Germany with DHL",
+      "item_2": "30-day returns on unopened bottles",
+      "item_3": "14-day right of withdrawal",
+      "free_shipping": "Free shipping from {{ amount }}",
+      "free_shipping_all": "Free shipping across Germany",
+      "free_shipping_final": "Free shipping"
     },
-
     "header": {
       "cart": "Cart",
       "cart_short": "Bag",
       "menu": "Menu"
     },
-
     "hero": {
-      "rating_text": "4.8 · 2,184 reviews",
+      "eyebrow": "Hair removal spray",
       "heading_1": "Smooth skin in",
       "heading_2": "8 minutes.",
-      "body": "Spray, wait a moment, wipe off. No pulling, no shaving, no appointments. With aloe vera & allantoin for skin that feels better afterwards than before.",
-      "body_mobile": "Spray, wait, wipe off. No pulling, no shaving — with aloe vera & allantoin.",
-      "note": "100 ml · around 6 applications · incl. VAT",
-      "secondary_button": "Bundles",
-      "trust_1": "CPSR certified",
-      "trust_2": "Dermatologically tested",
-      "trust_3": "Vegan",
-      "trust_mobile_1": "CPSR certified",
-      "trust_mobile_2": "Vegan",
-      "trust_mobile_3": "30-day returns"
+      "body": "Spray, wait 8 minutes, wipe – no blades, no wax, no appointment. Aloe vera and allantoin care for the skin while it works, and hair grows back soft instead of stubbly.",
+      "body_mobile": "Spray, wait, wipe – no blades, no wax, no stubble.",
+      "note": "1 bottle = 100 ml · enough for about 4× arms or lower legs",
+      "secondary_button": "View product",
+      "trust_1": "30-day returns – unopened & in original packaging",
+      "trust_2": "Shipped from Germany",
+      "trust_3": "With aloe vera & allantoin",
+      "trust_mobile_1": "30-day returns (unopened)",
+      "trust_mobile_2": "Ships from DE",
+      "trust_mobile_3": "No blades or wax"
     },
-
     "sticky": {
       "product_title": "MyHaut Hair Removal Spray",
-      "product_meta": "100 ml · In stock",
-      "buy": "Buy now"
+      "product_meta": "In stock · ships from Germany",
+      "product_meta_preorder": "100 ml · Pre-launch",
+      "buy": "Add to cart",
+      "buy_preorder": "Join waitlist"
     },
-
     "marquee": {
-      "items": "No blades, No wax, No appointments, Aloe vera & allantoin, 8 minutes, For body, legs & arms"
+      "items": "No blades, No wax, No appointment, With aloe vera & allantoin, 8 minutes, For legs · arms · underarms, 30-day returns (unopened)"
     },
-
     "steps": {
       "eyebrow": "How it works",
       "heading": "Three steps.\nOne shower long.",
-      "body": "No heating up, no touch-up shaving. All you need is the bottle, a damp cloth and eight minutes.",
+      "body": "No heating, no touch-up shave. All you need is the bottle, a damp cloth and eight minutes.",
       "step_1_title": "Spray",
-      "step_1_body": "Apply evenly to dry skin until the hairs are covered. Don't rub it in.",
+      "step_1_body": "Spray evenly onto dry, unbroken skin until the hairs are covered. Do not rub in.",
       "step_2_title": "Wait 8 minutes",
-      "step_2_body": "The formula dissolves the hair at the surface. Aloe vera keeps your skin calm meanwhile.",
+      "step_2_body": "The formula dissolves the hair right at the skin surface while aloe vera keeps the skin calm. For coarse hair up to 17 minutes – never longer.",
       "step_3_title": "Wipe & rinse",
-      "step_3_body": "Wipe off with a damp cloth, rinse briefly with lukewarm water. Done."
+      "step_3_body": "Wipe off with a damp cloth and rinse with lukewarm water. Done – no stubble."
     },
-
     "before_after": {
       "eyebrow": "Before / after",
-      "heading": "One pass. No stubble.",
+      "heading": "No razor bumps.\nNo stubble.",
       "label_before": "Before",
       "label_after": "After · 8 min",
-      "stat_1_value": "96 %",
-      "stat_1_label": "report noticeably smoother skin after the first application*",
+      "stat_1_value": "8",
+      "stat_1_label": "minutes on the skin – up to 17 for coarse hair",
       "stat_2_value": "0",
-      "stat_2_label": "blades, wax strips and salon appointments",
-      "stat_3_value": "€3.15",
-      "stat_3_label": "per application – a fraction of a salon session",
-      "footnote": "*Self-assessment, user test with 112 participants over 4 weeks."
+      "stat_2_label": "blades, wax, appointments – none of them needed",
+      "stat_3_value": "7",
+      "stat_3_label": "days of smooth skin* – up to, depending on hair type",
+      "footnote": "* In our own user tests, skin stayed smooth for 2 to 7 days depending on hair type."
     },
-
     "facts": {
       "eyebrow": "In the bottle",
       "heading": "Care that pulls its weight.",
       "fact_label": "FACT",
-      "fact_1_title": "Allantoin soothes instantly",
-      "fact_1_body": "Instead of irritated skin after shaving: allantoin supports regeneration and reduces redness right after use.",
+      "fact_1_title": "Allantoin soothes",
+      "fact_1_body": "Instead of irritated skin after shaving: allantoin supports regeneration and reduces redness after use.",
       "fact_2_title": "Aloe vera holds moisture",
       "fact_2_body": "Your skin doesn't dry out the way it does with many hair removal creams. After rinsing, a soft, cared-for film remains.",
-      "fact_3_title": "CPSR certified",
-      "fact_3_body": "Cosmetic Product Safety Report under EU regulation 1223/2009. Made and tested in the EU, vegan and cruelty-free."
+      "fact_3_title": "Soothing plant extracts",
+      "fact_3_body": "Alongside aloe vera and allantoin the formula contains Chrysanthellum indicum flower water and dipotassium glycyrrhizate from liquorice root – both are used in cosmetics to calm the skin after use."
     },
-
     "reviews": {
-      "heading": "What customers\nsay afterwards.",
-      "rating_summary": "4.8 out of 5 · 2,184 reviews",
-      "verified": "Verified purchase",
-      "review_1_body": "“I shaved for ten years and complained about stubble for ten years. This was the first week without.”",
-      "review_1_author": "Lena M.",
-      "review_2_body": "“No smell like other creams, no red patches. After eight minutes everything was gone, really.”",
-      "review_2_author": "Sarah K.",
-      "review_3_body": "“I use it on my chest and back. Far more pleasant than waxing and I don't need anyone to help me.”",
-      "review_3_author": "Tobias R."
+      "heading": "What customers\nsay.",
+      "body": "",
+      "editor_hint": "The Loox widget appears here as soon as the product has its first review. With no review the section stays hidden on the storefront. Another review app’s widget can be added with “Add block → Apps”."
     },
-
     "bundles": {
-      "eyebrow": "Bundles",
+      "eyebrow": "Sets",
       "heading": "Choose your amount.",
-      "body": "One bottle lasts around six applications. Most people order three.",
-      "select": "Select",
+      "body": "Each bottle holds 100 ml – enough for about 4 applications on arms or lower legs, or about 2 full-body applications. Multiple bottles ship individually packed, and you pay less per bottle.",
+      "select": "Add to cart",
+      "select_preorder": "Reserve this set",
       "selected": "Selected",
       "per_bottle": "{{ price }} per bottle",
       "per_bottle_short": "{{ price }} / bottle",
-      "badge_bestseller": "Bestseller",
+      "badge_bestseller": "Most popular",
+      "badge_recommended": "Our recommendation",
       "save_percent": "save {{ percent }} %",
-      "card_1_eyebrow": "To try",
-      "card_2_eyebrow": "For 3 months",
-      "card_3_eyebrow": "Most popular",
-      "card_4_eyebrow": "Best price",
-      "trust_1": "Free shipping over €25",
-      "trust_2": "30-day money back",
-      "trust_3": "Delivery in 2–4 working days"
+      "card_1_eyebrow": "To try it out",
+      "card_2_eyebrow": "For legs & arms",
+      "card_3_eyebrow": "Larger supply",
+      "card_4_eyebrow": "Best price per bottle",
+      "trust_1": "30-day returns on unopened bottles",
+      "trust_2": "DHL from Germany, 2–5 working days",
+      "trust_3": "PayPal, credit card, Apple Pay & Google Pay",
+      "saved": "{{ amount }} saved",
+      "saving": "You save {{ amount }}",
+      "vs_single": "instead of {{ price }} each",
+      "free_shipping_badge": "Free shipping",
+      "bottles_volume": "{{ count }} × {{ volume }} ml",
+      "card_1_title": "1 bottle",
+      "card_2_title": "2 bottles",
+      "card_3_title": "3 bottles",
+      "card_4_title": "5 bottles"
     },
-
+    "waitlist": {
+      "eyebrow": "Waitlist",
+      "heading": "Be there when we launch.",
+      "body": "MyHaut is not on sale yet. Leave your address and we'll write as soon as there is a delivery date – and we'll know how big the first batch needs to be.",
+      "perk_1": "No purchase, no payment, no obligation.",
+      "perk_2": "One email at launch – that's it.",
+      "perk_3": "Unsubscribe any time in one click.",
+      "selection_label": "Your set",
+      "selection_change": "change",
+      "first_name": "First name (optional)",
+      "first_name_placeholder": "What should we call you?",
+      "email": "Email address",
+      "email_placeholder": "you@example.com",
+      "consent": "Yes, email me when MyHaut is available. I can unsubscribe at any time.",
+      "consent_privacy": "This is subject to the",
+      "consent_link": "privacy policy",
+      "submit": "Join the waitlist",
+      "cta": "Join the waitlist",
+      "checkout_link": "Or pre-order now →",
+      "note": "No purchase, no payment.",
+      "success_heading": "Almost there.",
+      "success_body": "We've sent you an email. Confirm your address in it and you're on the list.",
+      "success_link": "Got two minutes? Tell us more"
+    },
+    "interest": {
+      "eyebrow": "Two minutes",
+      "heading": "Tell us what you need.",
+      "body": "We're finalising the formula and the pricing. Your answers decide which sizes we produce – and what MyHaut costs at launch.",
+      "name": "Name",
+      "email": "Email address",
+      "bundle": "Which set would you take?",
+      "message": "Anything else?",
+      "no_answer": "No answer",
+      "yes": "Yes",
+      "consent": "My answers may be used for product development.",
+      "submit": "Send my answers",
+      "success_heading": "Thanks – got it.",
+      "success_body": "That genuinely helps. If we have follow-up questions we'll write to the address you gave us."
+    },
+    "details": {
+      "eyebrow": "Product details",
+      "heading": "Everything that's in it.",
+      "body": "Mandatory information under EU Cosmetics Regulation 1223/2009 and German price-indication law.",
+      "net_content": "Net content",
+      "base_price": "Base price",
+      "availability": "Availability",
+      "item_1_title": "Ingredients (INCI)",
+      "item_1_body_html": "<p>Aqua, Mineral Oil, Allantoin, Calcium Thioglycolate, Aloe Barbadensis Leaf Juice, Chrysanthellum Indicum Flower Water, Sodium Hydroxide, Butylene Glycol, Glycerin, Larrea Divaricata Extract, Lecithin, Glyceryl Stearate, PEG-100 Stearate, Parfum, Phenoxyethanol, Dipotassium Glycyrrhizate, Ethylhexylglycerin</p><p>Listed in descending order of weight, identical to the packaging.</p>",
+      "item_2_title": "How to use",
+      "item_2_body_html": "<p>24 hours before first use, do a patch test on a small area inside the elbow.</p><p>Clean and dry the skin, remove any cosmetic residue. Shake the bottle well. Spray onto dry, unbroken skin until the hairs are covered. Do not rub in. We recommend disposable gloves for spreading and wiping.</p><p>Leave on for 8 minutes, up to 17 minutes for coarse hair – never longer. Then wipe off with a damp cloth and rinse thoroughly with lukewarm water. Do not use soap immediately afterwards; pat the skin dry.</p>",
+      "item_3_title": "Warnings",
+      "item_3_body_html": "<p><strong>Contains thioglycolate. Follow the instructions. Keep out of reach of children.</strong></p><p>Do not use on the face, the intimate area, mucous membranes or on irritated, broken or sunburnt skin. Do not use if you are hypersensitive to any ingredient. Avoid contact with eyes – rinse thoroughly with water immediately on contact. Do not use directly before or after shaving, waxing or sunbathing. If redness or burning persists, rinse off immediately and stop using. Do not exceed the recommended time.</p>",
+      "item_4_title": "Responsible person & manufacturer",
+      "item_4_body_html": "<p>Responsible person under Art. 4 of Regulation (EC) No 1223/2009:<br>MH Solutions – Petrina Angelova<br>Riegerweg 34<br>82024 Taufkirchen<br>Germany</p><p>Made in: China<br>Product enquiries: hello@my-haut.com</p>",
+      "item_5_title": "Durability & batch number",
+      "item_5_body_html": "<p>Best before and batch number: see the print on the bottle.</p><p>The period-after-opening (PAO) figure is not yet fixed and will be added here once it is.</p><p>Store cool, dry and out of direct sunlight.</p>",
+      "item_6_title": "Safety assessment (CPSR)",
+      "item_6_body_html": "<p>MyHaut has a cosmetic product safety report (CPSR) under Annex I of Regulation (EC) No 1223/2009, the product information file is maintained and the product is notified in the EU CPNP portal.</p>"
+    },
     "faq": {
       "eyebrow": "FAQ",
       "heading": "Still have questions?",
-      "body_html": "Write to us at <a href=\"mailto:hallo@myhaut.de\">hallo@myhaut.de</a> – we usually reply the same working day.",
-      "q_1": "Which body areas is the spray suitable for?",
-      "a_1": "Legs, arms, underarms, chest and back. Do not use on the face, the intimate area or irritated skin.",
-      "q_2": "How long does the skin stay smooth?",
-      "a_2": "Because the hair is dissolved below the skin's surface, it takes most people five to seven days before anything grows back – noticeably longer than after shaving. And it comes back soft, not stubbly.",
-      "q_3": "Is it suitable for sensitive skin?",
-      "a_3": "Aloe vera and allantoin are in the formula for exactly that reason. Still, do a patch test on a small area of your inner elbow 24 hours in advance.",
-      "q_4": "Does the spray smell like other hair removal creams?",
-      "a_4": "No. The formula works without the typical harsh smell – you get a light, neutral scent.",
-      "q_5": "What if it doesn't work for me?",
-      "a_5": "Send us a message within 30 days and you'll get the full purchase price back – even with an opened bottle."
+      "body_html": "Write to <a href=\"mailto:support@my-haut.com\">support@my-haut.com</a> – we reply within 48 hours.",
+      "q_1": "How fast will I get MyHaut?",
+      "a_1": "We ship from Germany with DHL, usually the next working day. Delivery takes 2–5 working days. You receive the tracking number by email.",
+      "q_2": "How long does one bottle last?",
+      "a_2": "One bottle holds 100 ml – enough for about 4 applications on arms or lower legs, or about 2 full-body applications. Smaller areas such as underarms go further.",
+      "q_3": "Which body areas is the spray suitable for?",
+      "a_3": "Legs, arms, underarms, chest and back. Do not use on the face, the intimate area, mucous membranes or on irritated, broken or sunburnt skin.",
+      "q_4": "How long does the skin stay smooth?",
+      "a_4": "That depends on your hair type. In our own user tests the skin stayed smooth for 2 to 7 days. Because the hair is dissolved right at the skin surface, it grows back soft, not stubbly like after shaving.",
+      "q_5": "Is it suitable for sensitive skin?",
+      "a_5": "Aloe vera and allantoin are in the formula for exactly that. Still do a patch test inside the elbow 24 hours before. If it burns or stays red, rinse off immediately.",
+      "q_6": "Does the spray smell like other hair removal creams?",
+      "a_6": "The formula has none of the typical sharp smell – you notice a light, neutral scent.",
+      "q_7": "How is it different from a hair removal cream?",
+      "a_7": "The principle is similar, the application is not: you spray instead of spreading, need no spatula, and aloe vera plus allantoin care for the skin while it works.",
+      "q_8": "Can I return MyHaut?",
+      "a_8": "Yes – unopened bottles in undamaged original packaging can be returned within 30 days of delivery, and we refund the price of those bottles. Opened bottles cannot be returned for hygiene reasons. Our tip: start with one bottle and the patch test. Your statutory 14-day right of withdrawal applies regardless."
     },
-
     "cta": {
       "heading": "Eight minutes until\nyour next shower.",
-      "button": "Try it now for {price}",
-      "note": "30-day money-back guarantee"
+      "button": "Add to cart – {price}",
+      "button_preorder": "Join the waitlist",
+      "note": "30-day returns on unopened bottles · incl. VAT",
+      "note_preorder": "No purchase · no payment · unsubscribe any time"
     },
-
     "footer": {
-      "tagline": "Skincare that gives you time back. Developed and tested in the EU.",
-      "column_1_title": "Shop",
+      "tagline": "Skincare that gives you time back.",
+      "column_1_title": "Product",
       "column_2_title": "Help",
       "column_3_title": "Legal",
       "copyright": "All rights reserved."
+    },
+    "proof_strip": {
+      "eyebrow": "From our user test",
+      "heading": "What testers say\nafter their first use.",
+      "body": "",
+      "disclaimer": "Statements from participants in our pre-launch user test – not customer reviews.",
+      "editor_hint": "No quotes yet. Add tester quotes with “Add block”. With no block this section stays hidden on the storefront."
+    },
+    "video": {
+      "eyebrow": "Real use",
+      "heading": "This is what it\nreally looks like.",
+      "body": "Uncut clips from our user test. Tap for sound.",
+      "mute": "Mute",
+      "unmute": "Unmute",
+      "play": "Play video",
+      "loading": "Loading …",
+      "loading_slow": "Slow connection – still loading …",
+      "error": "The video could not be loaded.",
+      "retry": "Try again",
+      "dots": "Choose a clip",
+      "dot": "Clip {{ n }} of {{ total }}",
+      "prev": "Previous video",
+      "next": "Next video",
+      "editor_hint": "No videos yet. Add a Shopify-hosted video (MP4, portrait 9:16) with “Add block → Video”. With no block this section stays hidden on the storefront."
+    },
+    "compare": {
+      "eyebrow": "Compared",
+      "heading": "Why not\njust shave?",
+      "body": "What happens during one application – and after.",
+      "col_1": "MyHaut",
+      "col_2": "Shaving",
+      "col_3": "Waxing",
+      "col_4": "Hair removal cream",
+      "row_1_label": "Time",
+      "row_1_value_1": "8 minutes, one spray",
+      "row_1_value_2": "5–10 min, each area separately",
+      "row_1_value_3": "30–60 min plus appointment",
+      "row_1_value_4": "5–10 min, spread with a spatula",
+      "row_2_label": "Pain",
+      "row_2_value_1": "No pulling, no blade",
+      "row_2_value_2": "Cuts possible",
+      "row_2_value_3": "Rips the hair out",
+      "row_2_value_4": "No pulling",
+      "row_3_label": "Skin afterwards",
+      "row_3_value_1": "Aloe vera & allantoin care for it",
+      "row_3_value_2": "Razor burn, bumps",
+      "row_3_value_3": "Redness, ingrown hairs",
+      "row_3_value_4": "Often dry, harsh smell",
+      "row_4_label": "Regrowth",
+      "row_4_value_1": "Soft, no stubble",
+      "row_4_value_2": "Stubbly after 1–2 days",
+      "row_4_value_3": "Soft, every 3–6 weeks",
+      "row_4_value_4": "Soft",
+      "row_5_label": "Application",
+      "row_5_value_1": "Spray – nothing to spread",
+      "row_5_value_2": "Razor, foam, buying blades",
+      "row_5_value_3": "Salon or heating wax",
+      "row_5_value_4": "Spread cream with a spatula",
+      "footnote": "Statements on shaving, waxing and creams refer to typical home use."
+    },
+    "guarantee": {
+      "eyebrow": "Order without risk",
+      "heading": "What you can\nexpect from us.",
+      "body": "Clear rules instead of small print.",
+      "item_1_title": "30-day returns on unopened bottles",
+      "item_1_body": "Unopened bottles in undamaged original packaging can be returned within 30 days of delivery, and we refund the price of those bottles. Opened bottles cannot be returned for hygiene reasons. Your statutory 14-day right of withdrawal is unaffected.",
+      "item_1_link": "Return conditions",
+      "item_2_title": "Shipped from Germany",
+      "item_2_body": "We ship with DHL, delivery in 2–5 working days. You receive the tracking number by email.",
+      "free_shipping_line": "Free shipping on orders from {{ amount }}.",
+      "free_shipping_line_all": "Every order ships free of charge.",
+      "item_2_link": "Shipping & payment",
+      "item_3_title": "Questions? We answer fast.",
+      "item_3_body": "Write to support@my-haut.com – you get a reply within 48 hours from us, not from a bot.",
+      "item_3_link": "",
+      "payments_label": "Secure payment"
+    },
+    "buybox": {
+      "subtitle": "For silky smooth skin – no blades, wax or appointment",
+      "chip_1": "Hair-free in 8 minutes",
+      "chip_2": "No razor burn, no bumps",
+      "chip_3": "With aloe vera & allantoin",
+      "selector_label": "Choose quantity",
+      "per_bottle": "{{ price }} / bottle",
+      "badge_best_price": "Best price",
+      "bullet_1": "At your door in 2–5 working days",
+      "bullet_2": "30-day returns on unopened bottles",
+      "trust_1": "Free shipping from {{ amount }}",
+      "trust_1_all": "Free shipping – the price you see is final",
+      "trust_2": "Shipped from Germany with DHL",
+      "trust_3": "Secure payment: PayPal, credit card, Apple Pay & Google Pay",
+      "trust_4": "30-day returns – unopened & in original packaging",
+      "trust_5": "Safety-assessed under the EU Cosmetics Regulation (CPSR)",
+      "description": "The MyHaut spray dissolves hair right at the skin surface: spray on, wait 8 minutes, wipe off with a damp cloth, rinse. No pulling like waxing, no stubble like after shaving, no appointment. Aloe vera and allantoin care for the skin while it works, and hair grows back soft. For legs, arms, underarms, chest and back.",
+      "acc_1_title": "How to use",
+      "acc_2_title": "Shipping & returns",
+      "acc_2_body_html": "<p>We ship from Germany with DHL, usually the next working day. Delivery 2–5 working days, tracking number by email. Shipping is free on every order.</p><p>Unopened bottles in undamaged original packaging can be returned within 30 days of delivery – we refund the price of those bottles. Opened bottles cannot be returned for hygiene reasons. Your statutory 14-day right of withdrawal is unaffected.</p>",
+      "gallery_label": "Product images",
+      "thumb_label": "Show image {{ index }}"
+    },
+    "benefits": {
+      "heading": "",
+      "item_1_title": "For women and men",
+      "item_1_body": "Made for every hair type – fine or coarse, on legs, arms, underarms, chest and back.",
+      "item_2_title": "Spray instead of spreading",
+      "item_2_body": "No spatula, no cream on your fingers. Spray until the hairs are covered – done.",
+      "item_3_title": "Care built into the formula",
+      "item_3_body": "Aloe vera and allantoin calm the skin while it works. No sharp smell.",
+      "item_4_title": "8 minutes, one shower",
+      "item_4_body": "No appointment, no heating, no touch-up shave. Up to 17 minutes for coarse hair."
     }
   },
 
@@ -190,6 +387,12 @@
       "sale_price": "Sale price",
       "save_percent": "−{{ percent }} %",
       "from_price": "from {{ price }}",
+      "base_price": "{{ price }} / 100 ml",
+      "tax_note": "incl. VAT, plus shipping",
+      "tax_note_free": "incl. VAT · free shipping",
+      "tax_note_incl": "incl. VAT",
+      "free_shipping_highlight": "Free shipping",
+      "shipping_link": "Shipping & payment",
       "view_details": "View details",
       "vendor": "Brand",
       "no_product": "No product selected. Pick your product under “Product” in the theme editor.",
@@ -202,7 +405,7 @@
       "title": "Cart",
       "empty": "Your cart is empty.",
       "subtotal": "Subtotal",
-      "taxes_and_shipping": "Incl. VAT. Shipping calculated at checkout.",
+      "taxes_and_shipping": "Incl. VAT. Shipping is calculated at checkout.",
       "checkout": "Checkout",
       "remove": "Remove",
       "quantity": "Quantity",
@@ -212,7 +415,7 @@
       },
       "continue": "Continue shopping",
       "update": "Update",
-      "error": "That item couldn't be added. Please try again."
+      "error": "The item could not be added. Please try again."
     }
   },
 
@@ -239,11 +442,11 @@
       "total": "Total"
     },
     "login": {
-      "title": "Log in",
+      "title": "Sign in",
       "email": "Email",
       "password": "Password",
       "forgot_password": "Forgot your password?",
-      "submit": "Log in",
+      "submit": "Sign in",
       "create_account": "Create account",
       "guest_title": "Continue as guest",
       "guest_continue": "Continue"
@@ -291,7 +494,7 @@
       "city": "City",
       "country": "Country",
       "province": "State / province",
-      "zip": "ZIP / postcode",
+      "zip": "Postcode",
       "phone": "Phone",
       "set_default": "Set as default address",
       "add": "Save address",
@@ -316,7 +519,7 @@
 
   "gift_cards": {
     "issued": {
-      "title": "Your {{ value }} gift card",
+      "title": "Your gift card for {{ value }}",
       "subtext": "Your gift card",
       "code": "Gift card code",
       "shop_link": "Redeem now",

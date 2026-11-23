@@ -11,9 +11,20 @@
   assign fallback_button = 'sections.cta.button' | t
   assign fallback_note = 'sections.cta.note' | t
 
+  comment
+    Pre-order mode overrides the section's own button setting: the closing CTA
+    has to lead to the same place as every other primary button on the page.
+  endcomment
+  assign preorder = settings.preorder_mode
+  if preorder
+    assign fallback_button = 'sections.cta.button_preorder' | t
+    assign fallback_note = 'sections.cta.note_preorder' | t
+  endif
+
   assign heading = section.settings.heading | default: fallback_heading
   assign button_label = section.settings.button_label | default: fallback_button
   assign note = section.settings.note | default: fallback_note
+  assign waitlist_anchor = settings.waitlist_anchor | default: '#mh-vormerken'
 
   assign label_parts = button_label | split: '{price}'
 -%}
@@ -33,7 +44,24 @@
   <div class="mh-cta__content">
     <h2 class="mh-cta__title">{{ heading | newline_to_br }}</h2>
     <div class="mh-cta__actions">
-      {%- if mh_product != blank and section.settings.button_action == 'add' -%}
+      {%- if preorder -%}
+        <a href="{{ waitlist_anchor }}" class="mh-btn mh-btn--light" data-mh-scroll="{{ waitlist_anchor }}" data-mh-waitlist-open>
+          {{ label_parts[0] }}
+          {%- if button_label contains '{price}' -%}
+            <span data-mh-price>{{ current_variant.price | money }}</span>{{ label_parts[1] }}
+          {%- endif -%}
+        </a>
+        {%- if settings.preorder_show_checkout and mh_product != blank -%}
+          <button
+            type="button"
+            class="mh-buy-actions__checkout mh-buy-actions__checkout--light"
+            data-mh-add
+            data-mh-add-label-text="{{ 'sections.waitlist.checkout_link' | t | escape }}"
+            {% unless current_variant.available %}disabled{% endunless %}>
+            <span data-mh-add-label>{{ 'sections.waitlist.checkout_link' | t }}</span>
+          </button>
+        {%- endif -%}
+      {%- elsif mh_product != blank and section.settings.button_action == 'add' -%}
         <button
           type="button"
           class="mh-btn mh-btn--light"
@@ -94,6 +122,7 @@
       "type": "select",
       "id": "button_action",
       "label": "What the button does",
+      "info": "Ignored while pre-order mode is on: the button always leads to the waitlist.",
       "options": [
         { "value": "add", "label": "Add to cart" },
         { "value": "link", "label": "Go to a link / anchor" }

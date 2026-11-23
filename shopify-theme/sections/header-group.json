@@ -1,18 +1,43 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "Header",
   "type": "header",
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
-      "settings": {}
+      "settings": {
+        "item_1": "Free shipping",
+        "item_2": "30 Tage Geld-zurück-Garantie",
+        "item_3": "2-5 Tage Versand aus Deutschland"
+      }
     },
     "header": {
       "type": "header",
       "settings": {
-        "menu": "main-menu",
-        "show_locale_switcher": true
+        "menu": "produkt",
+        "show_locale_switcher": true,
+        "show_social": true,
+        "logo": "shopify://shop_images/Logo_MyHaut_new.png",
+        "logo_width": 175,
+        "logo_height": 0
       }
+    },
+    "17851563679a8549d8": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
-  "order": ["announcement-bar", "header"]
+  "order": [
+    "announcement-bar",
+    "header",
+    "17851563679a8549d8"
+  ]
 }

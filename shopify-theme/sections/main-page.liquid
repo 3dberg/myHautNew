@@ -1,7 +1,21 @@
-<div class="mh-page">
+{%- comment -%}
+  Standard page. The "legal" layout narrows the measure and tightens the
+  heading scale, which is what Impressum / Datenschutz / AGB / Widerruf need —
+  those pages are long and are read, not skimmed.
+{%- endcomment -%}
+
+{%- assign is_legal = false -%}
+{%- if section.settings.layout == 'legal' -%}
+  {%- assign is_legal = true -%}
+{%- endif -%}
+
+<div class="mh-page{% if is_legal %} mh-page--legal{% endif %}">
   <div class="mh-container">
     <h1 class="mh-page__title">{{ page.title }}</h1>
-    <div class="mh-rte" style="max-width: 720px; color: var(--mh-body); line-height: 1.75">
+    {%- if is_legal and section.settings.updated_note != blank -%}
+      <p class="mh-page__meta">{{ section.settings.updated_note }}</p>
+    {%- endif -%}
+    <div class="mh-rte mh-page__content">
       {{ page.content }}
     </div>
   </div>
@@ -10,6 +24,23 @@
 {% schema %}
 {
   "name": "Page",
-  "settings": []
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "legal", "label": "Legal / long form (narrow column)" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "text",
+      "id": "updated_note",
+      "label": "Last-updated note",
+      "info": "Shown under the title on legal pages, e.g. “Stand: Juli 2026”."
+    }
+  ]
 }
 {% endschema %}

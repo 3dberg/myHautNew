@@ -1,22 +1,59 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "mh-hero",
+      "custom_css": [
+        "@media screen and (max-width: 767px) {.loox-rating-label, .mh-hero__eyebrow {color: #fff; }}"
+      ],
       "settings": {
-        "show_rating": true,
-        "rating_stars": 5,
-        "featured_position": 3,
-        "secondary_target": "#mh-bundles",
+        "product": "myhaut-haarentfernung-shaum",
         "full_width": false,
-        "height_mode": "image",
-        "height": 660,
-        "height_mobile": 400
+        "height_mode": "fixed",
+        "height": 690,
+        "height_mobile": 290,
+        "show_options_mobile": true,
+        "show_rating": true,
+        "rating_note": "",
+        "rating_target": "#mh-reviews",
+        "image": "shopify://shop_images/HeroPhoto_2x_93196961-522c-43f8-bca9-e1305354db50.png",
+        "image_mobile": "shopify://shop_images/Model_holding_MyHaut_hair_removal_spray.png",
+        "video_url": "",
+        "eyebrow": "",
+        "heading_1": "",
+        "heading_2": "",
+        "body": "",
+        "body_mobile": "",
+        "note": " ",
+        "buy_label": "",
+        "secondary_label": "",
+        "secondary_target": "/products/myhaut-haarentfernung-shaum",
+        "default_position": 3,
+        "featured_position": 4,
+        "trust_1": "30 Tage Geld-zurück-Garantie",
+        "trust_2": "",
+        "trust_3": "",
+        "trust_mobile_1": "30 Tage Geld-zurück-Garantie",
+        "trust_mobile_2": "",
+        "trust_mobile_3": ""
       }
     },
     "sticky": {
       "type": "mh-sticky-atc",
       "settings": {
+        "product": "myhaut-haarentfernung-shaum",
         "show_thumbnail": true,
+        "title": "",
+        "meta": "",
+        "buy_label": "",
         "show_chip_savings": true,
         "reveal_after": ".mh-hero"
       }
@@ -24,7 +61,176 @@
     "marquee": {
       "type": "mh-marquee",
       "settings": {
+        "items": "",
         "speed": 28
+      }
+    },
+    "proof": {
+      "type": "mh-proof-strip",
+      "blocks": {
+        "quote_etgMii": {
+          "type": "quote",
+          "settings": {
+            "quote": "Wir waren echt überascht wie gut es funktioniert hat. Es hat nicht gebrannt auf der Haut. Es wurde nicht rot, er emfand es als vollig normal.",
+            "name": "@Sonja_hlt",
+            "detail": "TikTok",
+            "video": "shopify://files/videos/ssstik.io_@sonja_hlt_1789163773120.mp4",
+            "image": "shopify://shop_images/sonja.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "quote_etgMii"
+      ],
+      "disabled": true,
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "disclaimer": "Aussagen von Testpersonen aus unserem Anwendertest vor dem Verkaufsstart.",
+        "anchor": "mh-stimmen"
+      }
+    },
+    "videos": {
+      "type": "mh-video-carousel",
+      "blocks": {
+        "video_QRfXYW": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Video 11.09.26, 22 08 05.mov",
+            "caption": ""
+          }
+        },
+        "video_mCmxge": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Video 11.09.26, 22 05 38.mov",
+            "caption": ""
+          }
+        },
+        "video_wRqEM8": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Video 11.09.26, 22 13 51.mov",
+            "caption": ""
+          }
+        },
+        "video_raPmgq": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Video 11.09.26, 21 58 19.mov",
+            "caption": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_QRfXYW",
+        "video_mCmxge",
+        "video_wRqEM8",
+        "video_raPmgq"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "autoplay": true,
+        "attention_delay": 1.5,
+        "quality": "auto",
+        "show_captions": true,
+        "anchor": "mh-videos"
+      }
+    },
+    "compare": {
+      "type": "mh-compare",
+      "blocks": {
+        "row-1": {
+          "type": "row",
+          "settings": {
+            "label": "",
+            "value_1": "",
+            "tone_1": "good",
+            "value_2": "",
+            "tone_2": "neutral",
+            "value_3": "",
+            "tone_3": "bad",
+            "value_4": "",
+            "tone_4": "neutral"
+          }
+        },
+        "row-2": {
+          "type": "row",
+          "settings": {
+            "label": "",
+            "value_1": "",
+            "tone_1": "good",
+            "value_2": "",
+            "tone_2": "neutral",
+            "value_3": "",
+            "tone_3": "bad",
+            "value_4": "",
+            "tone_4": "good"
+          }
+        },
+        "row-3": {
+          "type": "row",
+          "settings": {
+            "label": "",
+            "value_1": "",
+            "tone_1": "good",
+            "value_2": "",
+            "tone_2": "bad",
+            "value_3": "",
+            "tone_3": "bad",
+            "value_4": "",
+            "tone_4": "neutral"
+          }
+        },
+        "row-4": {
+          "type": "row",
+          "settings": {
+            "label": "",
+            "value_1": "",
+            "tone_1": "good",
+            "value_2": "",
+            "tone_2": "bad",
+            "value_3": "",
+            "tone_3": "good",
+            "value_4": "",
+            "tone_4": "good"
+          }
+        },
+        "row-5": {
+          "type": "row",
+          "settings": {
+            "label": "",
+            "value_1": "",
+            "tone_1": "good",
+            "value_2": "",
+            "tone_2": "neutral",
+            "value_3": "",
+            "tone_3": "bad",
+            "value_4": "",
+            "tone_4": "neutral"
+          }
+        }
+      },
+      "block_order": [
+        "row-1",
+        "row-2",
+        "row-3",
+        "row-4",
+        "row-5"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "col_1": "",
+        "col_2": "",
+        "col_3": "",
+        "col_4": "",
+        "footnote": "",
+        "anchor": "mh-vergleich"
       }
     },
     "steps": {
@@ -33,19 +239,31 @@
         "step-1": {
           "type": "step",
           "settings": {
-            "placeholder": "Schritt 1 \u2014 Spr\u00fchen aufs Bein"
+            "image": "shopify://shop_images/armpit_1.png",
+            "placeholder": "Schritt 1 — Sprühen aufs Bein",
+            "title": "",
+            "body": "",
+            "number": ""
           }
         },
         "step-2": {
           "type": "step",
           "settings": {
-            "placeholder": "Schritt 2 \u2014 Timer / 8 Minuten warten"
+            "image": "shopify://shop_images/Untitled_design_21.png",
+            "placeholder": "Schritt 2 — Timer / 8 Minuten warten",
+            "title": "",
+            "body": "Die Formel löst die Haare direkt an der Hautoberfläche auf, während Aloe Vera die Haut beruhigt. Bei dickem Haar länger einwirken lassen.",
+            "number": ""
           }
         },
         "step-3": {
           "type": "step",
           "settings": {
-            "placeholder": "Schritt 3 \u2014 Abwischen mit feuchtem Tuch"
+            "image": "shopify://shop_images/armpit_3.png",
+            "placeholder": "Schritt 3 — Abwischen mit feuchtem Tuch",
+            "title": "",
+            "body": "",
+            "number": ""
           }
         }
       },
@@ -55,6 +273,9 @@
         "step-3"
       ],
       "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
         "anchor": "mh-steps"
       }
     },
@@ -63,15 +284,24 @@
       "blocks": {
         "stat-1": {
           "type": "stat",
-          "settings": {}
+          "settings": {
+            "value": "",
+            "label": ""
+          }
         },
         "stat-2": {
           "type": "stat",
-          "settings": {}
+          "settings": {
+            "value": "",
+            "label": ""
+          }
         },
         "stat-3": {
           "type": "stat",
-          "settings": {}
+          "settings": {
+            "value": "",
+            "label": ""
+          }
         }
       },
       "block_order": [
@@ -80,68 +310,16 @@
         "stat-3"
       ],
       "settings": {
-        "placeholder_before": "Vorher \u2014 Nahaufnahme Bein",
-        "placeholder_after": "Nachher \u2014 dieselbe Stelle, 8 Min sp\u00e4ter",
+        "eyebrow": "",
+        "heading": "",
+        "image_before": "shopify://shop_images/download_8.png",
+        "placeholder_before": "Vorher — Nahaufnahme Bein",
+        "image_after": "shopify://shop_images/ChatGPT_Image_Sep_8_2026_01_56_55_PM.png",
+        "placeholder_after": "Nachher — dieselbe Stelle, 8 Min später",
+        "label_before": "",
+        "label_after": "",
+        "footnote": "",
         "anchor": "mh-results"
-      }
-    },
-    "facts": {
-      "type": "mh-facts",
-      "blocks": {
-        "fact-1": {
-          "type": "fact",
-          "settings": {}
-        },
-        "fact-2": {
-          "type": "fact",
-          "settings": {}
-        },
-        "fact-3": {
-          "type": "fact",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "fact-1",
-        "fact-2",
-        "fact-3"
-      ],
-      "settings": {
-        "placeholder": "Produktfoto MyHaut Flasche",
-        "anchor": "mh-ingredients"
-      }
-    },
-    "reviews": {
-      "type": "mh-reviews",
-      "blocks": {
-        "review-1": {
-          "type": "review",
-          "settings": {
-            "stars": 5
-          }
-        },
-        "review-2": {
-          "type": "review",
-          "settings": {
-            "stars": 5
-          }
-        },
-        "review-3": {
-          "type": "review",
-          "settings": {
-            "stars": 4
-          }
-        }
-      },
-      "block_order": [
-        "review-1",
-        "review-2",
-        "review-3"
-      ],
-      "settings": {
-        "show_summary": true,
-        "rating_stars": 5,
-        "anchor": "mh-reviews"
       }
     },
     "bundles": {
@@ -151,29 +329,45 @@
           "type": "bundle",
           "settings": {
             "variant_position": 1,
-            "bottles": 1
+            "eyebrow": "",
+            "title": "",
+            "bottles": 1,
+            "featured": false,
+            "flag": ""
           }
         },
         "bundle-2": {
           "type": "bundle",
           "settings": {
             "variant_position": 2,
-            "bottles": 2
+            "eyebrow": "",
+            "title": "",
+            "bottles": 2,
+            "featured": true,
+            "flag": ""
           }
         },
         "bundle-3": {
           "type": "bundle",
           "settings": {
             "variant_position": 3,
+            "eyebrow": "",
+            "title": "",
+            "image": "shopify://shop_images/Hair_Removal_Spray_Gift_Set.png",
             "bottles": 3,
-            "featured": true
+            "featured": false,
+            "flag": ""
           }
         },
         "bundle-4": {
           "type": "bundle",
           "settings": {
             "variant_position": 4,
-            "bottles": 5
+            "eyebrow": "",
+            "title": "",
+            "bottles": 5,
+            "featured": false,
+            "flag": ""
           }
         }
       },
@@ -184,8 +378,172 @@
         "bundle-4"
       ],
       "settings": {
+        "product": "myhaut-haarentfernung-shaum",
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "select_label": "",
+        "show_images": true,
+        "image_height": 160,
+        "single_position": 1,
         "cta_action": "add",
+        "trust_1": "",
+        "trust_2": "",
+        "trust_3": "",
         "anchor": "mh-bundles"
+      }
+    },
+    "reviews": {
+      "type": "mh-reviews",
+      "blocks": {
+        "loox_reviews_loox_card_carousel_section_9p9AQ7": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-card-carousel-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "maxWidth": 1100,
+            "borderRadius": 8,
+            "itemsPerView": 4,
+            "mobileItemsPerView": 1,
+            "maxNumberOfCharacters": 100,
+            "imageRatio": "0.72",
+            "reviewerNameColor": "#000000",
+            "textColor": "#000000",
+            "itemBackgroundColor": "#ffffff",
+            "starsColor": "",
+            "starsBackgroundColor": "#ffffff",
+            "arrows_backgroundColor": "#ffffff",
+            "arrows_iconColor": "#9a9a9a",
+            "shadow": "offset-dark",
+            "border_active": false,
+            "border_width": 2,
+            "border_color": "#000000",
+            "productIds": ""
+          }
+        }
+      },
+      "block_order": [
+        "loox_reviews_loox_card_carousel_section_9p9AQ7"
+      ],
+      "custom_css": [
+        "#mh-reviews {background: #f0e4dc;}"
+      ],
+      "settings": {
+        "show_loox": true,
+        "product": "",
+        "eyebrow": "",
+        "heading": "Kund:innenstimmen:",
+        "body": "★★★★★ 5.00  (13)\n✅ Verifiziert",
+        "dark": false,
+        "anchor": "mh-reviews"
+      }
+    },
+    "facts": {
+      "type": "mh-facts",
+      "blocks": {
+        "fact-1": {
+          "type": "fact",
+          "settings": {
+            "label": "",
+            "title": "",
+            "body": ""
+          }
+        },
+        "fact-2": {
+          "type": "fact",
+          "settings": {
+            "label": "",
+            "title": "",
+            "body": ""
+          }
+        },
+        "fact-3": {
+          "type": "fact",
+          "settings": {
+            "label": "",
+            "title": "",
+            "body": ""
+          }
+        }
+      },
+      "block_order": [
+        "fact-1",
+        "fact-2",
+        "fact-3"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/UnoDesk_MyHaut.png",
+        "placeholder": "Produktfoto MyHaut Flasche",
+        "eyebrow": "",
+        "heading": "",
+        "anchor": "mh-ingredients"
+      }
+    },
+    "details": {
+      "type": "mh-product-details",
+      "blocks": {
+        "detail-1": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "<p>Aqua, Mineral Oil, Allantoin, Calcium Thioglycolate, Aloe Barbadensis Leaf Juice, Chrysanthellum Indicum Flower Water, Sodium Hydroxide, Butylene Glycol, Glycerin, Larrea Divaricata Extract, Lecithin, Glyceryl Stearate, PEG-100 Stearate, Parfum, Phenoxyethanol, Dipotassium Glycyrrhizate, Ethylhexylglycerin<br/><br/></p>",
+            "open": true
+          }
+        },
+        "detail-2": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "<p>0.0. Vor der ersten Anwendung das Produkt an einer kleinen Hautstelle testen, an der es verwendet werden soll. Die Anwendungshinweise befolgen und 24 Stunden warten. Wenn keine Reizung auftritt, kann die Anwendung fortgesetzt werden.</p><p>0.1.<strong> ACHTUNG: Bitte vor Anwendung beachten!</strong><br/>Stellen Sie sicher, dass die Haut sauber, fettfrei und <strong>vollständig trocken</strong> ist. Entfernen Sie jegliche Kosmetikrückstände.<br/>Wenden Sie das Produkt <strong>keinesfalls auf verschwitzter Haut</strong> an. Die Verbindung von Wirkstoffen und Schweiß kann eine chemische Reaktion hervorrufen, die zu Hautirritationen führen kann.</p><p>1.<strong> Vor Gebrauch gut schütteln.</strong><br/>Gleichmäßig auf die gewünschte Hautstelle <strong>sprühen</strong> und sicherstellen, dass alle Haare vollständig bedeckt sind.<br/><strong>Tipp für die Anwendung:</strong> Für einen feinen Sprühnebel den Sprühkopf zügig und mit festem Druck durchdrücken. Bei leichtem Druck tritt das Produkt flüssiger aus und kann anschließend einfach per Hand auf der Haut verteilt werden.</p><p>2. Immer mindestens <strong>8 Minuten einwirken lassen</strong>. Anschließend an einer kleinen Stelle testen, ob sich die Haare leicht entfernen lassen. Falls erforderlich, einige Minuten länger einwirken lassen.<br/><strong>Nie länger als insgesamt 15 Minuten einwirken lassen.</strong></p><p>3. <strong>Haare entfernen & Haut spülen:</strong><br/>Entfernen Sie die Haare vorsichtig mit einem feuchten Tuch.</p><p><strong>Wichtige Anwendungstipps für das beste Ergebnis:</strong></p><ul><li><strong>Material:</strong> Nutzen Sie bevorzugt einen <strong>Baumwoll-Waschlappen</strong> oder Papiertücher mit griffiger Struktur.</li><li><strong>Richtung & Technik:</strong> Wischen Sie in den meisten Fällen <strong>entgegen der Haarwuchsrichtung</strong>. Waschen Sie Produkt- und Haarreste nach jedem Zug gründlich vom Waschlappen ab – oder verwenden Sie ein neues Stück Papiertuch.</li><li><strong>Unter der Dusche:</strong> Die Entfernung klappt am besten direkt unter der Dusche: Befeuchten Sie die Stellen und reiben Sie die Haut mit dem Waschlappen leicht ein (<em>leicht einreiben</em>).</li><li><strong>Nachbereitung:</strong> Anschließend die Haut gründlich mit lauwarmem Wasser abspülen (<strong>ohne Seife!</strong>) und sanft trocken tupfen.</li></ul>",
+            "open": false
+          }
+        },
+        "detail-3": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "<p><strong>Enthält Thioglycolat. Gebrauchsanweisung genau befolgen.</strong></p><p>Nur zur äußerlichen Anwendung.</p><p>Nicht einatmen oder verschlucken. Falls dies geschieht, ärztlichen Rat einholen.</p><p>Außerhalb der Reichweite von Kindern aufbewahren.</p><p>Kontakt mit den Augen vermeiden. Bei Kontakt mit den Augen sofort mehrere Minuten lang gründlich mit viel klarem Wasser ausspülen. Kontaktlinsen nach Möglichkeit entfernen und weiter ausspülen. Bei anhaltender Reizung ärztlichen Rat einholen.</p><p>Nicht im Gesicht, an den Brustwarzen, auf Schleimhäuten sowie in Ohren oder Nase anwenden.</p><p><strong>Im Genital- und Analbereich ist besondere Vorsicht geboten:</strong> Das Spray darf dort keinesfalls auf Schleimhäuten oder in deren unmittelbarer Nähe angewendet werden, da diese Bereiche besonders empfindlich sind und Hautreizungen auftreten können.</p><p>Nicht auf gereizter, entzündeter, sonnengeschädigter, verletzter, rissiger oder wunder Haut anwenden.</p><p>Nicht auf Narben, Muttermalen, Krampfadern, Flecken, Pickeln oder Hautstellen anwenden, die bereits auf Haarentfernungsprodukte reagiert haben.</p><p>Nicht unmittelbar vor oder nach dem Sonnenbaden, Schwimmen, der Anwendung von Deodorant, Parfum, alkoholhaltigen Produkten, Selbstbräuner oder anderen potenziell hautreizenden kosmetischen Produkten verwenden.</p><p>Nach der Anwendung mindestens 24 Stunden warten, bevor parfümierte Produkte, Deodorants oder alkoholhaltige Produkte auf der behandelten Stelle verwendet werden.</p><p>Bei Brennen, Stechen, Juckreiz, Rötung oder Reizung das Produkt sofort entfernen und gründlich mit Wasser abspülen.</p><p>Bei anhaltenden Beschwerden ärztlichen Rat einholen.</p><p>Die empfohlene Einwirkzeit nicht überschreiten.</p><p>Kühl, trocken und vor direkter Sonneneinstrahlung geschützt lagern.</p>",
+            "open": false
+          }
+        },
+        "detail-4": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "<p>RP / Verantwortliche Person:&nbsp;<br/>Universal International business SARL<br/>5 Impasse de la Colombette<br/>31000 Toulouse<br/>France<br/>E-mail: Leroy.Holliana@outlook.com<br/>Tel. +33 773332462<br/><br/>Made in PRC<br/>Hergestellt in der Volksrepublik China<br/><br/><br/><br/><br/></p>",
+            "open": false
+          }
+        },
+        "detail-5": {
+          "type": "detail",
+          "settings": {
+            "title": "",
+            "body": "<p><strong>Mindestens haltbar bis & Chargennummer:</strong> siehe Aufdruck auf der Flasche.<br/><strong>Haltbarkeit nach dem Öffnen:</strong> 12 Monate.<br/><strong>Lagerung:</strong> Kühl, trocken und lichtgeschützt lagern (bis 3 Jahre)<br/><br/></p>",
+            "open": false
+          }
+        },
+        "detail-6": {
+          "type": "detail",
+          "settings": {
+            "title": "Sicherheitsbewertung (CPSR) und EU Portal CPNP registration",
+            "body": "<p>MyHaut wurde gemäß den Anforderungen der EU-Kosmetikverordnung sicherheitsbewertet. Die erforderliche <strong>CPSR-Sicherheitsbewertung</strong> liegt vor, die <strong>Produktinformationsdatei</strong> wird geführt und das Produkt ist im europäischen <strong>CPNP-Meldeportal</strong> notifiziert.</p><p>Damit erfüllt MyHaut die wesentlichen regulatorischen Voraussetzungen für das Inverkehrbringen als Kosmetikprodukt in der Europäischen Union.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "detail-1",
+        "detail-2",
+        "detail-3",
+        "detail-4",
+        "detail-5",
+        "detail-6"
+      ],
+      "settings": {
+        "product": "",
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
+        "show_summary": true,
+        "anchor": "mh-produktdetails"
       }
     },
     "faq": {
@@ -193,25 +551,67 @@
       "blocks": {
         "q-1": {
           "type": "question",
-          "settings": {}
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": true
+          }
         },
         "q-2": {
           "type": "question",
           "settings": {
-            "open": true
+            "question": "",
+            "answer": "",
+            "open": false
           }
         },
         "q-3": {
           "type": "question",
-          "settings": {}
+          "settings": {
+            "question": "",
+            "answer": "<p>Das Spray darf nicht im Gesicht, an den Brustwarzen, auf Schleimhäuten sowie in Ohren oder Nase angewendet werden.</p><p><strong>Im Genital- und Analbereich ist besondere Vorsicht geboten:</strong> Das Spray darf dort keinesfalls auf Schleimhäuten oder in deren unmittelbarer Nähe angewendet werden, da diese Bereiche besonders empfindlich sind und Hautreizungen auftreten können.</p>",
+            "open": false
+          }
         },
         "q-4": {
           "type": "question",
-          "settings": {}
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
         },
         "q-5": {
           "type": "question",
-          "settings": {}
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-6": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-7": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
+        },
+        "q-8": {
+          "type": "question",
+          "settings": {
+            "question": "",
+            "answer": "",
+            "open": false
+          }
         }
       },
       "block_order": [
@@ -219,18 +619,30 @@
         "q-2",
         "q-3",
         "q-4",
-        "q-5"
+        "q-5",
+        "q-6",
+        "q-7",
+        "q-8"
       ],
       "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "body": "",
         "anchor": "mh-faq"
       }
     },
     "cta": {
       "type": "mh-cta",
       "settings": {
-        "button_action": "add",
+        "product": "myhaut-haarentfernung-shaum",
+        "full_width": true,
+        "image": "shopify://shop_images/Gemini_Generated_Image_2q3uju2q3uju2q3u.png",
         "placeholder": "Lifestyle-Foto quer (Beine, Badezimmer, warmes Licht)",
-        "full_width": true
+        "heading": "Genieße glatte Haut in nur 8 Minuten",
+        "button_label": "",
+        "button_action": "add",
+        "button_link": "",
+        "note": ""
       }
     }
   },
@@ -238,11 +650,15 @@
     "hero",
     "sticky",
     "marquee",
+    "proof",
+    "videos",
+    "compare",
     "steps",
     "before-after",
-    "facts",
-    "reviews",
     "bundles",
+    "reviews",
+    "facts",
+    "details",
     "faq",
     "cta"
   ]

@@ -11,12 +11,27 @@
   assign fallback_meta = 'sections.sticky.product_meta' | t
   assign fallback_buy = 'sections.sticky.buy' | t
 
+  if settings.preorder_mode
+    assign fallback_meta = 'sections.sticky.product_meta_preorder' | t
+    assign fallback_buy = 'sections.sticky.buy_preorder' | t
+  endif
+
   assign bar_title = section.settings.title | default: mh_product.title | default: fallback_title
   assign bar_meta = section.settings.meta | default: fallback_meta
   assign buy_label = section.settings.buy_label | default: fallback_buy
 
+  assign lock_unavailable = true
+  if settings.preorder_mode
+    assign lock_unavailable = false
+  endif
+
+  assign hide_discounts = true
+  if settings.show_compare_prices
+    assign hide_discounts = false
+  endif
+
   assign discount_percent = 0
-  if current_variant.compare_at_price > current_variant.price
+  if current_variant.compare_at_price > current_variant.price and hide_discounts == false
     assign price_difference = current_variant.compare_at_price | minus: current_variant.price
     assign rounding = current_variant.compare_at_price | divided_by: 2
     assign discount_percent = price_difference | times: 100 | plus: rounding | divided_by: current_variant.compare_at_price
@@ -28,7 +43,7 @@
   endcomment
   assign best_discount = 0
   for variant in mh_product.variants limit: 4
-    if variant.compare_at_price > variant.price
+    if variant.compare_at_price > variant.price and hide_discounts == false
       assign variant_difference = variant.compare_at_price | minus: variant.price
       assign variant_rounding = variant.compare_at_price | divided_by: 2
       assign variant_discount = variant_difference | times: 100 | plus: variant_rounding | divided_by: variant.compare_at_price
@@ -73,7 +88,7 @@
                 {%- for variant in mh_product.variants limit: 4 -%}
                   {%- liquid
                     assign variant_discount = 0
-                    if variant.compare_at_price > variant.price
+                    if variant.compare_at_price > variant.price and hide_discounts == false
                       assign variant_difference = variant.compare_at_price | minus: variant.price
                       assign variant_rounding = variant.compare_at_price | divided_by: 2
                       assign variant_discount = variant_difference | times: 100 | plus: variant_rounding | divided_by: variant.compare_at_price
@@ -84,7 +99,7 @@
                     class="mh-chip{% if variant.id == current_variant.id %} is-active{% endif %}"
                     data-mh-select="{{ variant.id }}"
                     aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
-                    {% unless variant.available %}disabled{% endunless %}>
+                    {% if lock_unavailable and variant.available == false %}disabled{% endif %}>
                     {{- variant.title -}}
                     {%- if variant_discount == best_discount and variant_discount > 0 and section.settings.show_chip_savings %}
                       <span> · {{ 'sections.bundles.save_percent' | t: percent: variant_discount }}</span>
@@ -96,16 +111,14 @@
 
             <span class="mh-atc__price" data-mh-price>{{ current_variant.price | money }}</span>
 
-            <button
-              type="submit"
-              class="mh-btn mh-atc__buy"
-              data-mh-add
-              data-mh-add-label-text="{{ buy_label | escape }}"
-              {% unless current_variant.available %}disabled{% endunless %}>
-              <span data-mh-add-label>
-                {%- if current_variant.available %}{{ buy_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif -%}
-              </span>
-            </button>
+            {% render 'mh-buy-actions',
+              mh_variant: current_variant,
+              mh_label: buy_label,
+              mh_modifier: 'mh-atc__buy',
+              mh_submit: true,
+              mh_class: 'mh-buy-actions--bar',
+              mh_context: 'sticky-desktop'
+            %}
           </div>
         </div>
 
@@ -120,19 +133,27 @@
                 {%- endif -%}
               </span>
             </div>
-            {% render 'mh-price', mh_variant: current_variant, mh_class: 'mh-atc__summary-price' %}
+            {%- comment -%}
+              The bar shows the selected bundle's price and nothing else — no
+              Grundpreis, no tax line. Both are on the bundle cards and in
+              "Produktdetails", where there is room for them.
+            {%- endcomment -%}
+            {% render 'mh-price',
+              mh_variant: current_variant,
+              mh_class: 'mh-atc__summary-price',
+              mh_show_base: false,
+              mh_show_tax: false
+            %}
           </div>
 
-          <button
-            type="submit"
-            class="mh-btn mh-atc__buy"
-            data-mh-add
-            data-mh-add-label-text="{{ buy_label | escape }}"
-            {% unless current_variant.available %}disabled{% endunless %}>
-            <span data-mh-add-label>
-              {%- if current_variant.available %}{{ buy_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif -%}
-            </span>
-          </button>
+          {% render 'mh-buy-actions',
+            mh_variant: current_variant,
+            mh_label: buy_label,
+            mh_modifier: 'mh-atc__buy',
+            mh_submit: true,
+            mh_class: 'mh-buy-actions--bar',
+            mh_context: 'sticky-mobile'
+          %}
         </div>
       </div>
     {%- endform -%}

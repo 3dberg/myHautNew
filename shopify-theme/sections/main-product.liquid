@@ -3,7 +3,13 @@
   that is not the landing-page product.
 {%- endcomment -%}
 
-{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign lock_unavailable = true
+  if settings.preorder_mode
+    assign lock_unavailable = false
+  endif
+-%}
 
 <div class="mh-container">
   <div class="mh-product">
@@ -18,6 +24,7 @@
 
     <div>
       <h1 class="mh-product__title">{{ product.title }}</h1>
+      {% render 'mh-loox-rating', mh_product: product, mh_class: 'mh-rating--product', mh_target: '' %}
       {% render 'mh-price', mh_variant: current_variant %}
       {% render 'mh-product-data', mh_product: product %}
 
@@ -33,7 +40,7 @@
                 class="mh-option{% if variant.id == current_variant.id %} is-active{% endif %}"
                 data-mh-select="{{ variant.id }}"
                 aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
-                {% unless variant.available %}disabled{% endunless %}>
+                {% if lock_unavailable and variant.available == false %}disabled{% endif %}>
                 <span class="mh-option__meta"><span>{{ variant.title }}</span></span>
                 <span class="mh-option__price">{{ variant.price | money }}</span>
               </button>
@@ -41,21 +48,30 @@
           </div>
         {%- endif -%}
 
-        <button
-          type="submit"
-          class="mh-btn mh-btn--block"
-          data-mh-add
-          data-mh-add-label-text="{{ 'products.product.add_to_cart' | t | escape }}"
-          {% unless current_variant.available %}disabled{% endunless %}>
-          <span data-mh-add-label>
-            {%- if current_variant.available -%}
-              {{ 'products.product.add_to_cart' | t }}
-            {%- else -%}
-              {{ 'products.product.sold_out' | t }}
-            {%- endif -%}
-          </span>
-        </button>
+        {%- comment -%}
+          This template is not the landing page, so it has no waitlist section
+          of its own — send people to the interest page, or to the anchor on
+          the home page if none is configured.
+        {%- endcomment -%}
+        {%- liquid
+          assign product_waitlist_href = settings.interest_page
+          if product_waitlist_href == blank
+            assign home_anchor = settings.waitlist_anchor | default: '#mh-vormerken'
+            assign product_waitlist_href = routes.root_url | append: home_anchor
+          endif
+        -%}
+        {% render 'mh-buy-actions',
+          mh_variant: current_variant,
+          mh_modifier: 'mh-btn--block',
+          mh_submit: true,
+          mh_href: product_waitlist_href,
+          mh_context: 'product'
+        %}
       {%- endform -%}
+
+      {%- if settings.preorder_mode and settings.preorder_ship_text != blank -%}
+        <p class="mh-product__ship">{{ settings.preorder_ship_text }}</p>
+      {%- endif -%}
 
       <div class="mh-rte" style="margin-top: 28px; color: var(--mh-body); line-height: 1.7">
         {{ product.description }}

@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "accessibility": {
@@ -5,8 +14,21 @@
       "close": "Schließen",
       "open_menu": "Menü öffnen",
       "open_cart": "Warenkorb öffnen",
+      "social_link": "Auf {{ network }} folgen",
       "previous": "Zurück",
       "next": "Weiter"
+    },
+    "rating": {
+      "link": "Zu den Bewertungen springen",
+      "stars": "Bewertung {{ rating }} von 5",
+      "count": {
+        "one": "{{ count }} Bewertung",
+        "other": "{{ count }} Bewertungen"
+      },
+      "pattern": {
+        "one": "[count] Bewertung",
+        "other": "[count] Bewertungen"
+      }
     },
     "meta": {
       "tags": "Schlagwörter: {{ tags }}",
@@ -37,146 +59,319 @@
     },
     "continue_shopping": "Weiter einkaufen"
   },
-
   "sections": {
     "announcement": {
-      "item_1": "Kostenloser Versand ab 25 €",
-      "item_2": "30 Tage Geld-zurück-Garantie",
-      "item_3": "Versand aus Deutschland"
+      "item_1": "Versand aus Deutschland mit DHL",
+      "item_2": "30 Tage Rückgabe für ungeöffnete Flaschen",
+      "item_3": "14 Tage Widerrufsrecht",
+      "free_shipping": "Versandkostenfrei ab {{ amount }}",
+      "free_shipping_all": "Versandkostenfrei in ganz Deutschland",
+      "free_shipping_final": "Versandkostenfrei"
     },
-
     "header": {
       "cart": "Warenkorb",
-      "cart_short": "Bag",
+      "cart_short": "Korb",
       "menu": "Menü"
     },
-
     "hero": {
-      "rating_text": "4,8 · 2.184 Bewertungen",
+      "eyebrow": "Haarentfernungsspray",
       "heading_1": "Glatte Haut in",
       "heading_2": "8 Minuten.",
-      "body": "Sprühen, kurz warten, abwischen. Kein Ziehen, kein Rasieren, keine Termine. Mit Aloe Vera & Allantoin für Haut, die sich danach besser anfühlt als vorher.",
-      "body_mobile": "Sprühen, warten, abwischen. Kein Ziehen, kein Rasieren – mit Aloe Vera & Allantoin.",
-      "note": "100 ml · reicht für ca. 6 Anwendungen · inkl. MwSt.",
-      "secondary_button": "Sparset",
-      "trust_1": "CPSR-zertifiziert",
-      "trust_2": "Dermatologisch geprüft",
-      "trust_3": "Vegan",
-      "trust_mobile_1": "CPSR-zertifiziert",
-      "trust_mobile_2": "Vegan",
-      "trust_mobile_3": "30 Tage Rückgabe"
+      "body": "Sprühen, 8 Minuten warten, abwischen – ohne Klingen, ohne Wachs, ohne Termin. Aloe Vera und Allantoin pflegen dabei mit, und das Haar wächst weich nach statt stoppelig.",
+      "body_mobile": "Sprühen, warten, abwischen – ohne Klingen, ohne Wachs, ohne Stoppeln.",
+      "note": "1 Flasche = 100 ml · reicht für ca. 4× Arme oder Unterschenkel",
+      "secondary_button": "Zum Produkt",
+      "trust_1": "30 Tage Rückgabe – ungeöffnet & originalverpackt",
+      "trust_2": "Versand aus Deutschland",
+      "trust_3": "Mit Aloe Vera & Allantoin",
+      "trust_mobile_1": "30 Tage Rückgabe (ungeöffnet)",
+      "trust_mobile_2": "Versand aus DE",
+      "trust_mobile_3": "Ohne Klingen & Wachs"
     },
-
     "sticky": {
       "product_title": "MyHaut Hair Removal Spray",
-      "product_meta": "100 ml · Auf Lager",
-      "buy": "Kaufen"
+      "product_meta": "Auf Lager · Versand aus Deutschland",
+      "product_meta_preorder": "100 ml · Vorbestellphase",
+      "buy": "In den Warenkorb",
+      "buy_preorder": "Vormerken"
     },
-
     "marquee": {
-      "items": "Ohne Klingen, Ohne Wachs, Ohne Termin, Aloe Vera & Allantoin, 8 Minuten, Für Körper, Beine & Arme"
+      "items": "Ohne Klingen, Ohne Wachs, Ohne Termin, Mit Aloe Vera & Allantoin, 8 Minuten Einwirkzeit, Für Beine · Arme · Achseln, 30 Tage Rückgabe (ungeöffnet)"
     },
-
     "steps": {
       "eyebrow": "So funktioniert's",
       "heading": "Drei Schritte.\nEine Dusche lang.",
       "body": "Kein Aufheizen, kein Nachrasieren. Du brauchst nur die Flasche, ein feuchtes Tuch und acht Minuten.",
       "step_1_title": "Sprühen",
-      "step_1_body": "Gleichmäßig auf trockene Haut auftragen, bis die Härchen bedeckt sind. Nicht einmassieren.",
+      "step_1_body": "Gleichmäßig auf trockene, unverletzte Haut sprühen, bis die Härchen bedeckt sind. Nicht einmassieren.",
       "step_2_title": "8 Minuten warten",
-      "step_2_body": "Die Formel löst das Haar an der Oberfläche. Aloe Vera hält die Haut in der Zeit ruhig.",
+      "step_2_body": "Die Formel löst das Haar direkt an der Hautoberfläche, Aloe Vera hält die Haut in der Zeit ruhig. Bei kräftigem Haar bis zu 17 Minuten – nie länger.",
       "step_3_title": "Abwischen & abspülen",
-      "step_3_body": "Mit einem feuchten Tuch abnehmen, kurz mit lauwarmem Wasser nachspülen. Fertig."
+      "step_3_body": "Mit einem feuchten Tuch abnehmen und mit lauwarmem Wasser abspülen. Fertig – kein Stoppelgefühl."
     },
-
     "before_after": {
       "eyebrow": "Vorher / Nachher",
-      "heading": "Ein Durchgang. Kein Stoppelgefühl.",
+      "heading": "Keine Rasierpickel.\nKein Stoppelgefühl.",
       "label_before": "Vorher",
       "label_after": "Nachher · 8 Min",
-      "stat_1_value": "96 %",
-      "stat_1_label": "berichten von spürbar glatterer Haut nach der ersten Anwendung*",
+      "stat_1_value": "8",
+      "stat_1_label": "Minuten Einwirkzeit – bei kräftigem Haar bis zu 17 Minuten",
       "stat_2_value": "0",
-      "stat_2_label": "Klingen, Wachsstreifen und Termine im Studio",
-      "stat_3_value": "3,15 €",
-      "stat_3_label": "pro Anwendung – ein Bruchteil einer Studio-Sitzung",
-      "footnote": "*Selbsteinschätzung, Anwendertest mit 112 Teilnehmerinnen über 4 Wochen."
+      "stat_2_label": "Klingen, Wachs, Termine – nichts davon brauchst du noch",
+      "stat_3_value": "7",
+      "stat_3_label": "Tage glatte Haut* – bis zu, je nach Haartyp",
+      "footnote": "* In eigenen Anwendungstests blieb die Haut je nach Haartyp 2 bis 7 Tage glatt."
     },
-
     "facts": {
       "eyebrow": "In der Flasche",
       "heading": "Pflege, die mitarbeitet.",
       "fact_label": "FAKT",
-      "fact_1_title": "Allantoin beruhigt sofort",
-      "fact_1_body": "Statt gereizter Haut nach dem Rasieren: Allantoin unterstützt die Regeneration und mindert Rötungen direkt nach der Anwendung.",
+      "fact_1_title": "Allantoin beruhigt",
+      "fact_1_body": "Statt gereizter Haut nach dem Rasieren: Allantoin unterstützt die Regeneration und mindert Rötungen nach der Anwendung.",
       "fact_2_title": "Aloe Vera hält Feuchtigkeit",
       "fact_2_body": "Die Haut trocknet nicht aus, wie es bei vielen Enthaarungscremes passiert. Nach dem Abspülen bleibt ein weicher, gepflegter Film.",
-      "fact_3_title": "CPSR-zertifiziert",
-      "fact_3_body": "Cosmetic Product Safety Report nach EU-Verordnung 1223/2009. Hergestellt und geprüft in der EU, vegan und ohne Tierversuche."
+      "fact_3_title": "Beruhigende Pflanzenauszüge",
+      "fact_3_body": "Neben Aloe Vera und Allantoin enthält die Formel Chrysanthellum-Indicum-Blütenwasser und Dipotassium Glycyrrhizate aus der Süßholzwurzel – beide werden in der Kosmetik eingesetzt, um die Haut nach der Anwendung zu beruhigen."
     },
-
     "reviews": {
-      "heading": "Was Kundinnen\ndanach sagen.",
-      "rating_summary": "4,8 von 5 · 2.184 Bewertungen",
-      "verified": "Verifizierter Kauf",
-      "review_1_body": "„Ich habe zehn Jahre lang rasiert und mich zehn Jahre lang über die Stoppeln geärgert. Das hier war die erste Woche ohne.“",
-      "review_1_author": "Lena M.",
-      "review_2_body": "„Kein Geruch wie bei anderen Cremes, keine roten Flecken. Nach acht Minuten war alles ab, wirklich.“",
-      "review_2_author": "Sarah K.",
-      "review_3_body": "„Nutze es an Brust und Rücken. Deutlich angenehmer als Waxing und ich brauche niemanden, der mir hilft.“",
-      "review_3_author": "Tobias R."
+      "heading": "Was Kundinnen\nsagen.",
+      "body": "",
+      "editor_hint": "Hier erscheint das Loox-Widget, sobald das Produkt seine erste Bewertung hat. Ohne Bewertung bleibt der Abschnitt im Shop unsichtbar. Ein anderes Bewertungs-App-Widget lässt sich über „Block hinzufügen → Apps“ einsetzen."
     },
-
     "bundles": {
-      "eyebrow": "Sparsets",
+      "eyebrow": "Sets",
       "heading": "Wähle deine Menge.",
-      "body": "Eine Flasche reicht für rund sechs Anwendungen. Die meisten bestellen drei.",
-      "select": "Auswählen",
+      "body": "Jede Flasche enthält 100 ml – genug für ca. 4 Anwendungen an Armen oder Unterschenkeln oder ca. 2 am ganzen Körper. Mehrere Flaschen kommen einzeln verpackt, du zahlst pro Flasche weniger.",
+      "select": "In den Warenkorb",
+      "select_preorder": "Dieses Set vormerken",
       "selected": "Ausgewählt",
       "per_bottle": "{{ price }} pro Flasche",
       "per_bottle_short": "{{ price }} / Stück",
-      "badge_bestseller": "Bestseller",
+      "badge_bestseller": "Beliebteste Wahl",
+      "badge_recommended": "Unsere Empfehlung",
       "save_percent": "spare {{ percent }} %",
-      "card_1_eyebrow": "Zum Testen",
-      "card_2_eyebrow": "Für 3 Monate",
-      "card_3_eyebrow": "Beliebteste Wahl",
-      "card_4_eyebrow": "Bester Preis",
-      "trust_1": "Kostenloser Versand ab 25 €",
-      "trust_2": "30 Tage Geld-zurück",
-      "trust_3": "Lieferung in 2–4 Werktagen"
+      "card_1_eyebrow": "Zum Ausprobieren",
+      "card_2_eyebrow": "Für Beine & Arme",
+      "card_3_eyebrow": "Größerer Vorrat",
+      "card_4_eyebrow": "Bester Preis pro Flasche",
+      "trust_1": "30 Tage Rückgabe für ungeöffnete Flaschen",
+      "trust_2": "DHL aus Deutschland, 2–5 Werktage",
+      "trust_3": "PayPal, Kreditkarte, Apple Pay & Google Pay",
+      "saved": "{{ amount }} gespart",
+      "saving": "Du sparst {{ amount }}",
+      "vs_single": "statt {{ price }} einzeln",
+      "free_shipping_badge": "Versandkostenfrei",
+      "bottles_volume": "{{ count }} × {{ volume }} ml",
+      "card_1_title": "1 Flasche",
+      "card_2_title": "2 Flaschen",
+      "card_3_title": "3 Flaschen",
+      "card_4_title": "5 Flaschen"
     },
-
+    "waitlist": {
+      "eyebrow": "Vormerken",
+      "heading": "Sei dabei, wenn wir starten.",
+      "body": "MyHaut ist noch nicht im Handel. Trag dich ein und wir schreiben dir, sobald ein Liefertermin steht – und wir wissen, wie groß die erste Charge werden muss.",
+      "perk_1": "Kein Kauf, keine Zahlung, keine Verpflichtung.",
+      "perk_2": "Eine E-Mail zum Launch – nicht mehr.",
+      "perk_3": "Abmeldung jederzeit mit einem Klick.",
+      "selection_label": "Dein Set",
+      "selection_change": "ändern",
+      "first_name": "Vorname (optional)",
+      "first_name_placeholder": "Wie dürfen wir dich nennen?",
+      "email": "E-Mail-Adresse",
+      "email_placeholder": "du@beispiel.de",
+      "consent": "Ja, schickt mir eine E-Mail, sobald MyHaut lieferbar ist. Ich kann mich jederzeit abmelden.",
+      "consent_privacy": "Es gilt die",
+      "consent_link": "Datenschutzerklärung",
+      "submit": "Unverbindlich vormerken",
+      "cta": "Unverbindlich vormerken",
+      "checkout_link": "Oder jetzt verbindlich vorbestellen →",
+      "note": "Kein Kauf, keine Zahlung.",
+      "success_heading": "Fast geschafft.",
+      "success_body": "Wir haben dir eine E-Mail geschickt. Bestätige darin kurz deine Adresse – danach stehst du auf der Liste.",
+      "success_link": "Zwei Minuten Zeit? Erzähl uns mehr"
+    },
+    "interest": {
+      "eyebrow": "Zwei Minuten",
+      "heading": "Erzähl uns, was du brauchst.",
+      "body": "Wir stellen die Formel und die Preise gerade fertig. Deine Antworten entscheiden mit, welche Größen wir produzieren – und was MyHaut zum Start kostet.",
+      "name": "Name",
+      "email": "E-Mail-Adresse",
+      "bundle": "Welches Set würdest du nehmen?",
+      "message": "Sonst noch etwas?",
+      "no_answer": "Keine Angabe",
+      "yes": "Ja",
+      "consent": "Meine Angaben dürfen zur Produktentwicklung ausgewertet werden.",
+      "submit": "Antworten abschicken",
+      "success_heading": "Danke – angekommen.",
+      "success_body": "Das hilft uns wirklich. Wenn wir Rückfragen haben, melden wir uns an der Adresse, die du angegeben hast."
+    },
+    "details": {
+      "eyebrow": "Produktdetails",
+      "heading": "Alles, was drinsteckt.",
+      "body": "Pflichtangaben nach EU-Kosmetikverordnung 1223/2009 und deutschem Preisangabenrecht.",
+      "net_content": "Nettofüllmenge",
+      "base_price": "Grundpreis",
+      "availability": "Verfügbarkeit",
+      "item_1_title": "Inhaltsstoffe (INCI)",
+      "item_1_body_html": "<p>Aqua, Mineral Oil, Allantoin, Calcium Thioglycolate, Aloe Barbadensis Leaf Juice, Chrysanthellum Indicum Flower Water, Sodium Hydroxide, Butylene Glycol, Glycerin, Larrea Divaricata Extract, Lecithin, Glyceryl Stearate, PEG-100 Stearate, Parfum, Phenoxyethanol, Dipotassium Glycyrrhizate, Ethylhexylglycerin</p><p>Die Liste ist absteigend nach Gewichtsanteil geordnet und entspricht dem Aufdruck auf der Verpackung.</p>",
+      "item_2_title": "Anwendung",
+      "item_2_body_html": "<p>Vor der ersten Anwendung 24 Stunden vorher einen Verträglichkeitstest an einer kleinen Stelle in der Armbeuge machen.</p><p>Haut reinigen und trocknen, Rückstände von Kosmetik entfernen. Flasche gut schütteln. Auf trockene, unverletzte Haut sprühen, bis die Härchen bedeckt sind. Nicht einmassieren. Zum Verteilen und Abwischen empfehlen wir Einmalhandschuhe.</p><p>8 Minuten einwirken lassen, bei kräftigem Haar bis zu 17 Minuten – länger darf die Formel keinesfalls auf der Haut bleiben. Anschließend mit einem feuchten Tuch abnehmen und mit lauwarmem Wasser gründlich abspülen. Direkt danach keine Seife verwenden, die Haut sanft trocken tupfen.</p>",
+      "item_3_title": "Warnhinweise",
+      "item_3_body_html": "<p><strong>Enthält Thioglykolat. Gebrauchsanweisung beachten. Darf nicht in die Hände von Kindern gelangen.</strong></p><p>Nicht im Gesicht, im Intimbereich, an den Schleimhäuten oder auf gereizter, verletzter oder sonnenverbrannter Haut anwenden. Nicht anwenden bei bekannter Überempfindlichkeit gegen einen der Inhaltsstoffe. Kontakt mit den Augen vermeiden – bei Kontakt sofort gründlich mit Wasser ausspülen. Nicht direkt vor oder nach dem Rasieren, Waxen oder einem Sonnenbad anwenden. Bei anhaltender Rötung oder Brennen sofort abspülen und die Anwendung beenden. Die empfohlene Einwirkzeit nicht überschreiten.</p>",
+      "item_4_title": "Verantwortliche Person & Hersteller",
+      "item_4_body_html": "<p>Verantwortliche Person im Sinne von Art. 4 der Verordnung (EG) Nr. 1223/2009:<br>MH Solutions – Petrina Angelova<br>Riegerweg 34<br>82024 Taufkirchen<br>Deutschland</p><p>Hergestellt in: China<br>Kontakt für Produktfragen: hello@my-haut.com</p>",
+      "item_5_title": "Haltbarkeit & Chargennummer",
+      "item_5_body_html": "<p>Mindestens haltbar bis und Chargennummer: siehe Aufdruck auf der Flasche.</p><p>Die Angabe zur Verwendungsdauer nach dem Öffnen (PAO) steht noch aus und wird hier ergänzt, sobald sie feststeht.</p><p>Kühl, trocken und vor direkter Sonneneinstrahlung geschützt lagern.</p>",
+      "item_6_title": "Sicherheitsbewertung (CPSR)",
+      "item_6_body_html": "<p>Für MyHaut liegt eine Sicherheitsbewertung (CPSR) nach Anhang I der Verordnung (EG) Nr. 1223/2009 vor, die Produktinformationsdatei wird geführt und das Produkt ist im europäischen Meldeportal CPNP notifiziert.</p>"
+    },
     "faq": {
       "eyebrow": "FAQ",
       "heading": "Noch Fragen?",
-      "body_html": "Schreib uns an <a href=\"mailto:hallo@myhaut.de\">hallo@myhaut.de</a> – wir antworten meist am selben Werktag.",
-      "q_1": "Für welche Körperstellen ist das Spray geeignet?",
-      "a_1": "Für Beine, Arme, Achseln, Brust und Rücken. Nicht im Gesicht, im Intimbereich oder auf gereizter Haut anwenden.",
-      "q_2": "Wie lange bleibt die Haut glatt?",
-      "a_2": "Weil das Haar unterhalb der Hautoberfläche gelöst wird, dauert es bei den meisten fünf bis sieben Tage, bis wieder etwas nachwächst – deutlich länger als nach dem Rasieren. Und es kommt weich zurück, nicht stoppelig.",
-      "q_3": "Ist es auch für empfindliche Haut geeignet?",
-      "a_3": "Aloe Vera und Allantoin sind genau dafür in der Formel. Mach trotzdem 24 Stunden vorher einen Test an einer kleinen Stelle in der Armbeuge.",
-      "q_4": "Riecht das Spray wie andere Enthaarungscremes?",
-      "a_4": "Nein. Die Formel kommt ohne den typischen scharfen Geruch aus – du riechst einen leichten, neutralen Duft.",
-      "q_5": "Was, wenn es bei mir nicht funktioniert?",
-      "a_5": "Dann schickst du uns innerhalb von 30 Tagen eine Nachricht und bekommst den vollen Kaufpreis zurück – auch bei geöffneter Flasche."
+      "body_html": "Schreib uns an <a href=\"mailto:support@my-haut.com\">support@my-haut.com</a> – wir antworten innerhalb von 48 Stunden.",
+      "q_1": "Wie schnell bekomme ich MyHaut?",
+      "a_1": "Wir verschicken aus Deutschland mit DHL, in der Regel am nächsten Werktag. Die Lieferung dauert 2–5 Werktage. Die Sendungsnummer bekommst du per E-Mail.",
+      "q_2": "Wie lange reicht eine Flasche?",
+      "a_2": "Eine Flasche enthält 100 ml – genug für ca. 4 Anwendungen an Armen oder Unterschenkeln oder ca. 2 Anwendungen am ganzen Körper. Für kleinere Stellen wie Achseln entsprechend mehr.",
+      "q_3": "Für welche Körperstellen ist das Spray geeignet?",
+      "a_3": "Für Beine, Arme, Achseln, Brust und Rücken. Nicht im Gesicht, im Intimbereich, auf Schleimhäuten oder auf gereizter, verletzter oder sonnenverbrannter Haut anwenden.",
+      "q_4": "Wie lange bleibt die Haut glatt?",
+      "a_4": "Das hängt vom Haartyp ab. In unseren eigenen Anwendungstests blieb die Haut 2 bis 7 Tage glatt. Weil das Haar direkt an der Hautoberfläche gelöst wird, kommt es weich zurück, nicht stoppelig wie nach dem Rasieren.",
+      "q_5": "Ist es auch für empfindliche Haut geeignet?",
+      "a_5": "Aloe Vera und Allantoin sind genau dafür in der Formel. Mach trotzdem 24 Stunden vorher einen Test an einer kleinen Stelle in der Armbeuge. Bei Brennen oder anhaltender Rötung sofort abspülen.",
+      "q_6": "Riecht das Spray wie andere Enthaarungscremes?",
+      "a_6": "Die Formel kommt ohne den typischen scharfen Geruch aus – du riechst einen leichten, neutralen Duft.",
+      "q_7": "Was ist der Unterschied zu einer Enthaarungscreme?",
+      "a_7": "Das Wirkprinzip ist ähnlich, die Anwendung nicht: Du sprühst statt zu verteilen, brauchst keinen Spatel, und Aloe Vera plus Allantoin pflegen die Haut während der Einwirkzeit.",
+      "q_8": "Kann ich MyHaut zurückgeben?",
+      "a_8": "Ja – ungeöffnete Flaschen in unbeschädigter Originalverpackung kannst du innerhalb von 30 Tagen nach Erhalt zurückschicken, wir erstatten dir den Kaufpreis dieser Flaschen. Geöffnete Flaschen nehmen wir aus Hygienegründen nicht zurück. Unser Tipp: Starte mit einer Flasche und dem Verträglichkeitstest. Dein gesetzliches 14-tägiges Widerrufsrecht gilt unabhängig davon."
     },
-
     "cta": {
       "heading": "Acht Minuten bis\nzur nächsten Dusche.",
-      "button": "Jetzt für {price} testen",
-      "note": "30 Tage Geld-zurück-Garantie"
+      "button": "In den Warenkorb – {price}",
+      "button_preorder": "Unverbindlich vormerken",
+      "note": "30 Tage Rückgabe für ungeöffnete Flaschen · inkl. MwSt.",
+      "note_preorder": "Kein Kauf · keine Zahlung · jederzeit abbestellbar"
     },
-
     "footer": {
-      "tagline": "Hautpflege, die dir Zeit zurückgibt. Entwickelt und geprüft in der EU.",
-      "column_1_title": "Shop",
+      "tagline": "Hautpflege, die dir Zeit zurückgibt.",
+      "column_1_title": "Produkt",
       "column_2_title": "Hilfe",
       "column_3_title": "Rechtliches",
       "copyright": "Alle Rechte vorbehalten."
+    },
+    "proof_strip": {
+      "eyebrow": "Aus dem Anwendertest",
+      "heading": "Was Testerinnen nach\nder ersten Anwendung sagen.",
+      "body": "",
+      "disclaimer": "Aussagen von Testpersonen aus unserem Anwendertest vor dem Verkaufsstart – keine Kundenbewertungen.",
+      "editor_hint": "Noch keine Zitate. Über „Block hinzufügen“ Zitate aus dem Anwendertest eintragen. Ohne Block bleibt dieser Abschnitt im Shop unsichtbar."
+    },
+    "video": {
+      "eyebrow": "Echte Anwendung",
+      "heading": "So sieht es\nwirklich aus.",
+      "body": "Ungeschnittene Clips aus unserem Anwendertest. Tippen für Ton.",
+      "mute": "Ton aus",
+      "unmute": "Ton an",
+      "play": "Video abspielen",
+      "loading": "Wird geladen …",
+      "loading_slow": "Langsame Verbindung – lädt weiter …",
+      "error": "Das Video konnte nicht geladen werden.",
+      "retry": "Erneut versuchen",
+      "dots": "Clip auswählen",
+      "dot": "Clip {{ n }} von {{ total }}",
+      "prev": "Vorheriges Video",
+      "next": "Nächstes Video",
+      "editor_hint": "Noch keine Videos. Über „Block hinzufügen → Video“ ein Shopify-Video (MP4, hochkant 9:16) hochladen. Ohne Block bleibt dieser Abschnitt im Shop unsichtbar."
+    },
+    "compare": {
+      "eyebrow": "Im Vergleich",
+      "heading": "Warum nicht\neinfach rasieren?",
+      "body": "Was in einer Anwendung passiert – und danach.",
+      "col_1": "MyHaut",
+      "col_2": "Rasieren",
+      "col_3": "Waxing",
+      "col_4": "Enthaarungscreme",
+      "row_1_label": "Dauer",
+      "row_1_value_1": "8 Minuten, einmal sprühen",
+      "row_1_value_2": "5–10 Min, jede Stelle einzeln",
+      "row_1_value_3": "30–60 Min plus Termin",
+      "row_1_value_4": "5–10 Min, mit Spatel verteilen",
+      "row_2_label": "Schmerz",
+      "row_2_value_1": "Kein Ziehen, keine Klinge",
+      "row_2_value_2": "Schnitte möglich",
+      "row_2_value_3": "Reißt das Haar aus",
+      "row_2_value_4": "Kein Ziehen",
+      "row_3_label": "Hautgefühl danach",
+      "row_3_value_1": "Aloe Vera & Allantoin pflegen mit",
+      "row_3_value_2": "Rasurbrand, Pickelchen",
+      "row_3_value_3": "Rötungen, eingewachsene Haare",
+      "row_3_value_4": "Oft trocken, strenger Geruch",
+      "row_4_label": "Nachwachsen",
+      "row_4_value_1": "Weich, kein Stoppelgefühl",
+      "row_4_value_2": "Stoppelig nach 1–2 Tagen",
+      "row_4_value_3": "Weich, alle 3–6 Wochen",
+      "row_4_value_4": "Weich",
+      "row_5_label": "Anwendung",
+      "row_5_value_1": "Sprühen – nichts verteilen",
+      "row_5_value_2": "Rasierer, Schaum, Klingen nachkaufen",
+      "row_5_value_3": "Studio oder Wachs erhitzen",
+      "row_5_value_4": "Creme mit Spatel verteilen",
+      "footnote": "Angaben zu Rasur, Waxing und Cremes beziehen sich auf die übliche Heimanwendung."
+    },
+    "guarantee": {
+      "eyebrow": "Ohne Risiko bestellen",
+      "heading": "Was du von uns\nerwarten kannst.",
+      "body": "Klare Regeln statt Kleingedrucktem.",
+      "item_1_title": "30 Tage Rückgabe für ungeöffnete Flaschen",
+      "item_1_body": "Ungeöffnete Flaschen in unbeschädigter Originalverpackung kannst du innerhalb von 30 Tagen nach Erhalt zurückschicken. Wir erstatten dir den Kaufpreis dieser Flaschen. Geöffnete Flaschen nehmen wir aus Hygienegründen nicht zurück. Dein gesetzliches Widerrufsrecht von 14 Tagen bleibt davon unberührt.",
+      "item_1_link": "Rückgabebedingungen",
+      "item_2_title": "Versand aus Deutschland",
+      "item_2_body": "Wir verschicken mit DHL, Lieferzeit 2–5 Werktage. Die Sendungsnummer bekommst du per E-Mail.",
+      "free_shipping_line": "Ab {{ amount }} Bestellwert versandkostenfrei.",
+      "free_shipping_line_all": "Jede Bestellung verschicken wir versandkostenfrei.",
+      "item_2_link": "Versand & Zahlung",
+      "item_3_title": "Fragen? Wir antworten schnell.",
+      "item_3_body": "Schreib an support@my-haut.com – du bekommst innerhalb von 48 Stunden eine Antwort von uns, nicht von einem Bot.",
+      "item_3_link": "",
+      "payments_label": "Sichere Zahlung"
+    },
+    "buybox": {
+      "subtitle": "Für seidig glatte Haut – ohne Klingen, Wachs oder Termin",
+      "chip_1": "In 8 Minuten haarfrei",
+      "chip_2": "Kein Rasurbrand, keine Pickel",
+      "chip_3": "Mit Aloe Vera & Allantoin",
+      "selector_label": "Menge wählen",
+      "per_bottle": "{{ price }} / Flasche",
+      "badge_best_price": "Bester Preis",
+      "bullet_1": "In 2–5 Werktagen bei dir",
+      "bullet_2": "30 Tage Rückgabe für ungeöffnete Flaschen",
+      "trust_1": "Versandkostenfrei ab {{ amount }}",
+      "trust_1_all": "Versandkostenfrei – der Preis ist der Endpreis",
+      "trust_2": "Versand aus Deutschland mit DHL",
+      "trust_3": "Sichere Zahlung: PayPal, Kreditkarte, Apple Pay & Google Pay",
+      "trust_4": "30 Tage Rückgabe – ungeöffnet & originalverpackt",
+      "trust_5": "Sicherheitsbewertet nach EU-Kosmetikverordnung (CPSR)",
+      "description": "Das MyHaut Spray löst das Haar direkt an der Hautoberfläche: aufsprühen, 8 Minuten warten, mit einem feuchten Tuch abwischen, abspülen. Kein Ziehen wie beim Waxing, keine Stoppeln wie nach dem Rasieren, kein Termin. Aloe Vera und Allantoin pflegen die Haut schon während der Einwirkzeit, und das Haar wächst weich nach. Für Beine, Arme, Achseln, Brust und Rücken.",
+      "acc_1_title": "Anwendung",
+      "acc_2_title": "Versand & Rückgabe",
+      "acc_2_body_html": "<p>Wir verschicken aus Deutschland mit DHL, in der Regel am nächsten Werktag. Lieferzeit 2–5 Werktage, Sendungsnummer per E-Mail. Der Versand ist für jede Bestellung kostenlos.</p><p>Ungeöffnete Flaschen in unbeschädigter Originalverpackung kannst du innerhalb von 30 Tagen nach Erhalt zurückschicken – wir erstatten den Kaufpreis dieser Flaschen. Geöffnete Flaschen nehmen wir aus Hygienegründen nicht zurück. Dein gesetzliches Widerrufsrecht von 14 Tagen bleibt unberührt.</p>",
+      "gallery_label": "Produktbilder",
+      "thumb_label": "Bild {{ index }} anzeigen"
+    },
+    "benefits": {
+      "heading": "",
+      "item_1_title": "Für Frauen und Männer",
+      "item_1_body": "Entwickelt für jeden Haartyp – fein oder kräftig, an Beinen, Armen, Achseln, Brust und Rücken.",
+      "item_2_title": "Sprühen statt verteilen",
+      "item_2_body": "Kein Spatel, keine Creme auf den Fingern. Aufsprühen, bis die Härchen bedeckt sind – fertig.",
+      "item_3_title": "Pflege in der Formel",
+      "item_3_body": "Aloe Vera und Allantoin beruhigen die Haut während der Einwirkzeit. Kein scharfer Geruch.",
+      "item_4_title": "8 Minuten, eine Dusche",
+      "item_4_body": "Kein Termin, kein Aufheizen, kein Nachrasieren. Bei kräftigem Haar bis zu 17 Minuten."
     }
   },
-
   "products": {
     "product": {
       "add_to_cart": "In den Warenkorb",
@@ -190,13 +385,18 @@
       "sale_price": "Aktionspreis",
       "save_percent": "−{{ percent }} %",
       "from_price": "ab {{ price }}",
+      "base_price": "{{ price }} / 100 ml",
+      "tax_note": "inkl. MwSt., zzgl. Versand",
+      "tax_note_free": "inkl. MwSt. · versandkostenfrei",
+      "tax_note_incl": "inkl. MwSt.",
+      "free_shipping_highlight": "Versandkostenfrei",
+      "shipping_link": "Versand & Zahlung",
       "view_details": "Details ansehen",
       "vendor": "Marke",
       "no_product": "Kein Produkt ausgewählt. Wähle im Theme-Editor unter „Produkt“ dein Produkt aus.",
       "no_product_link": "Produkt im Theme-Editor wählen"
     }
   },
-
   "cart": {
     "general": {
       "title": "Warenkorb",
@@ -215,7 +415,6 @@
       "error": "Der Artikel konnte nicht hinzugefügt werden. Bitte versuche es erneut."
     }
   },
-
   "blogs": {
     "article": {
       "read_more": "Weiterlesen",
@@ -223,7 +422,6 @@
       "posted_on": "Veröffentlicht am {{ date }}"
     }
   },
-
   "customer": {
     "account": {
       "title": "Mein Konto",
@@ -313,7 +511,6 @@
       "cancelled": "Bestellung storniert am {{ date }}"
     }
   },
-
   "gift_cards": {
     "issued": {
       "title": "Deine Geschenkkarte über {{ value }}",
@@ -324,18 +521,20 @@
       "expired": "Abgelaufen"
     }
   },
-
   "onboarding": {
     "product_title": "MyHaut Hair Removal Spray",
     "collection_title": "Kollektion"
   },
-
   "shopify": {
     "links": {
       "powered_by_shopify": "Powered by Shopify"
+    },
+    "checkout": {
+      "marketing": {
+        "accept_marketing_checkbox_label": "Ja, schickt mir exklusive Rabatte, Set-Angebote und Anwendungstipps per E-Mail"
+      }
     }
   },
-
   "password_page": {
     "title": "Bald verfügbar",
     "message": "Wir öffnen in Kürze.",

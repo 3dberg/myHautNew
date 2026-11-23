@@ -1,0 +1,94 @@
+{%- comment -%}
+  The button cluster used by the hero, the bundle cards, the sticky bar and the
+  closing CTA.
+
+  In pre-order mode the primary action is the waitlist — a plain anchor, so it
+  works without JavaScript — and the real add-to-cart is demoted to a small
+  secondary link that only appears once “Kaufen-Link zusätzlich anzeigen” is
+  switched on in the theme settings. With pre-order mode off the snippet
+  renders the normal add-to-cart button and the theme behaves like a shop.
+
+  Accepts:
+    mh_variant           the variant the buttons act on
+    mh_label             primary label (defaults to the translation)
+    mh_checkout_label    label of the small checkout link
+    mh_modifier          button modifier class, e.g. mh-btn--primary
+    mh_checkout_modifier button modifier for the checkout link in shop mode
+    mh_submit            true to render the checkout button as a form submit
+    mh_class             extra class names on the wrapper
+    mh_context           free-form label used for analytics / styling hooks
+    mh_href              overrides the waitlist target, for pages that do not
+                         carry the waitlist section themselves
+{%- endcomment -%}
+
+{%- liquid
+  assign preorder = settings.preorder_mode
+  assign anchor = settings.waitlist_anchor | default: '#mh-vormerken'
+  if mh_href != blank
+    assign anchor = mh_href
+  endif
+  comment
+    Only a same-page anchor gets the smooth-scroll hook; a full URL has to stay
+    an ordinary link.
+  endcomment
+  assign is_anchor = false
+  assign anchor_first_char = anchor | slice: 0
+  if anchor_first_char == '#'
+    assign is_anchor = true
+  endif
+  assign modifier = mh_modifier | default: 'mh-btn--primary'
+
+  assign fallback_waitlist = 'sections.waitlist.cta' | t
+  assign fallback_add = 'products.product.add_to_cart' | t
+  assign fallback_checkout = 'sections.waitlist.checkout_link' | t
+
+  assign primary_label = mh_label
+  if primary_label == blank
+    if preorder
+      assign primary_label = fallback_waitlist
+    else
+      assign primary_label = fallback_add
+    endif
+  endif
+
+  assign checkout_label = mh_checkout_label | default: fallback_checkout
+  assign button_type = 'button'
+  if mh_submit
+    assign button_type = 'submit'
+  endif
+-%}
+
+<div class="mh-buy-actions {{ mh_class }}" {% if mh_context != blank %}data-mh-context="{{ mh_context }}"{% endif %}>
+  {%- if preorder -%}
+    <a
+      href="{{ anchor }}"
+      class="mh-btn {{ modifier }}"
+      {% if is_anchor %}data-mh-scroll="{{ anchor }}" data-mh-waitlist-open{% endif %}>
+      {{ primary_label }}
+    </a>
+
+    {%- if settings.preorder_show_checkout -%}
+      <button
+        type="{{ button_type }}"
+        class="mh-buy-actions__checkout"
+        data-mh-add
+        data-mh-add-label-text="{{ checkout_label | escape }}"
+        {% unless mh_variant.available %}disabled{% endunless %}>
+        <span data-mh-add-label>
+          {%- if mh_variant.available %}{{ checkout_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif -%}
+        </span>
+      </button>
+    {%- endif -%}
+  {%- else -%}
+    <button
+      type="{{ button_type }}"
+      class="mh-btn {{ modifier }} {{ mh_checkout_modifier }}"
+      data-mh-add
+      data-mh-add-label-text="{{ primary_label | escape }}"
+      {% unless mh_variant.available %}disabled{% endunless %}>
+      <span data-mh-add-label>
+        {%- if mh_variant.available %}{{ primary_label }}{% else %}{{ 'products.product.sold_out' | t }}{% endif -%}
+      </span>
+    </button>
+  {%- endif -%}
+</div>

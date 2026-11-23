@@ -14,6 +14,16 @@
   assign label_before = section.settings.label_before | default: fallback_before
   assign label_after = section.settings.label_after | default: fallback_after
   assign footnote = section.settings.footnote | default: fallback_footnote
+
+  comment
+    Until real photos are uploaded the pair would render as two empty boxes, so
+    the storefront skips it and only the headline and the numbers show. The
+    theme editor still displays the slots so you can drop the images in.
+  endcomment
+  assign has_images = false
+  if section.settings.image_before != blank or section.settings.image_after != blank
+    assign has_images = true
+  endif
 -%}
 
 <div class="mh-ba" id="{{ section.settings.anchor | default: 'mh-results' }}">
@@ -23,6 +33,7 @@
       <h2 class="mh-ba__title">{{ heading | newline_to_br }}</h2>
     </div>
 
+    {%- if has_images or request.design_mode -%}
     <div class="mh-ba__pair">
       <div class="mh-ba__frame">
         {%- if label_before != blank -%}
@@ -47,6 +58,7 @@
         %}
       </div>
     </div>
+    {%- endif -%}
 
     {%- if section.blocks.size > 0 -%}
       <div class="mh-ba__stats">
@@ -65,9 +77,23 @@
             assign stat_value = block.settings.value | default: fallback_value
             assign stat_label = block.settings.label | default: fallback_label
           -%}
+          {%- liquid
+            comment
+              The label splits at the dash: the part before it is the headline
+              of the card, the rest is the detail line.
+            endcomment
+            assign stat_title = stat_label | split: ' – ' | first
+            assign stat_detail = ''
+            if stat_label contains ' – '
+              assign stat_detail = stat_label | remove_first: stat_title | remove_first: ' – '
+            endif
+          -%}
           <div class="mh-ba__stat" {{ block.shopify_attributes }}>
             <div class="mh-ba__stat-value">{{ stat_value }}</div>
-            <div class="mh-ba__stat-label">{{ stat_label }}</div>
+            <div class="mh-ba__stat-text">
+              <div class="mh-ba__stat-label">{{ stat_title }}</div>
+              {%- if stat_detail != blank -%}<div class="mh-ba__stat-detail">{{ stat_detail }}</div>{%- endif -%}
+            </div>
           </div>
         {%- endfor -%}
       </div>
@@ -88,6 +114,10 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
     { "type": "textarea", "id": "heading", "label": "Headline" },
     { "type": "header", "content": "Images" },
+    {
+      "type": "paragraph",
+      "content": "The image pair is hidden on the storefront until you upload at least one photo, so an unfinished section can never go live. Both photos must come from the same real application — same person, same spot, same lighting and distance. A retouched or stock “after” is a § 5 UWG problem and is the kind of thing Meta rejects. Whatever conditions applied (time left on, body area, days since use) belong in the footnote below."
+    },
     { "type": "image_picker", "id": "image_before", "label": "Before" },
     { "type": "text", "id": "placeholder_before", "label": "Placeholder caption (before)" },
     { "type": "image_picker", "id": "image_after", "label": "After" },
@@ -95,7 +125,12 @@
     { "type": "text", "id": "label_before", "label": "Label on the before image" },
     { "type": "text", "id": "label_after", "label": "Label on the after image" },
     { "type": "header", "content": "Footnote" },
-    { "type": "textarea", "id": "footnote", "label": "Footnote" },
+    {
+      "type": "textarea",
+      "id": "footnote",
+      "label": "Footnote",
+      "info": "Fill this in when you add the photos: who the photos are of, the body area, how long the spray was left on, and how long after the application the “after” shot was taken. Empty = no footnote is shown."
+    },
     { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-results" }
   ],
   "blocks": [

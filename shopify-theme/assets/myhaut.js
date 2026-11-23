@@ -17,6 +17,17 @@
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
+  // Scroll targets come from theme settings, so they can be a full URL rather
+  // than a selector — querySelector throws on those.
+  function querySafe(sel) {
+    if (!sel) return null;
+    try {
+      return document.querySelector(sel);
+    } catch (error) {
+      return null;
+    }
+  }
+
   function formatString(template, replacements) {
     return String(template || '').replace(/\{\{\s*(\w+)\s*\}\}/g, function (match, key) {
       return Object.prototype.hasOwnProperty.call(replacements, key) ? replacements[key] : match;
@@ -109,6 +120,15 @@
       }
     });
 
+    $$('[data-mh-base-price]').forEach(function (el) {
+      if (variant.base_price) {
+        el.textContent = formatString(strings.base_price || '{{ price }}', { price: variant.base_price });
+        el.hidden = false;
+      } else {
+        el.hidden = true;
+      }
+    });
+
     $$('[data-mh-unit-price]').forEach(function (el) {
       if (variant.unit_price) {
         el.textContent = formatString(strings.per_bottle || '{{ price }}', { price: variant.unit_price });
@@ -119,6 +139,21 @@
     });
 
     $$('[data-mh-variant-title]').forEach(function (el) { el.textContent = variant.title; });
+
+    $$('[data-mh-saving]').forEach(function (el) {
+      if (variant.saving) {
+        el.textContent = formatString(strings.saving || '{{ amount }}', { amount: variant.saving });
+        el.hidden = false;
+      } else {
+        el.hidden = true;
+      }
+    });
+
+    $$('[data-mh-free-shipping]').forEach(function (el) {
+      el.hidden = !variant.free_shipping;
+    });
+
+    syncWaitlistTags();
 
     $$('[data-mh-select]').forEach(function (el) {
       var isActive = String(el.getAttribute('data-mh-select')) === String(selectedId);
@@ -132,12 +167,64 @@
       var label = button.querySelector('[data-mh-add-label]') || button;
       if (variant.available) {
         button.removeAttribute('disabled');
-        label.textContent = button.getAttribute('data-mh-add-label-text') || label.textContent;
+        // A label may carry a {price} token (closing CTA): fill it with the
+        // selected variant's price instead of printing the token.
+        var text = button.getAttribute('data-mh-add-label-text') || label.textContent;
+        label.textContent = text.replace('{price}', variant.price);
       } else {
         button.setAttribute('disabled', 'disabled');
         label.textContent = strings.sold_out || 'Sold out';
       }
     });
+  }
+
+  /* -------------------------------------------------------------- waitlist */
+
+  /* Where somebody came from is the only thing that makes a test campaign
+     readable afterwards, so the UTM parameters ride along with the signup as
+     customer tags — no tracking pixel needed to tell the campaigns apart. */
+  var campaignTags = (function () {
+    var params = new URLSearchParams(window.location.search);
+    return ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content']
+      .map(function (key) {
+        var value = params.get(key);
+        return value ? key.replace('utm_', '') + ':' + value : null;
+      })
+      .filter(Boolean);
+  })();
+
+  /* Shopify splits customer tags on commas, so a comma inside one would
+     silently turn a single tag into two. */
+  function sanitizeTag(value) {
+    return String(value || '').replace(/,/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  function syncWaitlistTags() {
+    var variant = variantsById[selectedId];
+    $$('[data-mh-waitlist-tags]').forEach(function (input) {
+      var tags = (input.getAttribute('data-mh-waitlist-tags-base') || '')
+        .split(',')
+        .map(sanitizeTag)
+        .filter(Boolean);
+
+      if (variant) tags.push('set:' + sanitizeTag(variant.title));
+      campaignTags.forEach(function (tag) { tags.push(sanitizeTag(tag)); });
+
+      input.value = tags.join(',');
+    });
+  }
+
+  function focusWaitlistEmail() {
+    var field = $('[data-mh-waitlist-email]');
+    if (!field) return;
+    // preventScroll so the smooth scroll that just started isn't cut short.
+    window.setTimeout(function () {
+      try {
+        field.focus({ preventScroll: true });
+      } catch (error) {
+        field.focus();
+      }
+    }, 400);
   }
 
   /* ------------------------------------------------------------ cart glue */
@@ -270,6 +357,448 @@
     window.addEventListener('resize', update);
   }
 
+  /* -------------------------------------------------------- video player */
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // A clip has to sit in view this long before it starts (or, with autoplay
+  // off, before its play control fades in), so people scrolling past are not
+  // interrupted. The carousel can override it from the editor.
+  var ATTENTION_MS = 1500;
+  // Nothing playable after this long means the rendition is too heavy for the
+  // connection: step down to the small one and keep waiting.
+  var STALL_MS = 6000;
+
+  function videoFrame(video) { return video.closest('[data-mh-video-frame]'); }
+
+  function videoState(video, state) {
+    var frame = videoFrame(video);
+    if (frame) frame.setAttribute('data-mh-video-state', state);
+  }
+
+  function setSound(video, on) {
+    video.muted = !on;
+    var frame = videoFrame(video);
+    var button = frame ? frame.querySelector('[data-mh-video-sound]') : null;
+    if (button) {
+      var label = on ? (strings.mute || 'Mute') : (strings.unmute || 'Unmute');
+      button.setAttribute('aria-pressed', on ? 'true' : 'false');
+      button.setAttribute('aria-label', label);
+      var text = button.querySelector('[data-mh-video-sound-label]');
+      if (text) text.textContent = label;
+    }
+  }
+
+  function playSafe(video) {
+    var promise = video.play();
+    if (promise && promise.catch) {
+      // Refused (battery saver, unmuted without a gesture, …): show the play
+      // control rather than a poster that does nothing.
+      promise.catch(function () { if (video.paused) videoState(video, 'ready'); });
+    }
+  }
+
+  function connectionIsSlow() {
+    var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (!connection) return false;
+    if (connection.saveData) return true;
+    return /(^|-)2g$|^3g$/.test(connection.effectiveType || '');
+  }
+
+  function canPlayHls(video) {
+    var answer = video.canPlayType ? video.canPlayType('application/vnd.apple.mpegurl') : '';
+    return answer === 'probably' || answer === 'maybe';
+  }
+
+  // Which rendition to fetch: the HLS stream where the browser plays it
+  // natively (Safari — it adapts by itself), otherwise the 720p file, and the
+  // 480p file straight away on slow or metered connections or when the
+  // section asks for it.
+  function pickSource(video, forceSd) {
+    var quality = video.getAttribute('data-mh-quality') || 'auto';
+    var hls = video.getAttribute('data-mh-src-hls');
+    var hd = video.getAttribute('data-mh-src-hd');
+    var sd = video.getAttribute('data-mh-src-sd') || hd;
+    if (forceSd || quality === 'sd' || (quality !== 'hd' && connectionIsSlow())) return { url: sd, tier: 'sd' };
+    // canPlayType only ever says "maybe" for HLS, so a stream that then fails
+    // is retried as plain MP4 (see the error handler in setupPlayer).
+    if (hls && !video.getAttribute('data-mh-no-hls') && canPlayHls(video)) return { url: hls, tier: 'hls' };
+    return { url: hd || sd, tier: 'hd' };
+  }
+
+  // Attaches a source once; with forceSd it swaps a heavier one for the 480p
+  // file at the same position.
+  function attachSource(video, forceSd) {
+    var attached = video.getAttribute('src');
+    if (attached && !(forceSd && video.getAttribute('data-mh-tier') !== 'sd')) return true;
+    var choice = pickSource(video, forceSd);
+    if (!choice.url) { videoState(video, 'error'); return false; }
+    var position = video.currentTime || 0;
+    var player = video._mh;
+    if (player) player.swapping = !!attached;
+    video.setAttribute('data-mh-tier', choice.tier);
+    video.preload = 'auto';
+    video.src = choice.url;
+    if (position > 0) {
+      video.addEventListener('loadedmetadata', function seek() {
+        video.removeEventListener('loadedmetadata', seek);
+        try { video.currentTime = position; } catch (error) { /* not seekable */ }
+      });
+    }
+    return true;
+  }
+
+  // One state machine per clip: loading / ready / playing / paused / error on
+  // the frame, a progress bar, and a watchdog that steps the quality down when
+  // nothing arrives.
+  function setupPlayer(video) {
+    if (video._mh) return video._mh;
+    var frame = videoFrame(video);
+    var player = video._mh = {
+      wanted: false,    // the visitor has this clip in front of them
+      wantPlay: false,  // and it should be running
+      swapping: false,  // a source change of our own is in progress
+      timer: null,
+      stall: null,
+      buffered: 0,
+      frame: frame,
+      bar: frame ? frame.querySelector('[data-mh-video-progress]') : null
+    };
+
+    function bufferedEnd() {
+      try { return video.buffered.length ? video.buffered.end(video.buffered.length - 1) : 0; } catch (error) { return 0; }
+    }
+
+    function clearStall() { if (player.stall) { clearTimeout(player.stall); player.stall = null; } }
+    function armStall() {
+      clearStall();
+      player.stall = setTimeout(function () {
+        player.stall = null;
+        if (video.readyState >= 3) return;
+        // Bytes are still arriving: a heavier file that is nearly there must
+        // not be thrown away for a restart on the small one.
+        var now = bufferedEnd();
+        var progressing = now > player.buffered + 0.25;
+        player.buffered = now;
+        if (progressing) { armStall(); return; }
+        if (video.getAttribute('data-mh-tier') !== 'sd') {
+          attachSource(video, true);
+          if (player.wantPlay) playSafe(video);
+        } else if (frame) {
+          frame.setAttribute('data-mh-slow', 'true');
+        }
+        armStall();
+      }, STALL_MS);
+    }
+    function arrived() {
+      clearStall();
+      if (frame) frame.removeAttribute('data-mh-slow');
+    }
+
+    video.addEventListener('loadstart', function () { player.buffered = 0; videoState(video, 'loading'); armStall(); });
+    video.addEventListener('waiting', function () { videoState(video, 'loading'); armStall(); });
+    video.addEventListener('stalled', armStall);
+    video.addEventListener('canplay', function () { arrived(); if (video.paused && !player.wantPlay) videoState(video, 'ready'); });
+    video.addEventListener('playing', function () { arrived(); player.swapping = false; videoState(video, 'playing'); });
+    video.addEventListener('pause', function () {
+      if (player.swapping) return;
+      if (video.getAttribute('src')) videoState(video, player.wanted ? 'paused' : 'ready');
+    });
+    video.addEventListener('error', function () {
+      clearStall();
+      if (video.getAttribute('data-mh-tier') === 'hls') {
+        video.setAttribute('data-mh-no-hls', 'true');
+        player.swapping = true;
+        video.removeAttribute('src');
+        video.removeAttribute('data-mh-tier');
+        if (attachSource(video) && player.wantPlay) playSafe(video);
+        return;
+      }
+      videoState(video, 'error');
+    });
+    video.addEventListener('timeupdate', function () {
+      if (player.bar && video.duration) player.bar.style.width = (video.currentTime / video.duration * 100).toFixed(1) + '%';
+    });
+    return player;
+  }
+
+  function soloVideo(video) {
+    $$('[data-mh-video]').forEach(function (other) {
+      if (other !== video && other._mh && (other._mh.wantPlay || !other.paused)) sleepVideo(other);
+    });
+  }
+
+  function startVideo(video, withSound) {
+    var player = setupPlayer(video);
+    soloVideo(video);
+    player.wanted = true;
+    player.wantPlay = true;
+    if (player.frame) player.frame.classList.add('is-attentive');
+    attachSource(video);
+    if (withSound) setSound(video, true);
+    if (video.readyState < 3) videoState(video, 'loading');
+    playSafe(video);
+    if (typeof CustomEvent === 'function') video.dispatchEvent(new CustomEvent('mh:video:start', { bubbles: true }));
+  }
+
+  function pauseVideo(video) {
+    var player = setupPlayer(video);
+    player.wantPlay = false;
+    video.pause();
+  }
+
+  // The visitor has this clip in front of them: fetch it, and after the
+  // attention delay either start it (autoplay) or reveal the play control.
+  function wakeVideo(video, options) {
+    var player = setupPlayer(video);
+    var settings = options || {};
+    player.wanted = true;
+    attachSource(video);
+    if (player.timer) clearTimeout(player.timer);
+    var delay = typeof settings.attention === 'number' ? settings.attention : ATTENTION_MS;
+    player.timer = setTimeout(function () {
+      player.timer = null;
+      if (!player.wanted) return;
+      if (player.frame) player.frame.classList.add('is-attentive');
+      if (settings.autoplay) startVideo(video, false);
+    }, delay);
+  }
+
+  function sleepVideo(video) {
+    var player = video._mh;
+    if (!player) return;
+    player.wanted = false;
+    player.wantPlay = false;
+    if (player.timer) { clearTimeout(player.timer); player.timer = null; }
+    if (player.frame) player.frame.classList.remove('is-attentive');
+    if (!video.paused) video.pause();
+    if (!video.muted) setSound(video, false);
+  }
+
+  function initVideoCarousels(root) {
+    $$('[data-mh-carousel]', root).forEach(function (carousel) {
+      if (carousel.getAttribute('data-mh-carousel-ready')) return;
+      carousel.setAttribute('data-mh-carousel-ready', 'true');
+
+      var track = carousel.querySelector('[data-mh-carousel-track]');
+      var section = carousel.closest('.shopify-section') || carousel.parentNode;
+      var prev = section.querySelector('[data-mh-carousel-prev]');
+      var next = section.querySelector('[data-mh-carousel-next]');
+      var dots = $$('[data-mh-carousel-dot]', section);
+      var slides = $$('[data-mh-video-slide]', track);
+      var autoplay = carousel.getAttribute('data-mh-autoplay') !== 'false' && !reduceMotion;
+      var attention = parseInt(carousel.getAttribute('data-mh-attention'), 10);
+      if (isNaN(attention)) attention = ATTENTION_MS;
+      var quality = carousel.getAttribute('data-mh-quality') || 'auto';
+      var active = null;
+      var inView = false;
+
+      function slideVideo(slide) { return slide ? slide.querySelector('[data-mh-video]') : null; }
+
+      slides.forEach(function (slide) {
+        var video = slideVideo(slide);
+        if (!video) return;
+        video.setAttribute('data-mh-quality', quality);
+        setupPlayer(video);
+      });
+
+      function slideWidth() {
+        var slide = slides[0];
+        if (!slide) return track.clientWidth;
+        var gap = parseFloat(window.getComputedStyle(track).columnGap || window.getComputedStyle(track).gap) || 0;
+        return slide.getBoundingClientRect().width + gap;
+      }
+
+      function updateNav() {
+        if (!prev || !next) return;
+        var max = track.scrollWidth - track.clientWidth - 1;
+        prev.disabled = track.scrollLeft <= 0;
+        next.disabled = track.scrollLeft >= max;
+      }
+
+      function updateDots() {
+        var index = slides.indexOf(active);
+        dots.forEach(function (dot, i) {
+          if (i === index) dot.setAttribute('aria-current', 'true');
+          else dot.removeAttribute('aria-current');
+        });
+      }
+
+      // "The" clip: the one nearest the middle of a swipeable track, the first
+      // one when everything fits on screen (desktop).
+      function nearestSlide() {
+        if (!slides.length) return null;
+        if (track.scrollWidth <= track.clientWidth + 1) return active || slides[0];
+        var rect = track.getBoundingClientRect();
+        var middle = rect.left + rect.width / 2;
+        var best = slides[0];
+        var bestDistance = Infinity;
+        slides.forEach(function (slide) {
+          var box = slide.getBoundingClientRect();
+          var distance = Math.abs(box.left + box.width / 2 - middle);
+          if (distance < bestDistance) { bestDistance = distance; best = slide; }
+        });
+        return best;
+      }
+
+      function wakeActive() {
+        var video = slideVideo(active);
+        if (video) wakeVideo(video, { autoplay: autoplay, attention: attention });
+        // Warm the following clip, so a swipe lands on something that starts
+        // at once.
+        var following = slideVideo(slides[slides.indexOf(active) + 1]);
+        if (following && !following.getAttribute('src')) attachSource(following);
+      }
+
+      function setActive(slide) {
+        if (slide === active) return;
+        slides.forEach(function (other) {
+          var video = slideVideo(other);
+          if (video && other !== slide) sleepVideo(video);
+        });
+        active = slide;
+        updateDots();
+        if (active && inView) wakeActive();
+      }
+
+      if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -slideWidth(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+      if (next) next.addEventListener('click', function () { track.scrollBy({ left: slideWidth(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+      dots.forEach(function (dot, i) {
+        dot.addEventListener('click', function () {
+          if (slides[i]) slides[i].scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
+        });
+      });
+      if (canHover) {
+        slides.forEach(function (slide) {
+          slide.addEventListener('mouseenter', function () {
+            var current = slideVideo(active);
+            if (inView && !(current && !current.paused && !current.muted)) setActive(slide);
+          });
+        });
+      }
+      // A tap on any slide makes it the active one (desktop shows several).
+      track.addEventListener('mh:video:start', function (event) {
+        var slide = event.target.closest ? event.target.closest('[data-mh-video-slide]') : null;
+        if (slide && slide !== active) {
+          if (slideVideo(active)) sleepVideo(slideVideo(active));
+          active = slide;
+          updateDots();
+        }
+      });
+
+      var ticking = false;
+      track.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () {
+          updateNav();
+          setActive(nearestSlide());
+          ticking = false;
+        });
+      }, { passive: true });
+      window.addEventListener('resize', updateNav);
+      updateNav();
+
+      if ('IntersectionObserver' in window) {
+        // Approaching: fetch the first clip before the visitor gets here.
+        var warm = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var first = slideVideo(nearestSlide());
+            if (first) attachSource(first);
+            warm.disconnect();
+          });
+        }, { rootMargin: '400px 0px' });
+        warm.observe(carousel);
+
+        // On screen: run the active clip. Off screen: everything sleeps, so no
+        // sound ever keeps running out of view.
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            inView = entry.isIntersecting;
+            if (inView) {
+              var slide = nearestSlide();
+              if (slide === active) wakeActive();
+              else setActive(slide);
+            } else {
+              slides.forEach(function (slide) {
+                var video = slideVideo(slide);
+                if (video) sleepVideo(video);
+              });
+            }
+          });
+        }, { threshold: 0.4 });
+        observer.observe(carousel);
+        carousel._mhObserver = observer;
+        carousel._mhWarm = warm;
+      } else {
+        inView = true;
+        setActive(nearestSlide());
+      }
+    });
+  }
+
+  // Clips outside a carousel (tester-quote cards): same in-view behaviour.
+  function initInlineVideos(root) {
+    if (!('IntersectionObserver' in window)) return;
+    var solo = $$('[data-mh-video]', root).filter(function (video) {
+      return !video.closest('[data-mh-carousel]') && !video.getAttribute('data-mh-video-ready');
+    });
+    if (!solo.length) return;
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) wakeVideo(entry.target, { autoplay: !reduceMotion });
+        else sleepVideo(entry.target);
+      });
+    }, { threshold: 0.6 });
+    solo.forEach(function (video) {
+      video.setAttribute('data-mh-video-ready', 'true');
+      setupPlayer(video);
+      observer.observe(video);
+    });
+  }
+
+  function toggleVideoSound(video) {
+    if (video.muted) startVideo(video, true);
+    else setSound(video, false);
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) return;
+    $$('[data-mh-video]').forEach(function (video) { if (!video.paused) video.pause(); });
+  });
+
+  /* ---------------------------------------------------------- gallery */
+
+  function showGalleryMedia(gallery, mediaId) {
+    if (!gallery || !mediaId) return;
+    var found = false;
+    $$('[data-mh-gallery-slide]', gallery).forEach(function (slide) {
+      var active = String(slide.getAttribute('data-mh-gallery-slide')) === String(mediaId);
+      slide.classList.toggle('is-active', active);
+      if (active) found = true;
+      var video = slide.querySelector('video');
+      if (video && !active) video.pause();
+    });
+    if (!found) return;
+    $$('[data-mh-gallery-thumb]', gallery).forEach(function (thumb) {
+      var active = String(thumb.getAttribute('data-mh-gallery-thumb')) === String(mediaId);
+      thumb.classList.toggle('is-active', active);
+      thumb.setAttribute('aria-pressed', active ? 'true' : 'false');
+      if (active && thumb.scrollIntoView) {
+        try { thumb.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduceMotion ? 'auto' : 'smooth' }); } catch (error) { /* older browsers */ }
+      }
+    });
+  }
+
+  // A set has its own photo: choosing it shows that photo.
+  document.addEventListener('myhaut:variant:change', function (event) {
+    var variant = event.detail;
+    if (!variant || !variant.media_id) return;
+    $$('[data-mh-gallery]').forEach(function (gallery) { showGalleryMedia(gallery, variant.media_id); });
+  });
+
   /* -------------------------------------------------------------- events */
 
   function initEvents() {
@@ -281,8 +810,11 @@
         if (action === 'add') {
           addToCart(selectTrigger);
         } else if (action === 'scroll') {
-          var target = $(selectTrigger.getAttribute('data-mh-select-scroll') || '#mh-buy');
-          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          var target = querySafe(selectTrigger.getAttribute('data-mh-select-scroll') || '#mh-buy');
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (CONFIG.preorder) focusWaitlistEmail();
+          }
         }
         if (selectTrigger.tagName === 'BUTTON') event.preventDefault();
         return;
@@ -315,12 +847,82 @@
         return;
       }
 
+      var compareTab = event.target.closest('[data-mh-compare-tab]');
+      if (compareTab) {
+        event.preventDefault();
+        var compare = compareTab.closest('[data-mh-compare-table]');
+        if (compare) {
+          compare.setAttribute('data-mh-compare-active', compareTab.getAttribute('data-mh-compare-tab'));
+          $$('[data-mh-compare-tab]', compare).forEach(function (tab) {
+            var on = tab === compareTab;
+            tab.classList.toggle('is-active', on);
+            tab.setAttribute('aria-selected', on ? 'true' : 'false');
+          });
+        }
+        return;
+      }
+
+      var thumbTrigger = event.target.closest('[data-mh-gallery-thumb]');
+      if (thumbTrigger) {
+        event.preventDefault();
+        showGalleryMedia(thumbTrigger.closest('[data-mh-gallery]'), thumbTrigger.getAttribute('data-mh-gallery-thumb'));
+        return;
+      }
+
+      var playTrigger = event.target.closest('[data-mh-video-play]');
+      if (playTrigger) {
+        event.preventDefault();
+        var playFrame = playTrigger.closest('[data-mh-video-frame]');
+        var playVideo = playFrame ? playFrame.querySelector('[data-mh-video]') : null;
+        // A deliberate tap on "play" is the one moment sound is welcome.
+        if (playVideo) startVideo(playVideo, true);
+        return;
+      }
+
+      var retryTrigger = event.target.closest('[data-mh-video-retry]');
+      if (retryTrigger) {
+        event.preventDefault();
+        var retryFrame = retryTrigger.closest('[data-mh-video-frame]');
+        var retryVideo = retryFrame ? retryFrame.querySelector('[data-mh-video]') : null;
+        if (retryVideo) {
+          // Start over on the small file: it is the one most likely to arrive.
+          retryVideo.removeAttribute('src');
+          retryVideo.removeAttribute('data-mh-tier');
+          attachSource(retryVideo, true);
+          startVideo(retryVideo, false);
+        }
+        return;
+      }
+
+      var soundTrigger = event.target.closest('[data-mh-video-sound]');
+      if (soundTrigger) {
+        event.preventDefault();
+        var soundFrame = soundTrigger.closest('[data-mh-video-frame]');
+        var soundVideo = soundFrame ? soundFrame.querySelector('[data-mh-video]') : null;
+        if (soundVideo) toggleVideoSound(soundVideo);
+        return;
+      }
+
+      var frameTrigger = event.target.closest('[data-mh-video-frame]');
+      if (frameTrigger) {
+        var frameVideo = frameTrigger.querySelector('[data-mh-video]');
+        var frameState = frameTrigger.getAttribute('data-mh-video-state');
+        if (frameVideo) {
+          if (frameState === 'loading' && frameVideo._mh && frameVideo._mh.wantPlay) return;
+          if (frameVideo.paused) startVideo(frameVideo, true);
+          else if (frameVideo.muted) startVideo(frameVideo, true);
+          else pauseVideo(frameVideo);
+        }
+        return;
+      }
+
       var scrollTrigger = event.target.closest('[data-mh-scroll]');
       if (scrollTrigger) {
-        var scrollTarget = $(scrollTrigger.getAttribute('data-mh-scroll'));
+        var scrollTarget = querySafe(scrollTrigger.getAttribute('data-mh-scroll'));
         if (scrollTarget) {
           event.preventDefault();
           scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (scrollTrigger.hasAttribute('data-mh-waitlist-open')) focusWaitlistEmail();
         }
         return;
       }
@@ -351,11 +953,44 @@
     });
   }
 
+  /* -------------------------------------------------------- Loox rating */
+
+  // The theme draws the stars itself from the Loox metafields, so the rating
+  // is on the page in the first paint. Loox loads its own script asynchronously
+  // and appends its rating into .loox-rating; the moment it has, the theme's
+  // stars are dropped, so a row never shows two ratings at once.
+  function initRating(scope) {
+    $$('[data-mh-rating]', scope).forEach(function (row) {
+      var fallback = row.querySelector('[data-mh-rating-fallback]');
+      if (!fallback || row._mhRatingObserver) return;
+
+      function dropFallback() {
+        if (!row.querySelector('.loox-rating-content')) return false;
+        if (fallback.parentNode) fallback.parentNode.removeChild(fallback);
+        if (row._mhRatingObserver) row._mhRatingObserver.disconnect();
+        row._mhRatingObserver = null;
+        return true;
+      }
+
+      if (dropFallback()) return;
+      if (typeof MutationObserver !== 'function') return;
+      row._mhRatingObserver = new MutationObserver(dropFallback);
+      row._mhRatingObserver.observe(row, { childList: true, subtree: true });
+    });
+  }
+
   /* ---------------------------------------------------------------- boot */
 
   function init() {
     initProduct();
+    // Runs again here because a page can carry the waitlist without carrying
+    // the product data (the interest page does), and the campaign tags have to
+    // be attached either way.
+    syncWaitlistTags();
     initStickyBar();
+    initVideoCarousels();
+    initInlineVideos();
+    initRating();
     initEvents();
   }
 
@@ -366,10 +1001,24 @@
   }
 
   // Theme editor: re-init when a section is re-rendered
-  document.addEventListener('shopify:section:load', function () {
+  document.addEventListener('shopify:section:load', function (event) {
     variantsById = {};
     drawer = null;
     initProduct();
     initStickyBar();
+    initVideoCarousels(event.target);
+    initInlineVideos(event.target);
+    initRating(event.target);
+  });
+  document.addEventListener('shopify:section:unload', function (event) {
+    $$('[data-mh-video]', event.target).forEach(sleepVideo);
+    $$('[data-mh-carousel]', event.target).forEach(function (carousel) {
+      if (carousel._mhObserver) carousel._mhObserver.disconnect();
+      if (carousel._mhWarm) carousel._mhWarm.disconnect();
+    });
+  });
+  document.addEventListener('shopify:block:select', function (event) {
+    var slide = event.target && event.target.closest ? event.target.closest('[data-mh-video-slide]') : null;
+    if (slide) slide.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
   });
 })();

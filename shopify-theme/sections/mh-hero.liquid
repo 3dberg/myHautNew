@@ -7,15 +7,33 @@
 
 {%- liquid
   assign mh_product = section.settings.product | default: product | default: collections.all.products.first
-  assign current_variant = mh_product.selected_or_first_available_variant
 
-  assign fallback_rating_text = 'sections.hero.rating_text' | t
+  comment
+    Preselected set: a variant id in the URL wins, then the section setting
+    default_position (so the homepage can open on the 2-bottle set), then the
+    first available variant.
+  endcomment
+  assign current_variant = mh_product.selected_variant
+  if current_variant == nil or current_variant == blank
+    assign default_position = section.settings.default_position | default: 0 | plus: 0
+    if default_position > 0
+      assign default_index = default_position | minus: 1
+      assign preset_variant = mh_product.variants[default_index]
+      if preset_variant != blank and preset_variant.available
+        assign current_variant = preset_variant
+      endif
+    endif
+  endif
+  if current_variant == nil or current_variant == blank
+    assign current_variant = mh_product.selected_or_first_available_variant
+  endif
+
+  assign fallback_eyebrow = 'sections.hero.eyebrow' | t
   assign fallback_heading_1 = 'sections.hero.heading_1' | t
   assign fallback_heading_2 = 'sections.hero.heading_2' | t
   assign fallback_body = 'sections.hero.body' | t
   assign fallback_body_mobile = 'sections.hero.body_mobile' | t
   assign fallback_note = 'sections.hero.note' | t
-  assign fallback_buy = 'products.product.add_to_cart' | t
   assign fallback_secondary = 'sections.hero.secondary_button' | t
   assign fallback_trust_1 = 'sections.hero.trust_1' | t
   assign fallback_trust_2 = 'sections.hero.trust_2' | t
@@ -24,14 +42,27 @@
   assign fallback_trust_m2 = 'sections.hero.trust_mobile_2' | t
   assign fallback_trust_m3 = 'sections.hero.trust_mobile_3' | t
 
-  assign rating_text = section.settings.rating_text | default: fallback_rating_text
+  assign eyebrow = section.settings.eyebrow | default: fallback_eyebrow
   assign heading_1 = section.settings.heading_1 | default: fallback_heading_1
   assign heading_2 = section.settings.heading_2 | default: fallback_heading_2
   assign body_text = section.settings.body | default: fallback_body
   assign body_mobile = section.settings.body_mobile | default: fallback_body_mobile
   assign note_text = section.settings.note | default: fallback_note
-  assign buy_label = section.settings.buy_label | default: fallback_buy
+  assign note_probe = note_text | replace: '&nbsp;', '' | strip
+  if note_probe == blank
+    assign note_text = ''
+  endif
   assign secondary_label = section.settings.secondary_label | default: fallback_secondary
+
+  comment
+    Pre-launch, Shopify usually reports every variant as out of stock. The
+    bundle rows below still have to be selectable then, because in pre-order
+    mode they only pick which set the waitlist signup is tagged with.
+  endcomment
+  assign lock_unavailable = true
+  if settings.preorder_mode
+    assign lock_unavailable = false
+  endif
 
   comment
     In "image" height mode the hero box takes the proportions of the image you
@@ -49,7 +80,7 @@
   class="mh-hero{% unless section.settings.full_width %} mh-hero--boxed{% endunless %}{% if use_ratio %} mh-hero--ratio{% endif %}"
   id="mh-hero-{{ section.id }}">
   {%- if mh_product != blank -%}
-    {% render 'mh-product-data', mh_product: mh_product %}
+    {% render 'mh-product-data', mh_product: mh_product, mh_default_position: section.settings.default_position %}
   {%- endif -%}
 
   <div
@@ -90,11 +121,31 @@
 
     <div class="mh-hero__text">
       <div class="mh-hero__head">
-        {%- if section.settings.show_rating -%}
+        {%- comment -%}
+          Rating slot. With no app block added the theme renders the Loox star
+          rating itself (snippets/mh-loox-rating.liquid); an app block added
+          with "Add block → Apps" replaces it.
+        {%- endcomment -%}
+        {%- if section.blocks.size > 0 -%}
           <div class="mh-hero__rating">
-            {% render 'mh-stars', mh_rating: section.settings.rating_stars %}
-            <span class="mh-hero__rating-note">{{ rating_text }}</span>
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when '@app' -%}
+                  {% render block %}
+              {%- endcase -%}
+            {%- endfor -%}
           </div>
+        {%- elsif section.settings.show_rating -%}
+          {% render 'mh-loox-rating',
+            mh_product: mh_product,
+            mh_class: 'mh-hero__rating',
+            mh_note: section.settings.rating_note,
+            mh_target: section.settings.rating_target
+          %}
+        {%- endif -%}
+
+        {%- if eyebrow != blank -%}
+          <p class="mh-hero__eyebrow">{{ eyebrow }}</p>
         {%- endif -%}
 
         <h1 class="mh-hero__title">
@@ -114,20 +165,33 @@
         {%- endif -%}
 
         {%- if mh_product != blank -%}
-          {% render 'mh-price', mh_variant: current_variant %}
+          {%- comment -%}
+            Price, then the Grundpreis and the VAT / shipping line in one small
+            row (§ 4 and § 6 PAngV want both next to the price).
+          {%- endcomment -%}
+          {% render 'mh-price',
+            mh_variant: current_variant,
+            mh_show_base: false,
+            mh_show_tax: false
+          %}
+          {% render 'mh-free-shipping', mh_class: 'mh-hero__ship' %}
+          <div class="mh-hero__legal">
+            {% render 'mh-base-price', mh_variant: current_variant, mh_dynamic: true %}
+            {% render 'mh-tax-note', mh_hide_shipping: true %}
+          </div>
 
           {%- if note_text != blank -%}
-            <div class="mh-hero__note mh-hero__text-desktop">{{ note_text }}</div>
+            <div class="mh-hero__note">{{ note_text }}</div>
           {%- endif -%}
 
-          {%- if mh_product.variants.size > 1 -%}
+          {%- if mh_product.variants.size > 1 and section.settings.show_options_mobile -%}
             <div class="mh-options mh-hero__options" role="group" aria-label="{{ 'sections.bundles.heading' | t }}">
               {%- for variant in mh_product.variants -%}
                 {%- liquid
-                  assign bottles = variant.title | split: ' ' | first | remove: '×' | remove: 'x' | remove: 'X' | remove: '*' | plus: 0
-                  if bottles < 1
-                    assign bottles = 1
-                  endif
+                  capture bottles
+                    render 'mh-bottles', mh_variant: variant
+                  endcapture
+                  assign bottles = bottles | plus: 0
                   assign unit_price = ''
                   if bottles > 1
                     assign unit_cents = variant.price | divided_by: bottles
@@ -143,7 +207,7 @@
                   class="mh-option{% if variant.id == current_variant.id %} is-active{% endif %}"
                   data-mh-select="{{ variant.id }}"
                   aria-pressed="{% if variant.id == current_variant.id %}true{% else %}false{% endif %}"
-                  {% unless variant.available %}disabled{% endunless %}>
+                  {% if lock_unavailable and variant.available == false %}disabled{% endif %}>
                   <span class="mh-option__meta">
                     <span>{{ variant.title }}</span>
                     {%- if is_featured or unit_price != blank -%}
@@ -154,7 +218,7 @@
                     {%- endif -%}
                   </span>
                   <span class="mh-option__price">
-                    {%- if variant.available -%}
+                    {%- if variant.available or settings.preorder_mode -%}
                       {{ variant.price | money }}
                     {%- else -%}
                       {{ 'products.product.sold_out' | t }}
@@ -169,20 +233,13 @@
             <input type="hidden" name="id" value="{{ current_variant.id }}" data-mh-form-variant>
             <input type="hidden" name="quantity" value="1">
             <div class="mh-hero__actions">
-              <button
-                type="submit"
-                class="mh-btn mh-btn--primary"
-                data-mh-add
-                data-mh-add-label-text="{{ buy_label | escape }}"
-                {% unless current_variant.available %}disabled{% endunless %}>
-                <span data-mh-add-label>
-                  {%- if current_variant.available -%}
-                    {{ buy_label }}
-                  {%- else -%}
-                    {{ 'products.product.sold_out' | t }}
-                  {%- endif -%}
-                </span>
-              </button>
+              {% render 'mh-buy-actions',
+                mh_variant: current_variant,
+                mh_label: section.settings.buy_label,
+                mh_modifier: 'mh-btn--primary',
+                mh_submit: true,
+                mh_context: 'hero'
+              %}
               {%- if secondary_label != blank -%}
                 <a
                   href="{{ section.settings.secondary_target | default: '#mh-bundles' }}"
@@ -277,12 +334,36 @@
     {
       "type": "range",
       "id": "height_mobile",
-      "min": 280,
+      "min": 240,
       "max": 640,
       "step": 10,
       "unit": "px",
       "label": "Mobile image height",
-      "default": 400
+      "default": 300,
+      "info": "Keep it short enough that the price and the button are on the first screen of a phone."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_options_mobile",
+      "label": "Show the set list in the mobile hero",
+      "default": false,
+      "info": "Off: the mobile hero sells one bottle and the sets are chosen further down. On: all sets are listed above the button, which pushes it off the first screen."
+    },
+    { "type": "header", "content": "Reviews" },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show the Loox star rating above the headline",
+      "default": true,
+      "info": "Needs the Loox app embed switched on under Theme settings → App embeds. The row stays hidden until the product has its first review. Adding a review app block with “Add block → Apps” replaces it."
+    },
+    { "type": "text", "id": "rating_note", "label": "Small line next to the stars", "info": "Optional, e.g. “Echte Kundenbewertungen”. Only shown once the product has a review." },
+    {
+      "type": "text",
+      "id": "rating_target",
+      "label": "The stars link to",
+      "default": "#mh-reviews",
+      "info": "Anchor of the review section on this page. Leave empty to make the stars a plain, unclickable row."
     },
     { "type": "header", "content": "Media" },
     {
@@ -299,23 +380,20 @@
       "accept": ["youtube", "vimeo"],
       "label": "Background video (YouTube / Vimeo)"
     },
-    { "type": "header", "content": "Rating" },
-    { "type": "checkbox", "id": "show_rating", "label": "Show star rating", "default": true },
-    { "type": "range", "id": "rating_stars", "min": 0, "max": 5, "step": 1, "label": "Stars", "default": 5 },
-    {
-      "type": "text",
-      "id": "rating_text",
-      "label": "Rating text",
-      "info": "Leave empty to use the built-in translation (DE/EN)."
-    },
     { "type": "header", "content": "Text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow above the headline", "info": "Says what the product is, e.g. \u201eHaarentfernungsspray\u201c. Leave empty for the built-in translation." },
     { "type": "text", "id": "heading_1", "label": "Headline, first line", "info": "Leave empty for the built-in translation." },
     { "type": "text", "id": "heading_2", "label": "Headline, second line (italic, accent colour)" },
     { "type": "textarea", "id": "body", "label": "Intro text (desktop)" },
     { "type": "textarea", "id": "body_mobile", "label": "Intro text (mobile)" },
     { "type": "text", "id": "note", "label": "Small note under the price" },
     { "type": "header", "content": "Buttons" },
-    { "type": "text", "id": "buy_label", "label": "Add-to-cart label" },
+    {
+      "type": "text",
+      "id": "buy_label",
+      "label": "Primary button label",
+      "info": "Leave empty for “Unverbindlich vormerken” in pre-order mode, “In den Warenkorb” otherwise."
+    },
     { "type": "text", "id": "secondary_label", "label": "Secondary button label" },
     {
       "type": "text",
@@ -323,6 +401,16 @@
       "label": "Secondary button target",
       "default": "#mh-bundles",
       "info": "An anchor on this page (e.g. #mh-bundles) or a full URL."
+    },
+    {
+      "type": "range",
+      "id": "default_position",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "label": "Preselected set (position)",
+      "default": 0,
+      "info": "Which set the page opens with, and what the hero button adds — 2 = the 2-bottle set. 0 = the first available variant. A ?variant= link always wins."
     },
     {
       "type": "range",
@@ -343,6 +431,8 @@
     { "type": "text", "id": "trust_mobile_2", "label": "Item 2" },
     { "type": "text", "id": "trust_mobile_3", "label": "Item 3" }
   ],
+  "blocks": [{ "type": "@app" }],
+  "max_blocks": 1,
   "presets": [{ "name": "Hero" }]
 }
 {% endschema %}

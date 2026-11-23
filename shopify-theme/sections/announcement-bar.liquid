@@ -3,7 +3,48 @@
   assign fallback_2 = 'sections.announcement.item_2' | t
   assign fallback_3 = 'sections.announcement.item_3' | t
 
+  comment
+    The shipping promise owns the first (and on mobile the only) message. How it
+    is phrased comes from "Shipping message": with free shipping on every order
+    it also says the displayed price is the final one, so nobody waits for a
+    surprise at the checkout. "Off" hands the slot back to Message 1.
+  endcomment
+  assign free_threshold = settings.free_shipping_threshold | default: 0 | plus: 0
+  assign shipping_style = section.settings.free_shipping_style | default: 'auto'
+
+  if shipping_style == 'auto'
+    if settings.free_shipping_all
+      assign shipping_style = 'final'
+    elsif free_threshold > 0
+      assign shipping_style = 'threshold'
+    else
+      assign shipping_style = 'off'
+    endif
+  endif
+
+  comment
+    A threshold line without a threshold would read "Versandkostenfrei ab" and
+    then stop.
+  endcomment
+  if shipping_style == 'threshold' and free_threshold <= 0
+    assign shipping_style = 'off'
+  endif
+
+  assign shipping_line = ''
+  case shipping_style
+    when 'final'
+      assign shipping_line = 'sections.announcement.free_shipping_final' | t
+    when 'plain'
+      assign shipping_line = 'sections.announcement.free_shipping_all' | t
+    when 'threshold'
+      assign free_amount = free_threshold | times: 100 | money_without_trailing_zeros
+      assign shipping_line = 'sections.announcement.free_shipping' | t: amount: free_amount
+  endcase
+
   assign item_1 = section.settings.item_1 | default: fallback_1
+  if shipping_line != blank
+    assign item_1 = shipping_line
+  endif
   assign item_2 = section.settings.item_2 | default: fallback_2
   assign item_3 = section.settings.item_3 | default: fallback_3
 -%}
@@ -11,7 +52,7 @@
 {%- if item_1 != blank -%}
   <div class="mh-announcement">
     <div class="mh-announcement__list">
-      <span class="mh-announcement__item">{{ item_1 }}</span>
+      <span class="mh-announcement__item{% if shipping_line != blank %} mh-announcement__item--strong{% endif %}">{{ item_1 }}</span>
       {%- if item_2 != blank -%}
         <span class="mh-announcement__sep">·</span>
         <span class="mh-announcement__item">{{ item_2 }}</span>
@@ -34,7 +75,21 @@
       "type": "paragraph",
       "content": "Only the first message is shown on mobile, exactly as in the design."
     },
-    { "type": "text", "id": "item_1", "label": "Message 1", "info": "Leave empty to use the built-in translation." },
+    {
+      "type": "select",
+      "id": "free_shipping_style",
+      "label": "Shipping message",
+      "default": "auto",
+      "info": "Takes the first slot, the only one phones show. “Auto” follows the theme setting “Versandkostenfrei für jede Bestellung”.",
+      "options": [
+        { "value": "auto", "label": "Auto (from theme settings)" },
+        { "value": "final", "label": "Free shipping + final price" },
+        { "value": "plain", "label": "Free shipping only" },
+        { "value": "threshold", "label": "Free shipping from X €" },
+        { "value": "off", "label": "Off — use Message 1 below" }
+      ]
+    },
+    { "type": "text", "id": "item_1", "label": "Message 1", "info": "Only used when the shipping message is off. Leave empty to use the built-in translation." },
     { "type": "text", "id": "item_2", "label": "Message 2" },
     { "type": "text", "id": "item_3", "label": "Message 3" }
   ]
