@@ -81,7 +81,7 @@
 
           {%- if deadline != blank -%}
             <p class="mh-gift__deadline">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
               <span>{{ deadline }}</span>
             </p>
           {%- endif -%}
@@ -138,7 +138,7 @@
     },
     { "type": "text", "id": "button_label", "label": "Button label" },
     { "type": "url", "id": "link", "label": "Button link", "info": "Empty = the gift product's page." },
-    { "type": "text", "id": "deadline", "label": "Deadline note", "info": "e.g. “Nur bis 24.12. erhältlich”. Hidden when empty." },
+    { "type": "text", "id": "deadline", "label": "Delivery deadline note", "info": "e.g. “Bis 18.12. bestellt – pünktlich unterm Baum”. Hidden when empty." },
     { "type": "text", "id": "anchor", "label": "Anchor id", "default": "mh-gift" }
   ],
   "presets": [{ "name": "Gift promo" }]
